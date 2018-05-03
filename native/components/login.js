@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
-export default class Login extends Component {
+import { StyleSheet, Text, View } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
+
+
+export default class LoginScreen extends Component {
   render() {
     return (
-      <Container>
+
+     
+
+      <Container style={styles.container}>
+      
         <Header />
         <Content>
           <Form>
@@ -15,10 +22,17 @@ export default class Login extends Component {
               <Label style={styles.titleText}>Password</Label>
               <Input />
             </Item>
-            <Button rounded>Login</Button>
+
           </Form>
+          <Button block><Text>Login</Text></Button>
+            <Button block>
+              <Icon />
+              <Text>Sign in with Google</Text>
+            </Button>
         </Content>
+        
       </Container>
+
     );
   }
 }
@@ -31,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-    baseText: {
+    titleText: {
     color: '#DBD56E',
     fontWeight: 'bold',
 
