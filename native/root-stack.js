@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import {HomeScreen, SelectTasks, LoginScreen, FrequencySelector, Scores} from './components'
+import {HomeScreen, TaskList, LoginScreen, FrequencySelector, Scores} from './components'
 
 const RootStack = StackNavigator({
   Home: {
     screen: HomeScreen
   },
-  Select: {
-    screen: SelectTasks
+  TaskList: {
+    screen: TaskList
   },
   Scores: {
     screen: Scores
