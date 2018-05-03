@@ -1,28 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Container, Header, Content, List, ListItem, Button} from 'native-base'
+import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
 
-export default class SelectTasks extends React.Component {
+
+export default class LoginScreen extends Component {
   render() {
     return (
-      <Container style={styles.list}>
-          <Content>
-            <List>
-              <ListItem><Text>Clean Living Room</Text></ListItem>
-              <ListItem><Text>Sweep the Kitchen</Text></ListItem>
-              <ListItem><Text>Take out the Trash</Text></ListItem>
-              <ListItem><Text>Clean the Bathroom</Text></ListItem>
-            </List>
-          <Button onPress={() => this.props.navigation.navigate('Select')} style={styles.button}><Text>Click Me</Text></Button>
-          <Button onPress={() => this.props.navigation.navigate('Home')}><Text>Go Back</Text></Button>
-          </Content>
+
+      <Container style={styles.container}>
+      
+        <Header />
+        <Content>
+          <Form>
+            <Item inlineLabel>
+              <Label style={styles.titleText}>Username</Label>
+              <Input />
+            </Item>
+            <Item inlineLabel last>
+              <Label style={styles.titleText}>Password</Label>
+              <Input />
+            </Item>
+
+          </Form>
+          <Button block><Text>Login</Text></Button>
+            <Button block>
+              <Icon />
+              <Text>Sign in with Google</Text>
+            </Button>
+        </Content>
+        
       </Container>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-  list: {
+  container: {
+    flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+    titleText: {
+    color: '#DBD56E',
+    fontWeight: 'bold',
+
   },
 });
