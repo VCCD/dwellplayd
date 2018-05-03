@@ -1,16 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { Card, CardItem} from 'native-base'
 
 const TaskCard = (props) => {
+  const {task} = props
   return (
     <Card >
-      <CardItem style={styles.header} button onPress={() => console.log('button')}>
+      <CardItem style={styles.header} button onPress={() => props.handleClick(task)}>
         <View style={styles.left}>
-          <Text>{props.task.task}</Text>
-          <Text>Last completed {props.task.daysSinceCompleted} days ago</Text>
+          <Text>{task.task}</Text>
+          <Text>Last completed {task.daysSinceCompleted} days ago</Text>
         </View>
-        <Text style={styles.score} >{props.task.pts}</Text>
+        <Text style={styles.score} >{task.pts}</Text>
       </CardItem>
     </Card>
   )

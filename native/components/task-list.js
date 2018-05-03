@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {Container, Header, Content, List, ListItem, Button, Right, Card, CardItem, Body} from 'native-base'
+import {Container, Header, Content, Button, ActionSheet} from 'native-base'
 import TaskCard from './task-card'
 
 
-const dummyTasks = [
+let dummyTasks = [
   {id: 1, task: 'Clean bathroom', daysSinceCompleted: 6, pts: 7},
   {id: 2, task: 'Take out trash', daysSinceCompleted: 1, pts: 0},
   {id: 3, task: 'Vacuum living room', daysSinceCompleted: 10, pts: 10},
@@ -15,6 +15,11 @@ const dummyTasks = [
   {id: 8, task: 'Random task 4', daysSinceCompleted: 7, pts: 19},
 ]
 
+const BUTTONS = [
+  "Completed",
+  "Cancel"
+];
+const CANCEL_INDEX = 1;
 
 export default class TaskList extends React.Component {
   constructor(props){
@@ -28,17 +33,34 @@ export default class TaskList extends React.Component {
     title: 'Current Tasks'
   }
 
+  handleClick = (clickedTask) => {
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+        cancelButtonIndex: CANCEL_INDEX,
+        title: clickedTask.task
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          clickedTask.daysSinceCompleted = 0
+          clickedTask.pts = 0
+          dummyTasks = dummyTasks.map(task => (task.id === clickedTask.id ? clickedTask : task))
+        }
+      }
+    )
+  }
+
   render() {
-    key = 1;
     const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
           <Content>
           {sortedTasks.map(task => {
             return (
-              <TaskCard key={task.id} task={task} />
+              <TaskCard key={task.id} task={task} handleClick={this.handleClick} />
             )
           })}
+          <Button onPress={() => this.handleClick()}><Text>Click</Text></Button>
           </Content>
       </Container>
     );
