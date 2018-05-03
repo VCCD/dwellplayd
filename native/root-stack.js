@@ -13,6 +13,7 @@ const RootStack = StackNavigator({
   },
   Scores: {
     screen: Scores
+  },
   Login: {
   	screen: LoginScreen
   }
