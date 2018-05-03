@@ -7,6 +7,8 @@ import {
   FrequencySelector,
   Scores,
   SelectTasks,
+  PlayerDetail,
+  PlayerDetailEdit,
 } from './components'
 
 const RootStack = StackNavigator ({
@@ -21,6 +23,12 @@ const RootStack = StackNavigator ({
   },
   Login: {
     screen: LoginScreen
+  },
+  PlayerDetail: {
+    screen: PlayerDetail
+  },
+  PlayerDetailEdit: {
+    screen: PlayerDetailEdit
   },
   FrequencySelector: {
     screen: FrequencySelector

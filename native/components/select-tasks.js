@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Container, Header, Content, ListItem, Right, Radio, Left, Body, Title } from 'native-base';
+import {
+  Container,
+  Header,
+  Content,
+  ListItem,
+  Right,
+  Radio,
+  Left,
+  Body,
+  Title,
+  Form,
+  Item,
+  Label,
+  Input
+} from 'native-base';
 
 const dummyTasks = [
   { id: 1, task: 'Clean bathroom', value: 1, selected: false },
@@ -44,6 +58,11 @@ export default class LoginScreen extends Component {
           </ListItem>
           ))
         }
+        <Form>
+            <Item floatingLabel>
+              <Input placeholder="Enter a custom task" />
+            </Item>
+          </Form>
         </Content>
       </Container>
 
