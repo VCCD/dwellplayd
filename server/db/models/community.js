@@ -8,7 +8,7 @@ const Community = db.define('community', {
     validate: {
       notEmpty: true,
     }
-  }
+  },
 })
 
 module.exports = Community
