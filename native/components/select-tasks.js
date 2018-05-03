@@ -1,56 +1,51 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {Container, Header, Content, List, ListItem, Button, Right, Card, CardItem, Body} from 'native-base'
-import TaskCard from './task-card'
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
 
 
-const dummyTasks = [
-  {id: 1, task: 'Clean bathroom', daysSinceCompleted: 6, pts: 7},
-  {id: 2, task: 'Take out trash', daysSinceCompleted: 1, pts: 0},
-  {id: 3, task: 'Vacuum living room', daysSinceCompleted: 10, pts: 10},
-  {id: 4, task: 'Sweep kitchen', daysSinceCompleted: 2, pts: 1},
-  {id: 5, task: 'Random task 1', daysSinceCompleted: 16, pts: 17},
-  {id: 6, task: 'Random task 2', daysSinceCompleted: 11, pts: 20},
-  {id: 7, task: 'Random task 3', daysSinceCompleted: 13, pts: 12},
-  {id: 8, task: 'Random task 4', daysSinceCompleted: 7, pts: 19},
-]
-
-
-export default class SelectTasks extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      tasks: {},
-    }
-  }
-
-  static navigationOptions = {
-    title: 'Current Tasks'
-  }
-
+export default class LoginScreen extends Component {
   render() {
-    key = 1;
-    const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
-      <Container style={styles.list}>
-          <Content>
-          {sortedTasks.map(task => {
-            return (
-              <TaskCard key={task.id} task={task} />
-            )
-          })}
-          </Content>
+
+      <Container style={styles.container}>
+      
+        <Header />
+        <Content>
+          <Form>
+            <Item inlineLabel>
+              <Label style={styles.titleText}>Username</Label>
+              <Input />
+            </Item>
+            <Item inlineLabel last>
+              <Label style={styles.titleText}>Password</Label>
+              <Input />
+            </Item>
+
+          </Form>
+          <Button block><Text>Login</Text></Button>
+            <Button block>
+              <Icon />
+              <Text>Sign in with Google</Text>
+            </Button>
+        </Content>
+        
       </Container>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-  list: {
+  container: {
+    flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
+
+    titleText: {
+    color: '#DBD56E',
+    fontWeight: 'bold',
+
+  },
 });
