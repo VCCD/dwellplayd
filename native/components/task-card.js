@@ -1,20 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Card, CardItem } from 'native-base'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Card, CardItem} from 'native-base'
 
 const TaskCard = (props) => {
   return (
-  <TouchableOpacity key={props.task.daysSinceCompleted} onPress={() => console.log('yo')} >
-    <Card>
-      <CardItem header style={styles.header} onPress={() => console.log('yo')}>
-        <Text>{props.task.task}</Text>
-        <Text >{props.task.pts}</Text>
-      </CardItem>
-      <CardItem>
-        <Text>Last completed {props.task.daysSinceCompleted} days ago</Text>
+    <Card >
+      <CardItem style={styles.header} button onPress={() => console.log('button')}>
+        <View style={styles.left}>
+          <Text>{props.task.task}</Text>
+          <Text>Last completed {props.task.daysSinceCompleted} days ago</Text>
+        </View>
+        <Text style={styles.score} >{props.task.pts}</Text>
       </CardItem>
     </Card>
-  </TouchableOpacity>
   )
 }
 
@@ -25,6 +23,15 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  left: {
+    height: 50,
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  score: {
+    fontSize: 30,
+    fontWeight: 'bold',
   }
 });
 
