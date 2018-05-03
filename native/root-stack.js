@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import {HomeScreen, TaskList, LoginScreen, FrequencySelector, Scores, PlayerDetail, PlayerDetailEdit} from './components'
+import {
+  HomeScreen,
+  TaskList,
+  LoginScreen,
+  FrequencySelector,
+  Scores,
+  SelectTasks,
+  PlayerDetail,
+  PlayerDetailEdit,
+} from './components'
 
-const RootStack = StackNavigator({
+const RootStack = StackNavigator ({
   Home: {
     screen: HomeScreen
   },
@@ -14,7 +22,7 @@ const RootStack = StackNavigator({
     screen: Scores
   },
   Login: {
-  	screen: LoginScreen
+    screen: LoginScreen
   },
   PlayerDetail: {
     screen: PlayerDetail
@@ -25,6 +33,9 @@ const RootStack = StackNavigator({
   FrequencySelector: {
     screen: FrequencySelector
   },
+  SelectTasks: {
+    screen: SelectTasks
+  }
 })
 
 export default RootStack
