@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {Container, Header, Content, List, ListItem, Button, Right, Card, CardItem, Body} from 'native-base'
+import TaskCard from './task-card'
 
 
 const dummyTasks = [
@@ -24,23 +25,14 @@ export default class SelectTasks extends React.Component {
   }
 
   render() {
+    key = 1;
     const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
           <Content>
           {sortedTasks.map(task => {
             return (
-              <TouchableOpacity key={task.daysSinceCompleted} onPress={() => console.log('yo')} >
-                <Card>
-                  <CardItem header style={styles.header} onPress={() => console.log('yo')}>
-                    <Text>{task.task}</Text>
-                    <Text style={styles.score}>{task.pts}</Text>
-                  </CardItem>
-                  <CardItem>
-                    <Text>Last completed {task.daysSinceCompleted} days ago</Text>
-                  </CardItem>
-                </Card>
-              </TouchableOpacity>
+              <TaskCard key={key++} task={task} />
             )
           })}
           </Content>
