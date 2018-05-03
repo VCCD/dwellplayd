@@ -60,7 +60,6 @@ export default class TaskList extends React.Component {
               <TaskCard key={task.id} task={task} handleClick={this.handleClick} />
             )
           })}
-          <Button onPress={() => this.handleClick()}><Text>Click</Text></Button>
           </Content>
       </Container>
     );
