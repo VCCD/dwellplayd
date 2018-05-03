@@ -9,6 +9,7 @@ export default class HomeScreen extends React.Component {
         <Text>Welcome To Game of Homes</Text>
         <Button onPress={() => this.props.navigation.navigate('Select')} style={styles.button}><Text>Click Me</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('Login')} style={styles.button}><Text>Login</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
       </Container>
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import {HomeScreen, SelectTasks, LoginScreen} from './components'
+import {HomeScreen, SelectTasks, LoginScreen, FrequencySelector} from './components'
 
 const RootStack = StackNavigator({
   Home: {
@@ -12,6 +12,9 @@ const RootStack = StackNavigator({
   },
   Login: {
   	screen: LoginScreen
+  },
+  FrequencySelector: {
+    screen: FrequencySelector
   }
 })
 
