@@ -13,56 +13,83 @@ import {
   Form,
   Item,
   Label,
-  Input
+  Input,
+  Button,
 } from 'native-base';
 
 const dummyTasks = [
-  { id: 1, task: 'Clean bathroom', value: 1, selected: false },
-  { id: 2, task: 'Take out trash', value: 1, selected: false },
-  { id: 3, task: 'Vacuum living room', value: 1, selected: false },
-  { id: 4, task: 'Sweep kitchen', value: 1, selected: false },
-  { id: 5, task: 'Random task', value: 1, selected: false },
+  { id: 1, task: 'Clean bathroom', selected: false },
+  { id: 2, task: 'Take out trash', selected: false },
+  { id: 3, task: 'Vacuum living room', selected: false },
+  { id: 4, task: 'Sweep kitchen', selected: false },
+  { id: 5, task: 'Random task', selected: false },
 ]
 
 export default class LoginScreen extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       taskList: dummyTasks,
+      taskInput: '',
     }
   }
 
   handleClick = (id) => {
     const taskList = this.state.taskList.map(task => {
-      if (task.id === id) return {...task, selected: !task.selected}
+      if (task.id === id) return { ...task, selected: !task.selected }
       else return task
     })
     this.setState({ taskList })
+  }
+
+  handleChangeTask = (taskInput) => {
+    this.setState({taskInput})
+  }
+
+  handleAddTask = () => {
+    const newTask = {
+      id: this.state.taskList.length + 1,
+      task: this.state.taskInput,
+      selected: true,
+    }
+    this.setState({
+      taskList: [...this.state.taskList, newTask],
+      taskInput: '',
+    })
+  }
+
+  handleSubmitTasks = () => {
+    console.log(this.state.taskList.filter(task => task.selected).map(task => {
+      delete task.selected
+      return task
+    }))
+    this.props.navigation.navigate('Home');
   }
 
   render() {
     return (
       <Container>
         <Content>
-        {
-          this.state.taskList.map(task => (
-            <ListItem
-              key={task.id}
-              value={task.id}
-              onPress={() => this.handleClick(task.id)}>
-            <Text>{task.task}</Text>
-            <Right>
-              <Radio
-                selected={task.selected} />
-            </Right>
-          </ListItem>
-          ))
-        }
-        <Form>
+          {
+            this.state.taskList.map(task => (
+              <ListItem
+                key={task.id}
+                value={task.id}
+                onPress={() => this.handleClick(task.id)}>
+                <Text>{task.task}</Text>
+                <Right>
+                  <Radio
+                    selected={task.selected} />
+                </Right>
+              </ListItem>
+            ))
+          }
+          <Form>
             <Item floatingLabel>
-              <Input placeholder="Enter a custom task" />
+              <Input onChangeText={this.handleChangeTask} onSubmitEditing={this.handleAddTask} placeholder="Enter a custom task" value={this.state.taskInput} />
             </Item>
           </Form>
+            <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
         </Content>
       </Container>
 
