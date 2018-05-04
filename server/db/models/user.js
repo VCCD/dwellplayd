@@ -22,6 +22,11 @@ const User = db.define('user', {
     unique: true,
     allowNull: false
   },
+  score: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  },
   password: {
     type: Sequelize.STRING,
     // Making `.password` act like a func hides it when serializing to JSON.
@@ -34,7 +39,7 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     // Making `.salt` act like a function hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
-    get () {
+    get() {
       return () => this.getDataValue('salt')
     }
   },
