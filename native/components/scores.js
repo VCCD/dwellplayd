@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Container, Header, Content, List, ListItem, Body, Title } from 'native-base'
+import { StyleSheet, Text } from 'react-native';
+import { Container, Content, List, ListItem } from 'native-base'
 
 export default class Scores extends React.Component {
   static navigationOptions = {
