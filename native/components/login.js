@@ -20,7 +20,7 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
         <Content>
           <Form name={name}>
             <Item inlineLabel>
-            <Icon active name='lock' />
+            <Icon active name='person' />
               
               <Input name="email" onChangeText={text => state.email = text } placeholder='Email'/>
             </Item>
@@ -29,11 +29,12 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
               
               <Input onChangeText={(text) => state.password = text}  placeholder='Password'/>
             </Item>
-            <Button block onPress={loginSubmit} style={styles.button}><Text style={styles.titleText}>Login</Text></Button>
+            
           </Form>
           
-          
-            <Button  block onPress={()=> console.log(state, 'state', props, 'props')} style={styles.button}>
+          <Button full onPress={loginSubmit} style={styles.button}><Text style={styles.titleText}>Login</Text></Button>
+            
+            <Button full onPress={()=> console.log(state, 'state', props, 'props')} style={styles.button}>
               <Icon />
               <Text style={styles.titleText}>Sign in with Google</Text>
             </Button>
@@ -47,23 +48,31 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    backgroundColor: 'white',
+    flex: 3,
+    flexDirection:"row",
+    justifyContent:'space-between',
+    backgroundColor: 'whitesmoke',
     alignItems: 'center',
     justifyContent: 'center',
-    alignItems: "stretch"
+    alignItems: "stretch",
+    
   },
 
     titleText: {
     color: '#DBD56E',
     fontWeight: 'bold',
     fontFamily: 'Skia',
+    fontSize: 14
 
   },
     button:{
       flex: 3,
+      padding:10,
+      
+      alignItems: "stretch",
      
-      backgroundColor: '#403D58'
+      backgroundColor: '#403D58',
+      
     }
 });
 
