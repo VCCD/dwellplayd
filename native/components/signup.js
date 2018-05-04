@@ -79,9 +79,9 @@ class Signup extends React.Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const form = this._form.getValue()
-    this.props.signupSubmit(form)
+    if (form) this.props.signupSubmit(form)
     console.log('here', form)
   }
 
@@ -108,8 +108,8 @@ const mapState = null
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    signupSubmit: async (form) => {
-      await dispatch(signup(form))
+    signupSubmit: (form) => {
+      dispatch(signup(form))
       ownProps.navigation.navigate('Home')
     }
   }
