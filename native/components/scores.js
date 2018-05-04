@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Container, Content, List, ListItem } from 'native-base'
 import { connect } from 'react-redux'
-import { fetchUsers } from '../store';
+import { fetchCommunity } from '../store';
 
 class Scores extends React.Component {
   static navigationOptions = {
@@ -10,17 +10,18 @@ class Scores extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getUsers } = this.props
-    getUsers()
+    const { getCommunity } = this.props
+    getCommunity(1)
   }
 
   render() {
-    const { users } = this.props
+    const { users } = this.props.community
+    console.log(this.props)
     return (
       <Container style={styles.list}>
         <Content>
           <List>
-            {users.map(user => {
+            {users && users.map(user => {
               const { firstName, lastName, score } = user
               return (
                 <ListItem key={firstName + lastName}>
@@ -39,14 +40,14 @@ class Scores extends React.Component {
 
 const mapState = state => {
   return {
-    users: state.users,
+    community: state.community,
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getUsers: () => {
-      dispatch(fetchUsers())
+    getCommunity: id => {
+      dispatch(fetchCommunity(id))
     }
   }
 }
