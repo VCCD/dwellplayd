@@ -9,6 +9,7 @@ import {
   SelectTasks,
   PlayerDetail,
   PlayerDetailEdit,
+  Signup
 } from './components'
 
 const RootStack = StackNavigator ({
@@ -35,6 +36,9 @@ const RootStack = StackNavigator ({
   },
   SelectTasks: {
     screen: SelectTasks
+  },
+  Signup: {
+    screen: Signup
   }
 })
 
