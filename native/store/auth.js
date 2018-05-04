@@ -27,9 +27,9 @@ export const me = () => dispatch => {
 
 }
 
-export const auth = (email, password) => (dispatch) => {
-    axios
-    .post(`${authURL}/auth/login`,  { email, password })
+export const auth = (body) => (dispatch) => {
+    return axios
+    .post(`${authURL}/login`, body)
     .then(
         res => {
             dispatch(loginUser(res.data))
