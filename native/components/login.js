@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {auth } from '../store/auth'
+import {auth, me } from '../store/auth'
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
 
@@ -9,7 +9,7 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
 
     const LoginScreen = (props) => {
       const state = {}
-      const {name, handleSubmit} = props
+      const {name, loginSubmit} = props
     return (
 
      
@@ -20,20 +20,22 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
         <Content>
           <Form name={name}>
             <Item inlineLabel>
-              <Label style={styles.titleText} >Email</Label>
-              <Input name="email" onChangeText={text => state.email = text } />
+            <Icon active name='lock' />
+              
+              <Input name="email" onChangeText={text => state.email = text } placeholder='Email'/>
             </Item>
             <Item inlineLabel last>
-              <Label style={styles.titleText} name="password">Password</Label>
-              <Input onChangeText={(text) => state.password = text} />
+            <Icon active name='key' />
+              
+              <Input onChangeText={(text) => state.password = text}  placeholder='Password'/>
             </Item>
-            <Button block onPress={loginSubmit}><Text>Login</Text></Button>
+            <Button block onPress={loginSubmit} style={styles.button}><Text style={styles.titleText}>Login</Text></Button>
           </Form>
           
-          <Button block onPress={(event)=> console.log(event.target.value)}><Text>Create Account</Text></Button>
-            <Button block onPress={()=> console.log(state)}>
+          
+            <Button  block onPress={()=> console.log(state, 'state', props, 'props')} style={styles.button}>
               <Icon />
-              <Text>Sign in with Google</Text>
+              <Text style={styles.titleText}>Sign in with Google</Text>
             </Button>
         </Content>
         
@@ -45,17 +47,24 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } fr
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flex: 2,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    alignItems: "stretch"
   },
 
     titleText: {
     color: '#DBD56E',
     fontWeight: 'bold',
+    fontFamily: 'Skia',
 
   },
+    button:{
+      flex: 3,
+     
+      backgroundColor: '#403D58'
+    }
 });
 
 //mapLogin = null
@@ -72,16 +81,14 @@ const mapLogin = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loginSubmit (evt) {
-      console.log(evt.target)
+      //console.log(evt.target)
       // evt.preventDefault()
      
       // const email = evt.target.email.value
       // const password = evt.target.password.value
        dispatch(auth(this.state))
     },
-    createAccount (){
-      dispatch()
-    }
+ 
 
   }
 }
