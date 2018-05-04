@@ -16,20 +16,17 @@ class Scores extends React.Component {
 
   render() {
     const { users } = this.props
-    const playerScores = Array.from(Object.entries(dummyPlayerScores))
-    const sortedPlayerScores = playerScores.sort((a, b) => b[1] - a[1])
     return (
       <Container style={styles.list}>
         <Content>
           <List>
-            {sortedPlayerScores.map(playerScore => {
-              const player = playerScore[0]
-              const score = playerScore[1]
+            {users.map(user => {
+              const { firstName, lastName, score } = user
               return (
-                <ListItem key={playerScore}>
+                <ListItem key={firstName + lastName}>
                   <Text>
-                    {player} has {score} points
-                </Text>
+                    {`${firstName} ${lastName} has ${score} points`}
+                  </Text>
                 </ListItem>
               )
             })}

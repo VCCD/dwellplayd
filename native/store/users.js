@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const defaultUsers = {}
+import CONFIG from '../api-routes'
+const apiURL = CONFIG.API_URL
+
+const defaultUsers = []
 
 /*--------actions-------*/
 
@@ -14,8 +17,9 @@ const getUsers = users => ({ type: GET_USERS, users })
 
 export const fetchUsers = () => dispatch => {
   axios.
-    get('/users')
-    .then(res => dispatch(getUsers(res.data || defaultUsers)))
+  get(`${apiURL}/users`)
+    .then(res => {
+      dispatch(getUsers(res.data || defaultUsers))})
     .catch(err => console.log(err))
 }
 
@@ -24,7 +28,7 @@ export const fetchUsers = () => dispatch => {
 export default function (state = defaultUsers, action) {
   switch (action.type) {
     case GET_USERS:
-      return action.scores;
+      return action.users;
     default:
       return state;
   }
