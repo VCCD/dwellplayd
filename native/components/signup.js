@@ -5,10 +5,15 @@ import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'na
 import t from 'tcomb-form-native'
 import { signup } from '../store/auth';
 
+const Email = t.refinement(t.String, email => {
+  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
+  return reg.test(email);
+});
+
 const UserSignup = t.struct({
   firstName: t.String,
   lastName: t.String,
-  email: t.String,
+  email: Email,
   password: t.String,
 })
 
@@ -16,7 +21,17 @@ const Form = t.form.Form
 
 const options = {
   fields: {
+    firstName: {
+      error: 'First name cannot be empty'
+    },
+    lastName: {
+      error: 'Last name cannot be empty'
+    },
+    email: {
+      error: 'Insert a valid email'
+    },
     password: {
+      error: 'Please enter a password',
       secureTextEntry: true
     }
   }
