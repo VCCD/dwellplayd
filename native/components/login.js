@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {auth} from '../store/auth'
+import {auth } from '../store/auth'
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
 
@@ -78,7 +78,11 @@ const mapDispatch = (dispatch) => {
       // const email = evt.target.email.value
       // const password = evt.target.password.value
        dispatch(auth(this.state))
+    },
+    createAccount (){
+      dispatch()
     }
+
   }
 }
 export default connect(mapLogin, mapDispatch)(LoginScreen)
