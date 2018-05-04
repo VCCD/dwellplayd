@@ -1,63 +1,73 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {auth, me } from '../store/auth'
+import { connect } from 'react-redux'
+import { auth, me } from '../store/auth'
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, Button, Icon } from 'native-base';
+import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import t from 'tcomb-form-native'
 
-    const LoginScreen = (props) => {
-      const state = {}
-      const {name, loginSubmit} = props
+const User = t.struct({
+  email: t.String,
+  password: t.String,
+})
+const Form = t.form.Form
+
+class LoginScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: '',
+    }
+  }
+
+  handleSubmit = () => {
+    const form = this._form.getValue()
+    this.props.loginSubmit(form)
+  }
+
+  render() {
+    const { name, loginSubmit } = this.props
     return (
       <Container style={styles.container}>
         <Content>
-          <Form name={name}>
-            <Item inlineLabel>
-            <Icon active name='person' />
-
-              <Input name="email" onChangeText={text => state.email = text } placeholder='Email'/>
-            </Item>
-            <Item inlineLabel last>
-            <Icon active name='key' />
-
-              <Input onChangeText={(text) => state.password = text}  placeholder='Password'/>
-            </Item>
-
-          </Form>
-
-          <Button full onPress={loginSubmit} style={styles.button}><Text style={styles.titleText}>Login</Text></Button>
-
-            <Button full onPress={()=> console.log(state, 'state', props, 'props')} style={styles.button}>
-              <Icon />
-              <Text style={styles.titleText}>Sign in with Google</Text>
-            </Button>
+          <Form
+            ref={c => this._form = c}
+            type={User} />
+          <Button
+            onPress={this.handleSubmit}><Text style={styles.titleText}>Sign in</Text></Button>
+          <Button full onPress={() => console.log(state, 'state', this.props, 'this.props')} style={styles.button}>
+            <Icon />
+            <Text style={styles.titleText}>Sign in with Google</Text>
+          </Button>
         </Content>
       </Container>
     );
   }
+}
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 3,
-    flexDirection:"row",
-    justifyContent:'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: 'whitesmoke',
     alignItems: 'stretch',
 
   },
 
-    titleText: {
+  titleText: {
     color: '#DBD56E',
     fontWeight: 'bold',
     fontSize: 14
 
   },
-    button:{
-      flex: 3,
-      padding:10,
-      alignItems: "stretch",
-      backgroundColor: '#403D58',
-    }
+  button: {
+    flex: 3,
+    padding: 10,
+    alignItems: "stretch",
+    backgroundColor: '#403D58',
+  }
 });
 
 //mapLogin = null
@@ -71,18 +81,12 @@ const mapLogin = (state) => {
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, ownProps) => {
   return {
-    loginSubmit (evt) {
-      //console.log(evt.target)
-      // evt.preventDefault()
-
-      // const email = evt.target.email.value
-      // const password = evt.target.password.value
-       dispatch(auth(this.state))
+    loginSubmit: async (form) => {
+      await dispatch(auth(form))
+      ownProps.navigation.navigate('Home')
     },
-
-
   }
 }
 export default connect(mapLogin, mapDispatch)(LoginScreen)
