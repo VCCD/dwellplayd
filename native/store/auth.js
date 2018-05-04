@@ -27,23 +27,24 @@ export const me = () => dispatch => {
 }
 
 export const auth = (email, password) => (dispatch) => {
+  console.log('aaaa')
     axios
-    .post('/auth/login',  { email, password })
-    .then(
-        res => {
-            dispatch(loginUser(res.data))
-            console.log('Logging in');
-            //history.push('/home');
-            console.log(res)
-        },
+    .get('/http://172.17.20.52:8080/auth/test')
+    // .then(
+    //     res => {
+    //         dispatch(loginUser(res.data))
+    //         console.log('Logging in');
+    //         //history.push('/home');
+    //         console.log(res)
+    //     },
 
-        authError => {
-        // rare example: a good use case for parallel (non-catch) error handler
-        dispatch(loginUser({ error: authError }));
-      }
+    //     authError => {
+    //     // rare example: a good use case for parallel (non-catch) error handler
+    //     dispatch(loginUser({ error: authError }));
+    //   }
         
-    )
-    .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
+    // )
+    // .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
 
 
 }
