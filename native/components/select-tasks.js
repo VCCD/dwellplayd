@@ -16,30 +16,23 @@ import {
   Input,
   Button,
 } from 'native-base';
+import store, { getAllTasksFromServer, addTaskFromServerThunkerator } from '../store'
+import { connect } from 'react-redux';
 
-const dummyTasks = [
-  { id: 1, task: 'Clean bathroom', selected: false },
-  { id: 2, task: 'Take out trash', selected: false },
-  { id: 3, task: 'Vacuum living room', selected: false },
-  { id: 4, task: 'Sweep kitchen', selected: false },
-  { id: 5, task: 'Random task', selected: false },
-]
-
-export default class LoginScreen extends Component {
+class SelectTasks extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      taskList: dummyTasks,
       taskInput: '',
     }
   }
 
   handleClick = (id) => {
-    const taskList = this.state.taskList.map(task => {
+    const taskList = this.props.taskList.map(task => {
       if (task.id === id) return { ...task, selected: !task.selected }
       else return task
     })
-    this.setState({ taskList })
+    store.dispatch(getAllTasksFromServer(taskList))
   }
 
   handleChangeTask = (taskInput) => {
@@ -48,14 +41,10 @@ export default class LoginScreen extends Component {
 
   handleAddTask = () => {
     const newTask = {
-      id: this.state.taskList.length + 1,
-      task: this.state.taskInput,
-      selected: true,
+      name: this.state.taskInput,
     }
-    this.setState({
-      taskList: [...this.state.taskList, newTask],
-      taskInput: '',
-    })
+    store.dispatch(addTaskFromServerThunkerator(newTask))
+    this.setState({taskInput: ''})
   }
 
   handleSubmitTasks = () => {
@@ -71,15 +60,15 @@ export default class LoginScreen extends Component {
       <Container>
         <Content>
           {
-            this.state.taskList.map(task => (
+            this.props.taskList.map(task => (
               <ListItem
                 key={task.id}
                 value={task.id}
                 onPress={() => this.handleClick(task.id)}>
-                <Text>{task.task}</Text>
+                <Text>{task.task.name}</Text>
                 <Right>
                   <Radio
-                    selected={task.selected} />
+                    selected={task.selected || false} />
                 </Right>
               </ListItem>
             ))
@@ -111,3 +100,9 @@ const styles = StyleSheet.create({
 
   },
 });
+
+const mapState = ({ taskList }) => ({ taskList })
+
+const mapDispatch = null
+
+export default connect(mapState, mapDispatch)(SelectTasks)

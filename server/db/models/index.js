@@ -17,6 +17,7 @@ TaskItem.belongsTo(Community)
 Community.hasMany(TaskItem)
 
 Task.hasMany(TaskItem)
+TaskItem.belongsTo(Task)
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
