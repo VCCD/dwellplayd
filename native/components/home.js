@@ -19,9 +19,9 @@ const HomeScreen = (props) => {
       <Button rounded onPress={() => props.navigation.navigate('PlayerDetail')} style={styles.button}><Text>PlayerDetail</Text></Button>
       <Button rounded onPress={() => props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
       <Button rounded onPress={() => props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
+      <Button rounded onPress={() => props.navigation.navigate('Signup')} style={styles.button}><Text>Signup</Text></Button>
     </Container>
   );
-
 }
 
 const styles = StyleSheet.create({

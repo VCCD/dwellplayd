@@ -34,7 +34,7 @@ class LoginScreen extends React.Component {
             ref={c => this._form = c}
             type={User} />
           <Button
-            onPress={this.handleSubmit}><Text style={styles.titleText}>Sign in</Text></Button>
+            full onPress={this.handleSubmit} style={styles.button}><Text style={styles.titleText}>Sign in</Text></Button>
           <Button full onPress={() => console.log(state, 'state', this.props, 'this.props')} style={styles.button}>
             <Icon />
             <Text style={styles.titleText}>Sign in with Google</Text>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'whitesmoke',
-    alignItems: 'stretch',
+    alignItems: 'center',
 
   },
 
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
   button: {
     flex: 3,
     padding: 10,
-    alignItems: "stretch",
+    margin: 10,
+    alignItems: 'center',
     backgroundColor: '#403D58',
   }
 });
