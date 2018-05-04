@@ -10,11 +10,16 @@ const Email = t.refinement(t.String, email => {
   return reg.test(email);
 });
 
+const Password = t.refinement(t.String, password => {
+  if (password.length < 3) return false
+  else return true
+})
+
 const UserSignup = t.struct({
   firstName: t.String,
   lastName: t.String,
   email: Email,
-  password: t.String,
+  password: Password,
 })
 
 const Form = t.form.Form
@@ -31,7 +36,7 @@ const options = {
       error: 'Insert a valid email'
     },
     password: {
-      error: 'Please enter a password',
+      error: 'Password must be at least 3 characters',
       secureTextEntry: true
     }
   }
