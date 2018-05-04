@@ -1,6 +1,7 @@
 import axios from 'axios'
+import CONFIG from '../api-routes'
 
-
+const authURL = CONFIG.AUTH_URL
 
 const LOGIN_USER = 'LOGIN_USER'
 const LOGOUT_USER = 'LOGOUT_USER'
@@ -28,7 +29,7 @@ export const me = () => dispatch => {
 
 export const auth = (email, password) => (dispatch) => {
     axios
-    .post('/auth/login',  { email, password })
+    .post(`${authURL}/auth/login`,  { email, password })
     .then(
         res => {
             dispatch(loginUser(res.data))
