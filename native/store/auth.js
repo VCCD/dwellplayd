@@ -19,7 +19,7 @@ const logoutUser = () => ({type: LOGOUT_USER})
 
 export const me = () => dispatch => {
 
-    axios. 
+    axios.
     get('/auth/me')
     .then(res => dispatch(loginUser(res.data || defaultUser)))
     .catch(err => console.log(err))
@@ -42,18 +42,35 @@ export const auth = (body) => (dispatch) => {
         // rare example: a good use case for parallel (non-catch) error handler
         dispatch(loginUser({ error: authError }));
       }
-        
     )
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
-
-
 }
+
+export const signup = (body) => (dispatch) => {
+  return axios
+  .post(`${authURL}/signup`, body)
+  .then(
+    res => {
+        dispatch(loginUser(res.data))
+        console.log('Logging in');
+        //history.push('/home');
+        console.log(res)
+    },
+
+    authError => {
+    // rare example: a good use case for parallel (non-catch) error handler
+    dispatch(loginUser({ error: authError }));
+  }
+)
+.catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
+}
+
 export const logout = () => dispatch =>
   axios
     .post('/auth/logout' )
     .then(_ => {
       dispatch(logoutUser());
-      
+
       //history.push('/login');
     })
     .catch(err => console.log(err));
