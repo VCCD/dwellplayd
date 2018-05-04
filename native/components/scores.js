@@ -10,8 +10,8 @@ class Scores extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getCommunity } = this.props
-    getCommunity(1)
+    const { getCommunity, user } = this.props
+    getCommunity(user.communityId)
   }
 
   render() {
@@ -40,6 +40,7 @@ class Scores extends React.Component {
 
 const mapState = state => {
   return {
+    user: state.user,
     community: state.community,
   }
 }
