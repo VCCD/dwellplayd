@@ -16,6 +16,8 @@ Community.hasMany(TaskItem)
 Task.hasMany(TaskItem)
 TaskItem.belongsTo(Task)
 
+Task.hasMany(CommunityTask)
+CommunityTask.belongsTo(Task)
 
 module.exports = {
   User,

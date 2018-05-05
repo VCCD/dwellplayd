@@ -16,7 +16,12 @@ import {
   Input,
   Button,
 } from 'native-base';
-import store, { getAllTasksFromServer, addTaskFromServerThunkerator, getAllTasksFromServerThunkerator, addTasksToCommunityThunkerator } from '../store'
+import store, {
+  getAllTasksFromServer,
+  addTaskFromServerThunkerator,
+  getAllTasksFromServerThunkerator,
+  addCommunityTasksThunkerator,
+} from '../store'
 import { connect } from 'react-redux';
 
 class SelectTasks extends Component {
@@ -53,7 +58,7 @@ class SelectTasks extends Component {
 
   handleSubmitTasks = async () => {
     const taskIds = this.props.taskList.filter(task => task.selected).map(task => task.id)
-    await store.dispatch(addTasksToCommunityThunkerator(1, taskIds))
+    await store.dispatch(addCommunityTasksThunkerator(1, taskIds))
     this.props.navigation.navigate('Home');
   }
 
@@ -87,7 +92,12 @@ class SelectTasks extends Component {
           }
           <Form>
             <Item floatingLabel>
-              <Input onChangeText={this.handleChangeTask} onSubmitEditing={this.handleAddTask} placeholder="Enter a custom task" value={this.state.taskInput} />
+              <Input
+                onChangeText={this.handleChangeTask}
+                onSubmitEditing={this.handleAddTask}
+                placeholder="Enter a custom task"
+                value={this.state.taskInput}
+              />
             </Item>
           </Form>
           <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
