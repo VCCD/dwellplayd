@@ -5,6 +5,7 @@ const apiURL = CONFIG.API_URL
 
 const ADD_TASK_FROM_SERVER = 'ADD_TASK_FROM_SERVER'
 const REMOVE_TASK_FROM_SERVER = 'REMOVE_TASK_FROM_SERVER'
+const EDIT_SINGLE_TASK = 'EDIT_SINGLE_TASK'
 const GET_ALL_TASKS_FROM_SERVER = 'GET_ALL_TASKS_FROM_SERVER'
 const CLEAR_TASKS = 'CLEAR_TASKS'
 
@@ -23,6 +24,11 @@ export const removeTaskFromServer = (task) => ({
 export const getAllTasksFromServer = (tasks) => ({
   type: GET_ALL_TASKS_FROM_SERVER,
   tasks
+})
+
+export const editSingleTask = (task) => ({
+  type: EDIT_SINGLE_TASK,
+  task
 })
 
 export const clearTasks = () => ({
@@ -80,6 +86,11 @@ export default (prevState = [], action) => {
       return prevState.filter(task => task.id !== action.task.id)
     case GET_ALL_TASKS_FROM_SERVER:
       return action.tasks
+    case EDIT_SINGLE_TASK:
+      return prevState.map(task => {
+        if (task.id === action.task.id) return action.task
+        else return task
+      })
     case CLEAR_TASKS:
       return []
     default: return prevState
