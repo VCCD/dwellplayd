@@ -1,22 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, Slider, View } from 'react-native';
 import { Container, Content, Button, Card, CardItem, Body } from 'native-base'
+import store, { getAllCommunityTasksFromServerThunkerator, editCommunityTask, submitCommunityTaskFrequenciesThunkerator } from '../store'
+import { connect } from 'react-redux'
 
-export default class FrequencySelector extends React.Component {
+class FrequencySelector extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      dummyTasks,
-      activeTask: null,
-    };
+      activeTask: {},
+    }
   }
 
-  change(value) {
-    const newTasks = this.state.dummyTasks.map(task => {
-      if (this.state.activeTask === task.id) return { ...task, value }
-      else return task
-    })
-    this.setState({ dummyTasks: newTasks })
+  componentDidMount () {
+    store.dispatch(getAllCommunityTasksFromServerThunkerator(1))
+  }
+
+  change = (value) => {
+    store.dispatch(editCommunityTask({...this.state.activeTask, value}))
+  }
+
+  handleSubmit = () => {
+    store.dispatch(submitCommunityTaskFrequenciesThunkerator(1, this.props.communityTasks))
+    this.props.navigation.navigate('Home')
   }
 
   render() {
@@ -24,30 +30,31 @@ export default class FrequencySelector extends React.Component {
       <Container style={styles.container}>
         <Content>
           {
-            this.state.dummyTasks.map(task => (
-              <Card key={task.id} >
+            this.props.communityTasks.map(item => (
+              <Card key={item.taskId} >
                 <CardItem>
                   <Body>
                     <Text>
-                      {task.task}
+                      {item.task.name}
                     </Text>
                     <Text>
                       {
-                        task.value === 1
+                        item.value === 1
                           ? `Every day`
-                          : `Every ${task.value} days`
+                          : `Every ${item.value} days`
                       }
                     </Text>
                   </Body>
                 </CardItem>
                 <Slider
+                  style={{marginLeft: 20, marginRight: 20}}
                   step={1}
                   maximumValue={30}
                   minimumValue={1}
-                  onTouchStart={() => this.setState({ activeTask: task.id })}
-                  onTouchEnd={() => this.setState({ activeTask: null })}
-                  onValueChange={this.change.bind(this)}
-                  value={task.value} />
+                  onTouchStart={() => this.setState({ activeTask: item })}
+                  onTouchEnd={() => this.setState({ activeTask: {} })}
+                  onValueChange={this.change}
+                  value={item.value} />
               </Card>
             ))
           }
@@ -58,27 +65,13 @@ export default class FrequencySelector extends React.Component {
           }}>
             <Button
               style={{ margin: 30 }}
-              onPress={() => {
-                console.log(this.state.dummyTasks);
-                this.props.navigation.navigate('Home')
-              }}><Text>Submit</Text></Button>
+              onPress={this.handleSubmit}><Text>Submit</Text></Button>
           </View>
         </Content>
       </Container>
     );
   }
 }
-
-const dummyTasks = [
-  { id: 1, task: 'Clean bathroom', value: 1 },
-  { id: 2, task: 'Take out trash', value: 1 },
-  { id: 3, task: 'Vacuum living room', value: 1 },
-  { id: 4, task: 'Sweep kitchen', value: 1 },
-  { id: 5, task: 'Random task', value: 1 },
-  { id: 6, task: 'Random task', value: 1 },
-  { id: 7, task: 'Random task', value: 1 },
-  { id: 8, task: 'Random task', value: 1 },
-]
 
 const styles = StyleSheet.create({
   container: {
@@ -90,3 +83,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 })
+
+const mapState = ({ communityTasks, community }) => ({ communityTasks, community })
+
+const mapDispatch = null
+
+export default connect(mapState, mapDispatch)(FrequencySelector)

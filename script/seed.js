@@ -10,13 +10,50 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Community, Task} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
   console.log('db synced!')
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
+
+  await Community.create({
+    name: 'Community',
+  })
+
+  const createTasks = async () => {
+    const tasks = [
+      {
+        name: 'Clean the dishes',
+      },
+      {
+        name: 'Wipe the counters',
+      },
+      {
+        name: 'Sweep the floors',
+      },
+      {
+        name: 'Vacuum the carpet',
+      },
+      {
+        name: 'Feed the dog',
+      }
+    ]
+    try {
+      const taskPromises = tasks.map(task => {
+        return Task.create(task)
+      })
+      const createdTasks = await Promise.all(taskPromises)
+      console.log('seeded the tasks')
+    }
+    catch (err) {
+      console.log(err)
+    }
+  
+  }
+  await createTasks()
+
 
   const createUsers = async () => {
     const users = [
@@ -25,24 +62,28 @@ async function seed () {
         lastName: 'Fayolle',
         email: 'c@cody.com',
         password: '123',
+        communityId: 1,
       },
       {
         firstName: 'Dave',
         lastName: 'Fudacz',
         email: 'd@dave.com',
         password: '123',
+        communityId: 1,
       },
       {
         firstName: 'Chris',
         lastName: 'Miller',
         email: 'c@chris.com',
         password: '123',
+        communityId: 1,
       },
       {
         firstName: 'Vi',
         lastName: 'Tran',
         email: 'v@vi.com',
         password: '123',
+        communityId: 1,
       },
     ]
     try {
@@ -50,7 +91,7 @@ async function seed () {
         return User.create(user)
       })
       const createdUsers = await Promise.all(userPromises)
-      console.log('seeded the users', createdUsers)
+      console.log('seeded the users')
     }
     catch (err) {
       console.log(err)
@@ -61,7 +102,6 @@ async function seed () {
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
-  console.log(`seeded the users`)
   console.log(`seeded successfully`)
 }
 
