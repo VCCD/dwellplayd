@@ -17,10 +17,11 @@ import {
   Button,
 } from 'native-base';
 import store, {
-  getAllTasksFromServer,
+  editSingleTask,
   addTaskFromServerThunkerator,
   getAllTasksFromServerThunkerator,
   addCommunityTasksThunkerator,
+  clearTasks,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -33,15 +34,17 @@ class SelectTasks extends Component {
   }
 
   componentDidMount() {
-    store.dispatch(getAllTasksFromServerThunkerator())
+    store.dispatch(getAllTasksFromServerThunkerator(this.props.community.id))
+  }
+
+  componentWillUnmount () {
+    store.dispatch(clearTasks())
   }
 
   handleClick = (id) => {
-    const taskList = this.props.taskList.map(task => {
-      if (task.id === id) return { ...task, selected: !task.selected }
-      else return task
-    })
-    store.dispatch(getAllTasksFromServer(taskList))
+    const taskArr = this.props.suggestedTasks.filter(task => task.id === id)
+    taskArr[0].selected = !taskArr[0].selected
+    store.dispatch(editSingleTask(taskArr[0]))
   }
 
   handleChangeTask = (taskInput) => {
@@ -57,7 +60,7 @@ class SelectTasks extends Component {
   }
 
   handleSubmitTasks = async () => {
-    const taskIds = this.props.taskList.filter(task => task.selected).map(task => task.id)
+    const taskIds = this.props.suggestedTasks.filter(task => task.selected).map(task => task.id)
     await store.dispatch(addCommunityTasksThunkerator(1, taskIds))
     this.props.navigation.navigate('Home');
   }
@@ -67,7 +70,7 @@ class SelectTasks extends Component {
       <Container>
         <Content>
           {
-            this.props.taskList.length && this.props.taskList.sort((a, b) => {
+            this.props.suggestedTasks.length && this.props.suggestedTasks.sort((a, b) => {
               var nameA = a.name.toUpperCase()
               var nameB = b.name.toUpperCase()
               if (nameA < nameB) {
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapState = ({ taskList }) => ({ taskList })
+const mapState = ({ suggestedTasks, community }) => ({ suggestedTasks, community })
 
 const mapDispatch = null
 

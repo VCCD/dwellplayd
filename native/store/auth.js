@@ -1,5 +1,6 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
+import { fetchCommunity } from '../store'
 
 const authURL = CONFIG.AUTH_URL
 
@@ -33,6 +34,7 @@ export const auth = (body) => (dispatch) => {
     .then(
         res => {
             dispatch(loginUser(res.data))
+            dispatch(fetchCommunity(res.data.communityId))
             console.log('Logging in');
             //history.push('/home');
             console.log(res)

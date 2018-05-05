@@ -13,7 +13,7 @@ class FrequencySelector extends React.Component {
   }
 
   componentDidMount () {
-    store.dispatch(getAllCommunityTasksFromServerThunkerator(1))
+    store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.community.id))
   }
 
   change = (value) => {
@@ -21,7 +21,7 @@ class FrequencySelector extends React.Component {
   }
 
   handleSubmit = () => {
-    store.dispatch(submitCommunityTaskFrequenciesThunkerator(1, this.props.communityTasks))
+    store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
     this.props.navigation.navigate('Home')
   }
 

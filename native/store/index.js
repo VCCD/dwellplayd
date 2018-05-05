@@ -5,14 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import user from './auth'
 import users from './users'
 import community from './community'
-import taskList from './task-list'
+import suggestedTasks from './suggested-tasks'
 import communityTasks from './community-tasks'
 
 const reducer = combineReducers({
   user,
   users,
   community,
-  taskList,
+  suggestedTasks,
   communityTasks,
 })
 const middleware = composeWithDevTools(applyMiddleware(
@@ -25,5 +25,5 @@ export default store
 export * from './auth'
 export * from './users'
 export * from './community'
-export * from './task-list'
+export * from './suggested-tasks'
 export * from './community-tasks'

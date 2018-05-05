@@ -5,6 +5,7 @@ const apiURL = CONFIG.API_URL
 
 const ADD_TASK_FROM_SERVER = 'ADD_TASK_FROM_SERVER'
 const REMOVE_TASK_FROM_SERVER = 'REMOVE_TASK_FROM_SERVER'
+const EDIT_SINGLE_TASK = 'EDIT_SINGLE_TASK'
 const GET_ALL_TASKS_FROM_SERVER = 'GET_ALL_TASKS_FROM_SERVER'
 const CLEAR_TASKS = 'CLEAR_TASKS'
 
@@ -25,16 +26,35 @@ export const getAllTasksFromServer = (tasks) => ({
   tasks
 })
 
+export const editSingleTask = (task) => ({
+  type: EDIT_SINGLE_TASK,
+  task
+})
+
 export const clearTasks = () => ({
   type: CLEAR_TASKS,
 })
 
 //thunks
-export const getAllTasksFromServerThunkerator = () => {
+export const getAllTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
-      const tasks = await axios.get(`${apiURL}/tasks`)
-      dispatch(getAllTasksFromServer(tasks.data))
+      if (communityId) {
+        const tasks = await axios.get(`${apiURL}/tasks`)
+        const communityTasks = await axios.get(`${apiURL}/community-tasks/${communityId}`)
+        const communityTaskIds = communityTasks.data.map(task => task.id)
+        tasks.data.map(task => {
+          if (communityTaskIds.includes(task.id)) {
+            task.selected = true
+            return task
+          }
+          else return task
+        })
+        dispatch(getAllTasksFromServer(tasks.data))
+      } else {
+        const tasks = await axios.get(`${apiURL}/tasks`)
+        dispatch(getAllTasksFromServer(tasks.data))
+      }
     }
     catch (err) {
       console.log(err)
@@ -80,6 +100,11 @@ export default (prevState = [], action) => {
       return prevState.filter(task => task.id !== action.task.id)
     case GET_ALL_TASKS_FROM_SERVER:
       return action.tasks
+    case EDIT_SINGLE_TASK:
+      return prevState.map(task => {
+        if (task.id === action.task.id) return action.task
+        else return task
+      })
     case CLEAR_TASKS:
       return []
     default: return prevState
