@@ -36,11 +36,25 @@ export const clearTasks = () => ({
 })
 
 //thunks
-export const getAllTasksFromServerThunkerator = () => {
+export const getAllTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
-      const tasks = await axios.get(`${apiURL}/tasks`)
-      dispatch(getAllTasksFromServer(tasks.data))
+      if (communityId) {
+        const tasks = await axios.get(`${apiURL}/tasks`)
+        const communityTasks = await axios.get(`${apiURL}/community-tasks/${communityId}`)
+        const communityTaskIds = communityTasks.data.map(task => task.id)
+        tasks.data.map(task => {
+          if (communityTaskIds.includes(task.id)) {
+            task.selected = true
+            return task
+          }
+          else return task
+        })
+        dispatch(getAllTasksFromServer(tasks.data))
+      } else {
+        const tasks = await axios.get(`${apiURL}/tasks`)
+        dispatch(getAllTasksFromServer(tasks.data))
+      }
     }
     catch (err) {
       console.log(err)

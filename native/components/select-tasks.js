@@ -34,7 +34,7 @@ class SelectTasks extends Component {
   }
 
   componentDidMount() {
-    store.dispatch(getAllTasksFromServerThunkerator())
+    store.dispatch(getAllTasksFromServerThunkerator(this.props.community.id))
   }
 
   componentWillUnmount () {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapState = ({ suggestedTasks }) => ({ suggestedTasks })
+const mapState = ({ suggestedTasks, community }) => ({ suggestedTasks, community })
 
 const mapDispatch = null
 
