@@ -42,10 +42,11 @@ router.post('/:communityId', async (req, res, next) => {
 router.put('/frequencies/:communityId', async (req, res, next) => {
   try {
     const tasks = req.body
+    
     const taskPromises = tasks.map(task => {
       CommunityTask.update({
         value: task.value
-      },{
+      }, {
         where: {
           id: task.id,
         }
