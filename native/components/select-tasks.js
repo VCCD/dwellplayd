@@ -21,6 +21,7 @@ import store, {
   addTaskFromServerThunkerator,
   getAllTasksFromServerThunkerator,
   addCommunityTasksThunkerator,
+  clearTasks,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -34,6 +35,10 @@ class SelectTasks extends Component {
 
   componentDidMount() {
     store.dispatch(getAllTasksFromServerThunkerator())
+  }
+
+  componentWillUnmount () {
+    store.dispatch(clearTasks())
   }
 
   handleClick = (id) => {
