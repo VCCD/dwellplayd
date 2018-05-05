@@ -33,8 +33,9 @@ class HomeScreen extends React.Component {
         <Button rounded onPress={() => this.props.navigation.navigate('PlayerDetail')} style={styles.button}><Text>PlayerDetail</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('Signup')} style={styles.button}><Text>Signup</Text></Button>
         <Button rounded onPress={() => store.dispatch(auth({email: 'd@dave.com', password: '123'}))} style={styles.button}><Text>Dev Login</Text></Button>
-      </Container>
+   </Container>
     );
   }
 }
