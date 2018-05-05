@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import { Container, Button, Text } from 'native-base'
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllTasksFromServerThunkerator, auth } from '../store'
+import CONFIG from '../api-routes'
+
 
 class HomeScreen extends React.Component {
   constructor (props) {
@@ -33,7 +35,7 @@ class HomeScreen extends React.Component {
         <Button rounded onPress={() => this.props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('Signup')} style={styles.button}><Text>Signup</Text></Button>
-        <Button rounded onPress={() => store.dispatch(auth({email: 'd@dave.com', password: '123'}))} style={styles.button}><Text>Dev Login</Text></Button>
+        <Button rounded onPress={() => store.dispatch(auth(CONFIG.LOGIN))} style={styles.button}><Text>Dev Login</Text></Button>
    </Container>
     );
   }
