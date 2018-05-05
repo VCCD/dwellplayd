@@ -6,6 +6,7 @@ const apiURL = CONFIG.API_URL
 const ADD_TASK_FROM_SERVER = 'ADD_TASK_FROM_SERVER'
 const REMOVE_TASK_FROM_SERVER = 'REMOVE_TASK_FROM_SERVER'
 const GET_ALL_TASKS_FROM_SERVER = 'GET_ALL_TASKS_FROM_SERVER'
+const CLEAR_TASKS = 'CLEAR_TASKS'
 
 //action creators
 
@@ -24,18 +25,49 @@ export const getAllTasksFromServer = (tasks) => ({
   tasks
 })
 
+export const clearTasks = () => ({
+  type: CLEAR_TASKS,
+})
+
 //thunks
-export const getAllTasksFromServerThunkerator = (communityId) => {
+export const getAllTasksFromServerThunkerator = () => {
   return async (dispatch) => {
-    const tasks = await axios.get(`${apiURL}/tasks/community/${communityId}`)
-    dispatch(getAllTasksFromServer(tasks.data))
+    try {
+      const tasks = await axios.get(`${apiURL}/tasks`)
+      dispatch(getAllTasksFromServer(tasks.data))
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 }
 
-export const addTaskFromServerThunkerator = (task) => {
+export const addTasksToCommunityThunkerator = (communityId, taskIds) => {
   return async (dispatch) => {
-    const newTask = await axios.post(`${apiURL}/tasks`, task)
-    dispatch(addTaskFromServer(newTask.data))
+    try {
+      await axios.post(`${apiURL}/community-tasks/${communityId}`, taskIds)
+      dispatch(clearTasks())
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export const addTaskFromServerThunkerator = (task, addedFlag) => {
+  return async (dispatch) => {
+    try {
+      const newTask = await axios.post(`${apiURL}/tasks`, task)
+      //if this was added from the select-task cmoponent, we will add a 'selected prop
+      //so that it shows up immediately checked
+      if (addedFlag) {
+        newTask.data.selected = true
+      }
+      dispatch(addTaskFromServer(newTask.data))
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 }
 
@@ -48,6 +80,8 @@ export default (prevState = [], action) => {
       return prevState.filter(task => task.id !== action.task.id)
     case GET_ALL_TASKS_FROM_SERVER:
       return action.tasks
+    case CLEAR_TASKS:
+      return []
     default: return prevState
   }
 }

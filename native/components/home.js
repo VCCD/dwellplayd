@@ -13,7 +13,7 @@ class HomeScreen extends React.Component {
     if (this.props.user.id) {
       const communityId = this.props.user.communityId
       store.dispatch(fetchCommunity(communityId))
-      store.dispatch(getAllTasksFromServerThunkerator(communityId))
+      // store.dispatch(getAllTasksFromServerThunkerator(communityId))
     }
   }
 

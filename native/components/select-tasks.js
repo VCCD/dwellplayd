@@ -16,7 +16,7 @@ import {
   Input,
   Button,
 } from 'native-base';
-import store, { getAllTasksFromServer, addTaskFromServerThunkerator } from '../store'
+import store, { getAllTasksFromServer, addTaskFromServerThunkerator, getAllTasksFromServerThunkerator, addTasksToCommunityThunkerator } from '../store'
 import { connect } from 'react-redux';
 
 class SelectTasks extends Component {
@@ -25,6 +25,10 @@ class SelectTasks extends Component {
     this.state = {
       taskInput: '',
     }
+  }
+
+  componentDidMount() {
+    store.dispatch(getAllTasksFromServerThunkerator())
   }
 
   handleClick = (id) => {
@@ -36,22 +40,20 @@ class SelectTasks extends Component {
   }
 
   handleChangeTask = (taskInput) => {
-    this.setState({taskInput})
+    this.setState({ taskInput })
   }
 
   handleAddTask = () => {
     const newTask = {
       name: this.state.taskInput,
     }
-    store.dispatch(addTaskFromServerThunkerator(newTask))
-    this.setState({taskInput: ''})
+    this.setState({ taskInput: '' })
+    store.dispatch(addTaskFromServerThunkerator(newTask, true))
   }
 
-  handleSubmitTasks = () => {
-    console.log(this.state.taskList.filter(task => task.selected).map(task => {
-      delete task.selected
-      return task
-    }))
+  handleSubmitTasks = async () => {
+    const taskIds = this.props.taskList.filter(task => task.selected).map(task => task.id)
+    await store.dispatch(addTasksToCommunityThunkerator(1, taskIds))
     this.props.navigation.navigate('Home');
   }
 
@@ -60,12 +62,22 @@ class SelectTasks extends Component {
       <Container>
         <Content>
           {
-            this.props.taskList.map(task => (
+            this.props.taskList.length && this.props.taskList.sort((a, b) => {
+              var nameA = a.name.toUpperCase()
+              var nameB = b.name.toUpperCase()
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0;
+            }).map(task => (
               <ListItem
                 key={task.id}
                 value={task.id}
                 onPress={() => this.handleClick(task.id)}>
-                <Text>{task.task.name}</Text>
+                <Text>{task.name}</Text>
                 <Right>
                   <Radio
                     selected={task.selected || false} />
@@ -78,7 +90,7 @@ class SelectTasks extends Component {
               <Input onChangeText={this.handleChangeTask} onSubmitEditing={this.handleAddTask} placeholder="Enter a custom task" value={this.state.taskInput} />
             </Item>
           </Form>
-            <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
+          <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
         </Content>
       </Container>
 

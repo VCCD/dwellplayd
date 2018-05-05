@@ -2,15 +2,9 @@ const router = require('express').Router()
 const { Task, TaskItem } = require('../db/models')
 module.exports = router
 
-router.get('/community/:communityId', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const communityId = req.params.communityId
-    const tasks = await TaskItem.findAll({
-      where: {
-        communityId: communityId,
-      },
-      include: [Task],
-    })
+    const tasks = await Task.findAll()
     res.json(tasks)
   }
   catch (err) {
@@ -21,7 +15,7 @@ router.get('/community/:communityId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const task = req.body
-    const createdTask = await TaskItem.create(task)
+    const createdTask = await Task.create(task)
     res.json(createdTask)
   }
   catch (err) {

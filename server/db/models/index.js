@@ -10,6 +10,9 @@ const Task = require('./task')
  *    BlogPost.belongsTo(User)
  */
 
+Community.belongsToMany(Task, {through: 'CommunityTask'})
+Task.belongsToMany(Community, {through: 'CommunityTask'})
+
 Community.hasMany(User)
 User.belongsTo(Community)
 
