@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {Container, Header, Content, Button, ActionSheet} from 'native-base'
 import TaskCard from './task-card'
@@ -21,7 +22,7 @@ const BUTTONS = [
 ];
 const CANCEL_INDEX = 1;
 
-export default class TaskList extends React.Component {
+class TaskList extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -34,6 +35,7 @@ export default class TaskList extends React.Component {
   }
 
   handleClick = (clickedTask) => {
+    console.log(this.props)
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -75,3 +77,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   }
 });
+
+const mapState = state => {
+  return {
+    user: state.user,
+    community: state.community,
+    communityTasks: state.communityTasks
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    getCommunityTasks: communityId => {
+      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(TaskList)
