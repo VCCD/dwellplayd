@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {Container, Header, Content, Button, ActionSheet} from 'native-base'
 import TaskCard from './task-card'
+import {getAllCommunityTasksFromServerThunkerator} from '../store'
 
 
 let dummyTasks = [
@@ -32,6 +33,9 @@ class TaskList extends React.Component {
 
   static navigationOptions = {
     title: 'Current Tasks'
+  }
+  componentDidMount = (communityId) =>{
+    this.props.getCommunityTasks(this.props.user.communityId)
   }
 
   handleClick = (clickedTask) => {
@@ -78,11 +82,14 @@ const styles = StyleSheet.create({
   }
 });
 
+
+//Render task items that are not completed
 const mapState = state => {
   return {
     user: state.user,
-    community: state.community,
-    communityTasks: state.communityTasks
+   // community: state.community,
+    communityTasks: state.communityTasks,
+    taskItems: state.taskItems
   }
 }
 const mapDispatch = dispatch => {
