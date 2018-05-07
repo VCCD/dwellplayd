@@ -3,12 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { Card, CardItem} from 'native-base'
 
 const TaskCard = (props) => {
+
   const {task} = props
+  console.log(task, 'this is the tasks')
   return (
     <Card >
       <CardItem style={styles.header} button onPress={() => props.handleClick(task)}>
         <View style={styles.left}>
-          <Text>{task.task}</Text>
+          <Text>{task}</Text>
           <Text>Last completed {task.daysSinceCompleted} days ago</Text>
         </View>
         <Text style={styles.score} >{task.pts}</Text>

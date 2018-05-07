@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {Container, Header, Content, Button, ActionSheet} from 'native-base'
 import TaskCard from './task-card'
+import {getAllCommunityTasksFromServerThunkerator} from '../store'
 
 
 let dummyTasks = [
@@ -21,7 +23,7 @@ const BUTTONS = [
 ];
 const CANCEL_INDEX = 1;
 
-export default class TaskList extends React.Component {
+class TaskList extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -32,8 +34,14 @@ export default class TaskList extends React.Component {
   static navigationOptions = {
     title: 'Current Tasks'
   }
+  componentDidMount = (communityId) =>{
+    this.props.getCommunityTasks(this.props.user.communityId)
+  }
 
   handleClick = (clickedTask) => {
+    console.log(this.props.communityTasks, '>>>>>>>>>>>community tasks')
+
+    const listTask = this.props.communityTasks
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -51,13 +59,14 @@ export default class TaskList extends React.Component {
   }
 
   render() {
+    const listTask = this.props.communityTasks
     const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
           <Content>
-          {sortedTasks.map(task => {
+          {listTask.map(task => {
             return (
-              <TaskCard key={task.id} task={task} handleClick={this.handleClick} />
+              <TaskCard key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
             )
           })}
           </Content>
@@ -75,3 +84,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   }
 });
+
+
+//Render task items that are not completed
+const mapState = state => {
+  return {
+    user: state.user,
+   // community: state.community,
+    communityTasks: state.communityTasks,
+    
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    getCommunityTasks: communityId => {
+      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(TaskList)
