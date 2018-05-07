@@ -1,10 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import store, { auth, me } from '../store'
-import { StyleSheet, Text, View, TextInput, Button as ReactNativeButton } from 'react-native';
+import { StyleSheet, Text, View, Button as ReactNativeButton } from 'react-native';
 import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
-import t from 'tcomb-form-native'
 import CONFIG from '../api-routes'
+import customFormStyle from '../customFormStyle'
+import t from 'tcomb-form-native'
+
+const options = {
+  stylesheet: customFormStyle,
+  fields: {
+    email: {
+      error: 'Please enter a valid email',
+      autoCapitalize: 'none'
+    },
+    password: {
+      error: 'Please enter correct password',
+      secureTextEntry: true,
+      autoCapitalize: 'none',
+    }
+  }
+}
 
 const User = t.struct({
   email: t.String,
@@ -30,53 +46,55 @@ class LoginScreen extends React.Component {
     const { name, loginSubmit } = this.props
     return (
       <Container style={styles.container}>
-        <Content>
+        <Content contentContainerStyle={styles.form}>
           <Form
             ref={c => this._form = c}
-            type={User} />
+            type={User}
+            options= {options}
+            />
           <Button
-            full onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.titleText}>Sign in</Text>
+            rounded onPress={this.handleSubmit} style={styles.button}>
+            <Text style={styles.text}>Sign in</Text>
             </Button>
-          <Button full onPress={() => console.log(state, 'state', this.props, 'this.props')} style={styles.button}>
-            <Icon />
-            <Text style={styles.titleText}>Sign in with Google</Text>
-          </Button>
-          <Button full onPress={() => {
+          <Button
+            rounded onPress={() => {
             store.dispatch(auth(CONFIG.LOGIN))
           }} style={styles.button}>
-            <Text style={styles.titleText}>Dev Login</Text>
+            <Text style={styles.text}>Dev Login</Text>
           </Button>
-          <ReactNativeButton title="Not a member?  Sign in here" onPress = {() => this.props.navigation.navigate('Signup')} />
         </Content>
       </Container>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
-    flex: 3,
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: '#8C9A9E',
     alignItems: 'center',
-
   },
-
+  form: {
+    margin: 20,
+  },
   titleText: {
     color: '#DBD56E',
     fontWeight: 'bold',
     fontSize: 14
-
   },
   button: {
-    flex: 3,
     padding: 10,
     margin: 10,
+    width: 150,
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#403D58',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
   }
 });
 
