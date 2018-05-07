@@ -23,10 +23,14 @@ export const fetchCommunity = id => dispatch => {
     .catch(err => console.log(err))
 }
 
-export const sendInvitations = (emails, communityId) => {
+export const sendInvitations = (emails, user, communityId) => {
   return async (dispatch) => {
     try {
-      await axios.post(`${apiURL}/communities/${communityId}/inviteUsers`, emails)
+      const payload = {
+        user,
+        emails,
+      }
+      await axios.post(`${apiURL}/communities/${communityId}/inviteUsers`, payload)
     }
     catch (err) {
       console.log(err)
