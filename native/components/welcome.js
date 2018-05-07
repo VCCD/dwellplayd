@@ -1,15 +1,63 @@
 import React from 'react'
-import { View, Button } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
+import {Container, Button, Text, Content, Body} from 'native-base'
 import { connect } from 'react-redux'
 
 const Welcome = (props) => {
   return (
-    <View>
-      <Button title="LOG IN" onPress={() => props.navigation.navigate('Login')} />
-      <Button title="SIGN UP" onPress={() => props.navigation.navigate('Signup')} />
-    </View>
+    <Container style={styles.container}>
+      <Content contentContainerStyle={styles.content}>
+        <Image style={styles.logo} source={require('../dwellplayd_logo.png')} />
+        <Button style={styles.login} rounded onPress={() => props.navigation.navigate('Login')}>
+          <Text style={styles.textLogin}>Log In</Text>
+        </Button>
+        <Button style={styles.signup} rounded onPress={() => props.navigation.navigate('Signup')}>
+          <Text style={styles.textSignup}>Signup</Text>
+        </Button>
+      </Content>
+    </Container>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#8C9A9E',
+  },
+  content: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  login: {
+    padding: 10,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  },
+  signup: {
+    padding: 10,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#93B7BE',
+  },
+  logo: {
+    marginTop: 220,
+    height: 80,
+    width: 250,
+  },
+  textLogin: {
+    color: '#747578',
+    fontSize: 20,
+  },
+  textSignup: {
+    color: '#D4F5F5',
+    fontSize: 20,
+  }
+});
 
 const mapState = ({ user }) => ({ user })
 

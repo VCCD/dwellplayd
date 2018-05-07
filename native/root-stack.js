@@ -27,7 +27,8 @@ const RootStack = StackNavigator ({
 }, {
   // Default config for all screen
   title: 'Main',
-  initialRouteName: 'Welcome'
+  initialRouteName: 'Welcome',
+  headerMode: 'none'
 })
 
 export default RootStack
