@@ -11,35 +11,15 @@ import {
   PlayerDetail,
   PlayerDetailEdit,
   Signup,
+  Welcome,
 } from './components'
 
 const RootStack = StackNavigator ({
-  Home: {
-    screen: HomeScreen
-  },
- TaskList: {
-    screen: TaskList
-  },
-  Scores: {
-    screen: Scores
+  Welcome: {
+    screen: Welcome
   },
   Login: {
     screen: LoginScreen
-  },
-  PlayerDetail: {
-    screen: PlayerDetail
-  },
-  PlayerDetailEdit: {
-    screen: PlayerDetailEdit
-  },
-  FrequencySelector: {
-    screen: FrequencySelector
-  },
-  SelectTasks: {
-    screen: SelectTasks
-  },
-  drawerStack: {
-    screen: DrawerNavigation
   },
   Signup: {
     screen: Signup
@@ -47,7 +27,7 @@ const RootStack = StackNavigator ({
 }, {
   // Default config for all screen
   title: 'Main',
-  initialRouteName: 'Home'
+  initialRouteName: 'Welcome'
 })
 
 export default RootStack

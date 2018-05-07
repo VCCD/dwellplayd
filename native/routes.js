@@ -12,7 +12,7 @@ const Routes = (props) => {
       <MainNavigation />
       :
         <RootStack />}
-      </Root >
+      </Root>
   )
 }
 

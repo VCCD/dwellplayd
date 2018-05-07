@@ -14,7 +14,7 @@ const defaultUser = {}
 
 
 const loginUser = user => ({type: LOGIN_USER, user})
-const logoutUser = () => ({type: LOGOUT_USER})
+export const logoutUser = () => ({type: LOGOUT_USER})
 
 /*--------thunk creators-------*/
 
