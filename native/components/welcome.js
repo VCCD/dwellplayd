@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 const Welcome = (props) => {
   return (
     <View>
-      <Button title="LOG IN" onPress={props.navigation.navigate('Login')} />
-      <Button title="SIGN UP" onPress={props.navigation.navigate('Signup')} />
+      <Button title="LOG IN" onPress={() => props.navigation.navigate('Login')} />
+      <Button title="SIGN UP" onPress={() => props.navigation.navigate('Signup')} />
     </View>
   )
 }

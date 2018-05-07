@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import { TaskList, FrequencySelector, Signup, Scores, LoginScreen, PlayerDetail, PlayerDetailEdit, SelectTasks} from './components'
-import {Icon, Container, Header, Content, Body, Text} from 'native-base'
+import {Icon, Container, Header, Content, Body, Text, Button} from 'native-base'
+import store, { logoutUser } from './store'
 
 const CustomDrawer = (props) => (
   <Container>
@@ -13,6 +14,7 @@ const CustomDrawer = (props) => (
     </Header>
     <Content>
       <DrawerItems {...props} />
+      <Button rounded onPress={() => store.dispatch(logoutUser())} style={styles.button}><Text>Logout</Text></Button>
     </Content>
   </Container>
 )
