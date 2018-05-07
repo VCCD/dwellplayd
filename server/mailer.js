@@ -1,7 +1,7 @@
 'use strict';
 const nodemailer = require('nodemailer');
 
-const sendEmail = (email, sender, community, status) => {
+const sendEmail = (email, user, community, status) => {
   let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -17,14 +17,14 @@ const sendEmail = (email, sender, community, status) => {
     from: '"dwellplayd" `dwellplayd@gmail.com', // sender address
     to: email, // list of receivers
     subject: `Thanks for joining!`, // Subject line
-    text: `Hey ${sender.firstName}! Thanks for joining dwellplayd. Get ready to have some fun doing not fun stuff`, // plain text body
+    text: `Hey ${user.firstName}! Thanks for joining dwellplayd. Get ready to have some fun doing not fun stuff`, // plain text body
     // html: '<b>Hello world?</b>' // html body
   };
   let invite = {
     from: '"dwellplayd" `dwellplayd@gmail.com', // sender address
     to: email, // list of receivers
     subject: `You've been invited!`, // Subject line
-    text: `Hey there! ${sender.firstName} ${sender.lastName} has invited you to join ${community.name} on dwellplayd.  You should go here and sign up!`, // plain text body
+    text: `Hey there! ${user.firstName} ${user.lastName} has invited you to join ${community.name} on dwellplayd.  You should go here and sign up!`, // plain text body
     // html: '<b>Hello world?</b>' // html body
   };
 
