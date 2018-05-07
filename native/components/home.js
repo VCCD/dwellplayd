@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Button, Text } from 'native-base'
+import { Container, Button, Text, Header, Left, Icon, Body, Right } from 'native-base'
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllTasksFromServerThunkerator, auth } from '../store'
 import CONFIG from '../api-routes'
@@ -22,6 +22,16 @@ class HomeScreen extends React.Component {
     const loggedIn = !!this.props.user.id
     return (
       <Container style={styles.container}>
+      <Header>
+      <Left>
+        <Button
+          transparent
+          onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+          <Icon name="menu" />
+        </Button>
+      </Left>
+  </Header>
+  <Body>
       {
         loggedIn
           ? <Text>Welcome, {this.props.user.firstName}</Text>
@@ -36,6 +46,7 @@ class HomeScreen extends React.Component {
         <Button rounded onPress={() => this.props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
         <Button rounded onPress={() => this.props.navigation.navigate('Signup')} style={styles.button}><Text>Signup</Text></Button>
         <Button rounded onPress={() => store.dispatch(auth(CONFIG.LOGIN))} style={styles.button}><Text>Dev Login</Text></Button>
+   </Body>
    </Container>
     );
   }
@@ -48,6 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+ 
   button: {
 
   }

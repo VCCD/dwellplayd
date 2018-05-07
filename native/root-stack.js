@@ -9,14 +9,15 @@ import {
   SelectTasks,
   PlayerDetail,
   PlayerDetailEdit,
-  Signup
+  Signup,
+  Sidebar
 } from './components'
 
 const RootStack = StackNavigator ({
   Home: {
     screen: HomeScreen
   },
-  TaskList: {
+ Tasks: {
     screen: TaskList
   },
   Scores: {
@@ -25,7 +26,7 @@ const RootStack = StackNavigator ({
   Login: {
     screen: LoginScreen
   },
-  PlayerDetail: {
+  Profile: {
     screen: PlayerDetail
   },
   PlayerDetailEdit: {
@@ -36,6 +37,9 @@ const RootStack = StackNavigator ({
   },
   SelectTasks: {
     screen: SelectTasks
+  },
+  DrawerOpen:{
+    screen: Sidebar
   },
   Signup: {
     screen: Signup

@@ -12,3 +12,7 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
+
+router.get('/test', (req, res, next)=>{
+  res.send(200)
+})
