@@ -40,7 +40,7 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
       if (!communityId) communityId = 1
-      const tasks = await axios.get(`${apiURL}/community-tasks/${communityId}`)
+      const tasks = await axios.get(`${apiURL}/communities/${communityId}/tasks`)
       dispatch(getAllCommunityTasks(tasks.data))
     }
     catch (err) {
@@ -64,7 +64,7 @@ export const addCommunityTasksThunkerator = (communityId, taskIds) => {
 export const submitCommunityTaskFrequenciesThunkerator = (communityId, tasks) => {
   return async (dispatch) => {
     try {
-      await axios.put(`${apiURL}/community-tasks/frequencies/${communityId}`, tasks)
+      await axios.put(`${apiURL}/communities/${communityId}/tasks`, tasks)
       dispatch(clearCommunityTasks())
     }
     catch (err) {
