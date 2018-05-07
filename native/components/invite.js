@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { StyleSheet, Text, View, ListView } from 'react-native';
 import { Container, Button, Icon, ListItem, List } from 'native-base';
 import t from 'tcomb-form-native'
+import { sendInvitations } from '../store/community';
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
   return reg.test(email);
 });
 
-const Invite = t.struct({
+const InviteForm = t.struct({
   email: Email,
 })
 
@@ -53,8 +54,7 @@ const styles = StyleSheet.create({
   },
 })
 
-
-class Signup extends React.Component {
+class Invite extends React.Component {
   constructor(props) {
     super(props)
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -65,8 +65,7 @@ class Signup extends React.Component {
   }
 
   handleSubmit = () => {
-    const form = this._form.getValue()
-    if (form) this.props.inviteSubmit(form)
+    this.props.inviteSubmit(this.state.emailList, this.props.user, this.props.community.id)
   }
 
   addEmail = () => {
@@ -103,7 +102,7 @@ class Signup extends React.Component {
           />
           <Form
             ref={c => { this._form = c }}
-            type={Invite}
+            type={InviteForm}
             options={options}
           />
           <Button full onPress={this.addEmail} style={styles.button}>
@@ -117,21 +116,21 @@ class Signup extends React.Component {
               : ''
           }
 
-
         </View>
       </Container>
     )
   }
 }
 
-const mapState = ({ community }) => ({ community })
+const mapState = ({ community, user }) => ({ community, user })
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    inviteSubmit: (form) => {
-      console.log('jello')
+    inviteSubmit: (emails, user, communityId) => {
+      dispatch(sendInvitations(emails, user, communityId))
+      ownProps.navigation.navigate('Tasks')
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(Signup)
+export default connect(mapState, mapDispatch)(Invite)

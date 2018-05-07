@@ -1,0 +1,58 @@
+import React from 'react'
+import { connect } from 'react-redux'
+import {StyleSheet, View} from 'react-native'
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie } from "victory-native";
+import { Container } from 'native-base';
+
+
+class Stats extends React.Component{
+
+    constructor(){
+      super()
+    }
+
+    render(){
+      return (
+      <Container style={styles.container}>
+      
+      <VictoryPie
+      colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
+        padding={90}
+        labelRadius={50}
+        animate={{duration: 2000, onLoad: {duration: 1000}, onEnter: {duration: 500, before: () => ({y: 0})}}}
+      data={[
+        { x: "Cody", y: 35 },
+        { x: "Chris", y: 40 },
+        { x: "Dave", y: 55 },
+        { x: "Vi", y: 20 }
+
+      ]}
+      style={{ labels: { fill: "white", fontSize: 20 } }}
+
+    />
+  
+
+      </Container>
+)
+    }
+
+
+}
+const styles = StyleSheet.create({
+    container: {
+      flex: 2,
+      alignItems: 'center',
+      justifyContent: 'stretch',
+      alignItems: 'center',
+    },
+    pie: {
+      labels: { fill: "white", fontSize: 20, fontWeight: "bold"
+      }
+    }
+
+})
+
+
+const mapState = null;
+const mapDispatch = null;
+export default connect(mapState ,mapDispatch)(Stats)
