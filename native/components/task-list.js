@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {Container, Header, Content, Button, ActionSheet} from 'native-base'
 import TaskCard from './task-card'
+import {getAllCommunityTasksFromServerThunkerator} from '../store'
 
 
 let dummyTasks = [
@@ -33,9 +34,14 @@ class TaskList extends React.Component {
   static navigationOptions = {
     title: 'Current Tasks'
   }
+  componentDidMount = (communityId) =>{
+    this.props.getCommunityTasks(this.props.user.communityId)
+  }
 
   handleClick = (clickedTask) => {
-    console.log(this.props)
+    console.log(this.props.communityTasks, '>>>>>>>>>>>community tasks')
+
+    const listTask = this.props.communityTasks
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -53,13 +59,14 @@ class TaskList extends React.Component {
   }
 
   render() {
+    const listTask = this.props.communityTasks
     const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
           <Content>
-          {sortedTasks.map(task => {
+          {listTask.map(task => {
             return (
-              <TaskCard key={task.id} task={task} handleClick={this.handleClick} />
+              <TaskCard key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
             )
           })}
           </Content>
@@ -78,11 +85,14 @@ const styles = StyleSheet.create({
   }
 });
 
+
+//Render task items that are not completed
 const mapState = state => {
   return {
     user: state.user,
-    community: state.community,
-    communityTasks: state.communityTasks
+   // community: state.community,
+    communityTasks: state.communityTasks,
+    
   }
 }
 const mapDispatch = dispatch => {
