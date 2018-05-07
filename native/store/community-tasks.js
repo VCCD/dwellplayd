@@ -40,7 +40,7 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
       if (!communityId) communityId = 1
-      const tasks = await axios.get(`${apiURL}/community-tasks/${communityId}`)
+      const tasks = await axios.get(`${apiURL}/community/${communityId}/tasks`)
       dispatch(getAllCommunityTasks(tasks.data))
     }
     catch (err) {

@@ -12,19 +12,13 @@ router.param('communityId', async (req, res, next, communityId) => {
   }
 })
 
-router.get('/:communityId', async (req, res, next) => {
+router.param('communityTaskId', async (req, res, next, communityTaskId) => {
   try {
-    const communityId = req.params.communityId
-    const communityTasks = await CommunityTask.findAll({
-      where: {
-        communityId
-      },
-      include: [Task],
-    })
-    res.json(communityTasks)
+    req.communityTask = await CommunityTask.findById(communityTaskId)
+    next()
   }
   catch (err) {
-    console.log(err)
+    next(err)
   }
 })
 
