@@ -9,7 +9,7 @@ const Email = t.refinement(t.String, email => {
   return reg.test(email);
 });
 
-const Invite = t.struct({
+const InviteForm = t.struct({
   email: Email,
 })
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 })
 
 
-class Signup extends React.Component {
+class Invite extends React.Component {
   constructor(props) {
     super(props)
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -103,7 +103,7 @@ class Signup extends React.Component {
           />
           <Form
             ref={c => { this._form = c }}
-            type={Invite}
+            type={InviteForm}
             options={options}
           />
           <Button full onPress={this.addEmail} style={styles.button}>
@@ -134,4 +134,4 @@ const mapDispatch = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Signup)
+export default connect(mapState, mapDispatch)(Invite)
