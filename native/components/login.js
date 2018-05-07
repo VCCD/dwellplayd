@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { auth, me } from '../store/auth'
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import store, { auth, me } from '../store'
+import { StyleSheet, Text, View, TextInput, Button as ReactNativeButton } from 'react-native';
 import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
+import CONFIG from '../api-routes'
 
 const User = t.struct({
   email: t.String,
@@ -34,11 +35,20 @@ class LoginScreen extends React.Component {
             ref={c => this._form = c}
             type={User} />
           <Button
-            full onPress={this.handleSubmit} style={styles.button}><Text style={styles.titleText}>Sign in</Text></Button>
+            full onPress={this.handleSubmit} style={styles.button}>
+            <Text style={styles.titleText}>Sign in</Text>
+            </Button>
           <Button full onPress={() => console.log(state, 'state', this.props, 'this.props')} style={styles.button}>
             <Icon />
             <Text style={styles.titleText}>Sign in with Google</Text>
           </Button>
+          <Button full onPress={() => {
+            store.dispatch(auth(CONFIG.LOGIN))
+            this.props.navigation.navigate('Home')
+          }} style={styles.button}>
+            <Text style={styles.titleText}>Dev Login</Text>
+          </Button>
+          <ReactNativeButton title="Not a member?  Sign in here" onPress = {() => this.props.navigation.navigate('Signup')} />
         </Content>
       </Container>
     );

@@ -12,9 +12,9 @@ import HomeScreen from './home'
 import PlayerDetail from './player-detail'
 import PlayerDetailEdit from './player-detail-edit'
 import Scores from './scores'
-import FrequencySelector from './scores'
+import FrequencySelector from './frequency-selector'
 import TaskList from './task-list'
-import { DrawerNavigator } from "react-navigation";
+import { DrawerNavigator } from 'react-navigation';
 import Sidebar from './sidebar'
 
 const SidebarRouter = DrawerNavigator (
