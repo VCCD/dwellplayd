@@ -1,5 +1,6 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import DrawerNavigation from './drawer-navigation'
 import {
   HomeScreen,
   TaskList,
@@ -10,7 +11,6 @@ import {
   PlayerDetail,
   PlayerDetailEdit,
   Signup,
-  Sidebar
 } from './components'
 
 const RootStack = StackNavigator ({
@@ -38,12 +38,16 @@ const RootStack = StackNavigator ({
   SelectTasks: {
     screen: SelectTasks
   },
-  DrawerOpen: {
-    screen: Sidebar
+  drawerStack: {
+    screen: DrawerNavigation
   },
   Signup: {
     screen: Signup
   }
+}, {
+  // Default config for all screen
+  title: 'Main',
+  initialRouteName: 'Home'
 })
 
 export default RootStack
