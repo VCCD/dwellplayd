@@ -1,12 +1,27 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Button, Text } from 'native-base'
+import { Container, Button, Text, Header, Left, Icon, Body, Right } from 'native-base'
 import { connect } from 'react-redux'
 
 const HomeScreen = (props) => {
+  
   const loggedIn = !!props.user.id
+  
   return (
-    <Container style={styles.container}>
+    
+    <Container>
+    <Header>
+    <Left>
+      <Button
+        transparent
+        onPress={() => props.navigation.navigate('DrawerOpen')}>
+        <Icon name="menu" />
+      </Button>
+    </Left>
+</Header>
+ 
+   
+    <Body>
     {
       loggedIn
         ? <Text>Welcome, {props.user.firstName}</Text>
@@ -19,7 +34,10 @@ const HomeScreen = (props) => {
       <Button rounded onPress={() => props.navigation.navigate('PlayerDetail')} style={styles.button}><Text>PlayerDetail</Text></Button>
       <Button rounded onPress={() => props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
       <Button rounded onPress={() => props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
-    </Container>
+      </Body>
+      
+      </Container>
+  
   );
 
 }
@@ -31,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+ 
   button: {
 
   }

@@ -1,21 +1,12 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import {
-  HomeScreen,
-  TaskList,
-  LoginScreen,
-  FrequencySelector,
-  Scores,
-  SelectTasks,
-  PlayerDetail,
-  PlayerDetailEdit,
-} from './components'
+import { HomeScreen, TaskList, LoginScreen, FrequencySelector, Scores, SelectTasks, PlayerDetail, PlayerDetailEdit, Sidebar } from './components'
 
 const RootStack = StackNavigator ({
   Home: {
     screen: HomeScreen
   },
-  TaskList: {
+ Tasks: {
     screen: TaskList
   },
   Scores: {
@@ -24,7 +15,7 @@ const RootStack = StackNavigator ({
   Login: {
     screen: LoginScreen
   },
-  PlayerDetail: {
+  Profile: {
     screen: PlayerDetail
   },
   PlayerDetailEdit: {
@@ -35,6 +26,9 @@ const RootStack = StackNavigator ({
   },
   SelectTasks: {
     screen: SelectTasks
+  },
+  DrawerOpen:{
+    screen: Sidebar
   }
 })
 
