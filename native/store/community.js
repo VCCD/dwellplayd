@@ -23,6 +23,17 @@ export const fetchCommunity = id => dispatch => {
     .catch(err => console.log(err))
 }
 
+export const sendInvitations = (emails, communityId) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(`${apiURL}/communities/${communityId}/inviteUsers`, emails)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 /*--------reducer-------*/
 
 export default function (state = defaultCommunity, action) {
