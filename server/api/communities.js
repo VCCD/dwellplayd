@@ -7,7 +7,9 @@ module.exports = router
 
 router.param('communityId', async (req, res, next, communityId) => {
   try {
-    req.community = await Community.findById(communityId)
+    req.community = await Community.findById(communityId, {
+      include: [User]
+    })
     next()
   }
   catch (err) {
@@ -16,12 +18,7 @@ router.param('communityId', async (req, res, next, communityId) => {
 })
 
 router.get('/:communityId', (req, res, next) => {
-  const id = req.params.communityId
-  Community.findById(id, {
-    include: [User]
-  })
-    .then(community => res.json(community))
-    .catch(next)
+  res.json(req.community)
 })
 
 router.post('/:communityId/inviteUsers', (req, res, next) => {
