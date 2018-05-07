@@ -115,7 +115,7 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     signupSubmit: (form) => {
       dispatch(signup(form))
-      ownProps.navigation.navigate('Home')
+      ownProps.navigation.navigate('Tasks')
     }
   }
 }

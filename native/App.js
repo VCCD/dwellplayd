@@ -1,20 +1,16 @@
+/* eslint react/prefer-stateless-function: 0 class-methods-use-this:0*/
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import RootStack from './root-stack';
 import {Provider} from 'react-redux'
 import store from './store'
-import { Root } from 'native-base';
-
+import Routes from './routes'
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-      <Root>
-      <RootStack />
-      </Root>
+        <Routes />
       </Provider>
     );
   }
 }
-
