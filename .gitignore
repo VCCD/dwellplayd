@@ -6,3 +6,15 @@ secrets.js
 npm-debug.log
 yarn-error.log
 native/api-routes.js
+
+# expo
+.expo/
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+api-routes.js
+
+npm-debug.log*

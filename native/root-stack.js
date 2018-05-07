@@ -17,7 +17,7 @@ const RootStack = StackNavigator ({
   Home: {
     screen: HomeScreen
   },
- Tasks: {
+ TaskList: {
     screen: TaskList
   },
   Scores: {
@@ -26,7 +26,7 @@ const RootStack = StackNavigator ({
   Login: {
     screen: LoginScreen
   },
-  Profile: {
+  PlayerDetail: {
     screen: PlayerDetail
   },
   PlayerDetailEdit: {
@@ -38,7 +38,7 @@ const RootStack = StackNavigator ({
   SelectTasks: {
     screen: SelectTasks
   },
-  DrawerOpen:{
+  DrawerOpen: {
     screen: Sidebar
   },
   Signup: {
