@@ -3,9 +3,11 @@ import CONFIG from '../api-routes'
 import { fetchCommunity } from '../store'
 
 const authURL = CONFIG.AUTH_URL
+const apiURL = CONFIG.API_URL
 
 const LOGIN_USER = 'LOGIN_USER'
 const LOGOUT_USER = 'LOGOUT_USER'
+
 
 const defaultUser = {}
 
@@ -19,13 +21,17 @@ export const logoutUser = () => ({type: LOGOUT_USER})
 /*--------thunk creators-------*/
 
 export const me = () => dispatch => {
-
     axios.
     get('/auth/me')
     .then(res => dispatch(loginUser(res.data || defaultUser)))
     .catch(err => console.log(err))
+}
 
-
+export const updateUser = (userId, form) => dispatch => {
+    axios.
+    put(`${apiURL}/users/${userId}`, form)
+    .then(res => dispatch(loginUser(res.data || defaultUser)))
+    .catch(err => console.log(err))
 }
 
 export const auth = (body) => (dispatch) => {
