@@ -39,7 +39,9 @@ class TaskList extends React.Component {
   }
 
   handleClick = (clickedTask) => {
-    console.log(this.props)
+    console.log(this.props.communityTasks, '>>>>>>>>>>>community tasks')
+
+    const listTask = this.props.communityTasks
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -57,13 +59,14 @@ class TaskList extends React.Component {
   }
 
   render() {
+    const listTask = this.props.communityTasks
     const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
           <Content>
-          {sortedTasks.map(task => {
+          {listTask.map(task => {
             return (
-              <TaskCard key={task.id} task={task} handleClick={this.handleClick} />
+              <TaskCard key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
             )
           })}
           </Content>
@@ -89,7 +92,7 @@ const mapState = state => {
     user: state.user,
    // community: state.community,
     communityTasks: state.communityTasks,
-    taskItems: state.taskItems
+    
   }
 }
 const mapDispatch = dispatch => {
