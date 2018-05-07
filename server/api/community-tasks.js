@@ -43,7 +43,7 @@ router.put('/frequencies/:communityId', async (req, res, next) => {
   try {
     const tasks = req.body
     
-    const taskPromises = tasks.map(task => {
+    const communityTaskPromises = tasks.map(task => {
       CommunityTask.update({
         value: task.value
       }, {
@@ -51,12 +51,18 @@ router.put('/frequencies/:communityId', async (req, res, next) => {
           id: task.id,
         }
       })
-      TaskItem.create({
-        taskId: task.taskId,
-        communityId: req.community.id,
+    })
+    const taskItemPromises = tasks.map(task => {
+      TaskItem.findOrCreate({
+        where: {
+          taskId: task.taskId,
+          communityId: req.params.communityId,
+          completed: null,
+        }
       })
     })
-    await Promise.all(taskPromises)
+    await Promise.all(communityTaskPromises)
+    await Promise.all(taskItemPromises)
     res.json(201)
   }
   catch (err) {
