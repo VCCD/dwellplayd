@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Image} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import {
   TaskList,
@@ -72,8 +72,8 @@ const MainNavigation = StackNavigator({
 }, {
   headerMode: 'float',
   navigationOptions: ({navigation}) => ({
-    headerStyle: {backgroundColor: '#2D728F'},
-    title: 'Welcome!',
+    headerStyle: {backgroundColor: '#554348'},
+    headerTitle: (<Image style={styles.logo} source={require('./dwellplayd_logo.png')} />),
     headerTintColor: 'white',
     headerLeft: <Icon name='menu' style={styles.menu} onPress={() =>
       navigation.navigate('DrawerToggle')} />
@@ -83,10 +83,14 @@ const MainNavigation = StackNavigator({
 const styles = StyleSheet.create({
   menu: {
     marginLeft: 10,
-    color: 'white',
+    color: '#D4F5F5',
   },
   drawerHead: {
     height: 100,
+  },
+  logo: {
+    height: 40,
+    width: 250,
   }
 });
 
