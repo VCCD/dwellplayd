@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Community, User } = require('../db/models')
+const { Community, User, CommunityTask, Task } = require('../db/models')
 const sendEmail = require('../mailer')
 module.exports = router
 
@@ -14,6 +14,22 @@ router.param('communityId', async (req, res, next, communityId) => {
   }
   catch (err) {
     next(err)
+  }
+})
+
+router.get('/:communityId/tasks', async (req, res, next) => {
+  try {
+    const communityId = req.params.communityId
+    const communityTasks = await CommunityTask.findAll({
+      where: {
+        communityId
+      },
+      include: [Task],
+    })
+    res.json(communityTasks)
+  }
+  catch (err) {
+    console.log(err)
   }
 })
 
