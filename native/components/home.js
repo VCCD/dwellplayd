@@ -7,6 +7,18 @@ import CONFIG from '../api-routes'
 
 
 class HomeScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button
+          transparent
+          onPress={() => navigation.navigate('DrawerOpen')}>
+          <Icon name="menu" />
+        </Button>
+      ),
+    }
+  }
+
   constructor (props) {
     super (props)
   }
@@ -22,15 +34,6 @@ class HomeScreen extends React.Component {
     const loggedIn = !!this.props.user.id
     return (
       <Container style={styles.container}>
-      <Header>
-      <Left>
-        <Button
-          transparent
-          onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-          <Icon name="menu" />
-        </Button>
-      </Left>
-  </Header>
   <Body>
       {
         loggedIn
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- 
+
   button: {
 
   }
