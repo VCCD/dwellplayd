@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
-import { TaskList, FrequencySelector, Signup} from './components'
+import { TaskList, FrequencySelector, Signup, Scores, LoginScreen, PlayerDetail, PlayerDetailEdit, SelectTasks} from './components'
 import {Icon, Container, Header, Content, Body, Text} from 'native-base'
 
 const CustomDrawer = (props) => (
@@ -26,7 +26,22 @@ const DrawerStack = DrawerNavigator({
   },
   Signup: {
     screen: Signup
-  }
+  },
+  Scores: {
+    screen: Scores
+  },
+  Login: {
+    screen: LoginScreen
+  },
+  PlayerDetail: {
+    screen: PlayerDetail
+  },
+  PlayerDetailEdit: {
+    screen: PlayerDetailEdit
+  },
+  SelectTasks: {
+    screen: SelectTasks
+  },
 }, {
   contentComponent: CustomDrawer,
   drawerOpenRoute: 'DrawerOpen',
