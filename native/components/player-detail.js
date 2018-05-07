@@ -12,7 +12,7 @@ class PlayerDetail extends React.Component {
         <Button
           transparent
           onPress={() => navigation.navigate('PlayerDetailEdit')}>
-          <Text>
+          <Text style={styles.edit}>
             Edit
           </Text>
         </Button>
@@ -34,6 +34,11 @@ class PlayerDetail extends React.Component {
             <CardItem bordered>
               <Text>
                 Email: {user.email}
+              </Text>
+            </CardItem>
+            <CardItem bordered>
+              <Text>
+                Score: {user.score}
               </Text>
             </CardItem>
             <CardItem bordered>
@@ -69,4 +74,7 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#fff',
   },
+  edit: {
+    marginRight: 20
+  }
 });
