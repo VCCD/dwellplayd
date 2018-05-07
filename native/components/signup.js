@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, TextInput } from 'react-native';
 import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import { signup } from '../store/auth';
+import customFormStyle from '../customFormStyle'
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -25,6 +26,7 @@ const UserSignup = t.struct({
 const Form = t.form.Form
 
 const options = {
+  stylesheet: customFormStyle,
   fields: {
     firstName: {
       error: 'First name cannot be empty'
@@ -48,25 +50,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    color: '#3B9EA5',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowColor: '#F5EE9E',
-    textShadowRadius: 5
+    color: '#D4F5F5',
   },
   form: {
     margin: 20,
   },
   container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#8C9A9E',
+    alignItems: 'center',
   },
   button: {
     padding: 10,
     margin: 10,
+    width: 150,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3B9EA5',
+    alignSelf: 'center',
+    backgroundColor: '#93B7BE',
   },
-  titleText: {
-    color: '#F5EE9E',
+  buttonText: {
+    color: '#D4F5F5',
     fontWeight: 'bold',
     fontSize: 20,
   },
@@ -93,17 +98,17 @@ class Signup extends React.Component {
   render() {
     return(
       <Container style={styles.container}>
-        <View style={styles.form}>
-          <Text style={styles.title}>Welcome Home</Text>
+        <Content style={styles.form}>
+          <Text style={styles.title}>dwellcome home</Text>
           <Form
             ref={c => {this._form = c}}
             type={UserSignup}
             options={options}
             />
-          <Button full onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.titleText}>Signup</Text>
+          <Button rounded onPress={this.handleSubmit} style={styles.button}>
+            <Text style={styles.buttonText}>Signup</Text>
           </Button>
-        </View>
+        </Content>
       </Container>
     )
   }
