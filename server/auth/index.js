@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const sendEmail = require('../mailer')
 module.exports = router
 
 router.post('/login', (req, res, next) => {
@@ -24,6 +25,7 @@ router.post('/signup', (req, res, next) => {
   User.create(req.body)
     .then(user => {
       req.login(user, err => (err ? next(err) : res.json(user)))
+      sendEmail(user.email, user, {}, 'signup')
     })
     .catch(err => {
       if (err.name === 'SequelizeUniqueConstraintError') {
