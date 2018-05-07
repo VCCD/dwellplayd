@@ -42,7 +42,7 @@ export const getAllTasksFromServerThunkerator = (communityId) => {
       if (communityId) {
         const tasks = await axios.get(`${apiURL}/tasks`)
         const communityTasks = await axios.get(`${apiURL}/community-tasks/${communityId}`)
-        const communityTaskIds = communityTasks.data.map(task => task.id)
+        const communityTaskIds = communityTasks.data.map(task => task.taskId)
         tasks.data.map(task => {
           if (communityTaskIds.includes(task.id)) {
             task.selected = true
