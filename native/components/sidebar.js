@@ -2,7 +2,7 @@ import React from "react";
 
 import { AppRegistry, Image, StatusBar, ImageBackground, StyleSheet } from "react-native";
 import { Container, Content, Text, List, ListItem } from "native-base";
-const routes = ["Home", "Profile", "Tasks", "Scores"];
+const routes = ["Profile", "Tasks", "Scores"];
 export default class SideBar extends React.Component {
   render() {
     return (
@@ -51,9 +51,5 @@ const styles = StyleSheet.create({
     width: 300
     
   }
-
-
-
-
 
 })

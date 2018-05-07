@@ -22,7 +22,7 @@ class FrequencySelector extends React.Component {
 
   handleSubmit = () => {
     store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate('Tasks')
   }
 
   render() {

@@ -44,7 +44,6 @@ class LoginScreen extends React.Component {
           </Button>
           <Button full onPress={() => {
             store.dispatch(auth(CONFIG.LOGIN))
-            this.props.navigation.navigate('Home')
           }} style={styles.button}>
             <Text style={styles.titleText}>Dev Login</Text>
           </Button>
@@ -96,7 +95,6 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     loginSubmit: async (form) => {
       await dispatch(auth(form))
-      ownProps.navigation.navigate('Home')
     },
   }
 }
