@@ -1,6 +1,17 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { HomeScreen, TaskList, LoginScreen, FrequencySelector, Scores, SelectTasks, PlayerDetail, PlayerDetailEdit, Sidebar } from './components'
+import {
+  HomeScreen,
+  TaskList,
+  LoginScreen,
+  FrequencySelector,
+  Scores,
+  SelectTasks,
+  PlayerDetail,
+  PlayerDetailEdit,
+  Signup,
+  Sidebar
+} from './components'
 
 const RootStack = StackNavigator ({
   Home: {
@@ -29,6 +40,9 @@ const RootStack = StackNavigator ({
   },
   DrawerOpen:{
     screen: Sidebar
+  },
+  Signup: {
+    screen: Signup
   }
 })
 

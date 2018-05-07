@@ -1,26 +1,33 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Container, Content, List, ListItem } from 'native-base'
+import { connect } from 'react-redux'
+import { fetchCommunity } from '../store';
 
-export default class Scores extends React.Component {
+class Scores extends React.Component {
   static navigationOptions = {
     title: 'Scores'
   }
+
+  componentDidMount = () => {
+    const { getCommunity, user } = this.props
+    getCommunity(user.communityId)
+  }
+
   render() {
-    const playerScores = Array.from(Object.entries(dummyPlayerScores))
-    const sortedPlayerScores = playerScores.sort((a, b) => b[1] - a[1])
+    const { users } = this.props.community
+    console.log(this.props)
     return (
       <Container style={styles.list}>
         <Content>
           <List>
-            {sortedPlayerScores.map(playerScore => {
-              const player = playerScore[0]
-              const score = playerScore[1]
+            {users && users.map(user => {
+              const { firstName, lastName, score } = user
               return (
-                <ListItem key={playerScore}>
+                <ListItem key={firstName + lastName}>
                   <Text>
-                    {player} has {score} points
-                </Text>
+                    {`${firstName} ${lastName} has ${score} points`}
+                  </Text>
                 </ListItem>
               )
             })}
@@ -31,15 +38,25 @@ export default class Scores extends React.Component {
   }
 }
 
+const mapState = state => {
+  return {
+    user: state.user,
+    community: state.community,
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    getCommunity: id => {
+      dispatch(fetchCommunity(id))
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(Scores)
+
 const styles = StyleSheet.create({
   list: {
     backgroundColor: '#fff',
   },
 });
-
-const dummyPlayerScores = {
-  Cody: 10,
-  Vi: 4,
-  Dave: 14,
-  Chris: 2
-}

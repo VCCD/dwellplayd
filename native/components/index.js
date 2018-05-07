@@ -36,3 +36,4 @@ const SidebarRouter = DrawerNavigator (
 )
 
 export default SidebarRouter;
+export {default as Signup} from './signup'

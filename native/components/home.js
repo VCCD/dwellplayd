@@ -2,44 +2,54 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Container, Button, Text, Header, Left, Icon, Body, Right } from 'native-base'
 import { connect } from 'react-redux'
+import store, { fetchCommunity, getAllTasksFromServerThunkerator, auth } from '../store'
+import CONFIG from '../api-routes'
 
-const HomeScreen = (props) => {
-  
-  const loggedIn = !!props.user.id
-  
-  return (
-    
-    <Container>
-    <Header>
-    <Left>
-      <Button
-        transparent
-        onPress={() => props.navigation.navigate('DrawerOpen')}>
-        <Icon name="menu" />
-      </Button>
-    </Left>
-</Header>
- 
-   
-    <Body>
-    {
-      loggedIn
-        ? <Text>Welcome, {props.user.firstName}</Text>
-        : <Text>Please log in</Text>
+
+class HomeScreen extends React.Component {
+  constructor (props) {
+    super (props)
+  }
+
+  componentDidMount () {
+    if (this.props.user.id) {
+      const communityId = this.props.user.communityId
+      store.dispatch(fetchCommunity(communityId))
     }
-      <Text>Welcome To Game of Homes</Text>
-      <Button onPress={() => props.navigation.navigate('TaskList')} style={styles.button}><Text>Tasks</Text></Button>
-      <Button onPress={() => props.navigation.navigate('Scores')} style={styles.button}><Text>Scores</Text></Button>
-      <Button rounded onPress={() => props.navigation.navigate('Login')} style={styles.button}><Text>Login</Text></Button>
-      <Button rounded onPress={() => props.navigation.navigate('PlayerDetail')} style={styles.button}><Text>PlayerDetail</Text></Button>
-      <Button rounded onPress={() => props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
-      <Button rounded onPress={() => props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
-      </Body>
-      
-      </Container>
-  
-  );
+  }
 
+  render () {
+    const loggedIn = !!this.props.user.id
+    return (
+      <Container style={styles.container}>
+      <Header>
+      <Left>
+        <Button
+          transparent
+          onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+          <Icon name="menu" />
+        </Button>
+      </Left>
+  </Header>
+  <Body>
+      {
+        loggedIn
+          ? <Text>Welcome, {this.props.user.firstName}</Text>
+          : <Text>Please log in</Text>
+      }
+        <Text>Welcome To Game of Homes</Text>
+        <Button onPress={() => this.props.navigation.navigate('TaskList')} style={styles.button}><Text>Tasks</Text></Button>
+        <Button onPress={() => this.props.navigation.navigate('Scores')} style={styles.button}><Text>Scores</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('Login')} style={styles.button}><Text>Login</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('PlayerDetail')} style={styles.button}><Text>PlayerDetail</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('FrequencySelector')} style={styles.button}><Text>FrequencySelector</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('SelectTasks')} style={styles.button}><Text>SelectTasks</Text></Button>
+        <Button rounded onPress={() => this.props.navigation.navigate('Signup')} style={styles.button}><Text>Signup</Text></Button>
+        <Button rounded onPress={() => store.dispatch(auth(CONFIG.LOGIN))} style={styles.button}><Text>Dev Login</Text></Button>
+   </Body>
+   </Container>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

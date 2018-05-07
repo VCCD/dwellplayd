@@ -16,53 +16,52 @@ import {
   Input,
   Button,
 } from 'native-base';
+import store, {
+  editSingleTask,
+  addTaskFromServerThunkerator,
+  getAllTasksFromServerThunkerator,
+  addCommunityTasksThunkerator,
+  clearTasks,
+} from '../store'
+import { connect } from 'react-redux';
 
-const dummyTasks = [
-  { id: 1, task: 'Clean bathroom', selected: false },
-  { id: 2, task: 'Take out trash', selected: false },
-  { id: 3, task: 'Vacuum living room', selected: false },
-  { id: 4, task: 'Sweep kitchen', selected: false },
-  { id: 5, task: 'Random task', selected: false },
-]
-
-export default class LoginScreen extends Component {
+class SelectTasks extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      taskList: dummyTasks,
       taskInput: '',
     }
   }
 
+  componentDidMount() {
+    store.dispatch(getAllTasksFromServerThunkerator(this.props.community.id))
+  }
+
+  componentWillUnmount () {
+    store.dispatch(clearTasks())
+  }
+
   handleClick = (id) => {
-    const taskList = this.state.taskList.map(task => {
-      if (task.id === id) return { ...task, selected: !task.selected }
-      else return task
-    })
-    this.setState({ taskList })
+    const taskArr = this.props.suggestedTasks.filter(task => task.id === id)
+    taskArr[0].selected = !taskArr[0].selected
+    store.dispatch(editSingleTask(taskArr[0]))
   }
 
   handleChangeTask = (taskInput) => {
-    this.setState({taskInput})
+    this.setState({ taskInput })
   }
 
   handleAddTask = () => {
     const newTask = {
-      id: this.state.taskList.length + 1,
-      task: this.state.taskInput,
-      selected: true,
+      name: this.state.taskInput,
     }
-    this.setState({
-      taskList: [...this.state.taskList, newTask],
-      taskInput: '',
-    })
+    this.setState({ taskInput: '' })
+    store.dispatch(addTaskFromServerThunkerator(newTask, true))
   }
 
-  handleSubmitTasks = () => {
-    console.log(this.state.taskList.filter(task => task.selected).map(task => {
-      delete task.selected
-      return task
-    }))
+  handleSubmitTasks = async () => {
+    const taskIds = this.props.suggestedTasks.filter(task => task.selected).map(task => task.id)
+    await store.dispatch(addCommunityTasksThunkerator(1, taskIds))
     this.props.navigation.navigate('Home');
   }
 
@@ -71,25 +70,40 @@ export default class LoginScreen extends Component {
       <Container>
         <Content>
           {
-            this.state.taskList.map(task => (
+            this.props.suggestedTasks.length && this.props.suggestedTasks.sort((a, b) => {
+              var nameA = a.name.toUpperCase()
+              var nameB = b.name.toUpperCase()
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0;
+            }).map(task => (
               <ListItem
                 key={task.id}
                 value={task.id}
                 onPress={() => this.handleClick(task.id)}>
-                <Text>{task.task}</Text>
+                <Text>{task.name}</Text>
                 <Right>
                   <Radio
-                    selected={task.selected} />
+                    selected={task.selected || false} />
                 </Right>
               </ListItem>
             ))
           }
           <Form>
             <Item floatingLabel>
-              <Input onChangeText={this.handleChangeTask} onSubmitEditing={this.handleAddTask} placeholder="Enter a custom task" value={this.state.taskInput} />
+              <Input
+                onChangeText={this.handleChangeTask}
+                onSubmitEditing={this.handleAddTask}
+                placeholder="Enter a custom task"
+                value={this.state.taskInput}
+              />
             </Item>
           </Form>
-            <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
+          <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
         </Content>
       </Container>
 
@@ -111,3 +125,9 @@ const styles = StyleSheet.create({
 
   },
 });
+
+const mapState = ({ suggestedTasks, community }) => ({ suggestedTasks, community })
+
+const mapDispatch = null
+
+export default connect(mapState, mapDispatch)(SelectTasks)

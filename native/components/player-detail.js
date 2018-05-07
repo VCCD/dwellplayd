@@ -1,54 +1,45 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
+import { connect } from 'react-redux'
+import { fetchCommunity } from '../store'
 
-export default class PlayerDetail extends React.Component {
+class PlayerDetail extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: 'Player Detail',
       headerRight: (
         <Button
           transparent
-          onPress={() => {
-            navigation.navigate('PlayerDetailEdit')
-          }}>
+          onPress={() => navigation.navigate('PlayerDetailEdit')}>
           <Text>
             Edit
-        </Text>
+          </Text>
         </Button>
       ),
     }
   }
+
   render() {
+    const { user, community } = this.props
     return (
       <Container style={styles.list}>
         <Content>
           <Card>
             <CardItem bordered>
               <Text>
-                Username: {dummyPlayer.username}
+                Name: {`${user.firstName} ${user.lastName}`}
               </Text>
             </CardItem>
             <CardItem bordered>
               <Text>
-                Email: {dummyPlayer.email}
+                Email: {user.email}
               </Text>
             </CardItem>
             <CardItem bordered>
               <Text>
-                Communities:
+                Community: {community.name}
               </Text>
-              {dummyPlayer.communities.map(community => {
-                return (
-                  <CardItem 
-                  key={community}
-                  button>
-                    <Text>
-                      {community}
-                    </Text>
-                  </CardItem>
-                )
-              })}
             </CardItem>
           </Card>
         </Content>
@@ -57,18 +48,25 @@ export default class PlayerDetail extends React.Component {
   }
 }
 
+const mapState = state => {
+  return {
+    community: state.community,
+    user: state.user,
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    getCommunity: id => {
+      dispatch(fetchCommunity(id))
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(PlayerDetail)
+
 const styles = StyleSheet.create({
   list: {
     backgroundColor: '#fff',
   },
-  img: {
-    width: 100,
-    height: 100,
-  },
 });
-
-const dummyPlayer = {
-  username: `DishKing`,
-  email: `i.do.dishes@gmail.com`,
-  communities: [`home`, `work`, `school`]
-}
