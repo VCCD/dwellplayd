@@ -7,18 +7,6 @@ import CONFIG from '../api-routes'
 
 
 class HomeScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerLeft: (
-        <Button
-          transparent
-          onPress={() => navigation.navigate('DrawerOpen')}>
-          <Icon name="menu" />
-        </Button>
-      ),
-    }
-  }
-
   constructor (props) {
     super (props)
   }
