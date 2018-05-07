@@ -10,10 +10,10 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User, Community, Task} = require('../server/db/models')
+const { User, Community, Task, CommunityTask, TaskItem } = require('../server/db/models')
 
-async function seed () {
-  await db.sync({force: true})
+async function seed() {
+  await db.sync({ force: true })
   console.log('db synced!')
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
@@ -24,36 +24,148 @@ async function seed () {
 
   const createTasks = async () => {
     const tasks = [
-      {
-        name: 'Clean the dishes',
-      },
-      {
-        name: 'Wipe the counters',
-      },
-      {
-        name: 'Sweep the floors',
-      },
-      {
-        name: 'Vacuum the carpet',
-      },
-      {
-        name: 'Feed the dog',
-      }
+      { name: 'Clean the dishes' },
+      { name: 'Wipe the counters' },
+      { name: 'Sweep the floors' },
+      { name: 'Vacuum the carpet' },
+      { name: 'Feed the dog' }
     ]
     try {
       const taskPromises = tasks.map(task => {
         return Task.create(task)
       })
-      const createdTasks = await Promise.all(taskPromises)
+      await Promise.all(taskPromises)
       console.log('seeded the tasks')
     }
     catch (err) {
       console.log(err)
     }
-  
+
   }
   await createTasks()
 
+  const createCommunityTasks = async () => {
+    const communityTasks = [
+      {
+        value: 2,
+        communityId: 1,
+        taskId: 3
+      },
+      {
+        value: 5,
+        communityId: 1,
+        taskId: 1
+      },
+      {
+        value: 8,
+        communityId: 1,
+        taskId: 2
+      },
+      {
+        value: 15,
+        communityId: 1,
+        taskId: 5
+      },
+      {
+        value: 21,
+        communityId: 1,
+        taskId: 4
+      },
+    ]
+    try {
+      const CommunityTaskPromises = communityTasks.map(task => {
+        return CommunityTask.create(task)
+      })
+      await Promise.all(CommunityTaskPromises)
+      console.log('seeded the communityTasks')
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  await createCommunityTasks()
+
+  const createTaskItems = async () => {
+    const taskItems = [
+      {
+        createdAt: new Date() - 86400000 * 5,
+        completed: new Date() - 86400000 * 3,
+        completedById: 1,
+        value: 2,
+        communityId: 1,
+        taskId: 1,
+      },
+      {
+        createdAt: new Date() - 86400000 * 10,
+        completed: new Date() - 86400000 * 6,
+        completedById: 2,
+        value: 3,
+        communityId: 1,
+        taskId: 2,
+      },
+      {
+        createdAt: new Date() - 86400000 * 15,
+        completed: new Date() - 86400000 * 9,
+        completedById: 3,
+        value: 4,
+        communityId: 1,
+        taskId: 3,
+      },
+      {
+        createdAt: new Date() - 86400000 * 20,
+        completed: new Date() - 86400000 * 12,
+        completedById: 4,
+        value: 5,
+        communityId: 1,
+        taskId: 4,
+      },
+      {
+        createdAt: new Date() - 86400000 * 1,
+        completed: null,
+        completedById: null,
+        value: 6,
+        communityId: 1,
+        taskId: 1,
+      },
+      {
+        createdAt: new Date() - 86400000 * 2,
+        completed: null,
+        completedById: null,
+        value: 7,
+        communityId: 1,
+        taskId: 2,
+      },
+      {
+        createdAt: new Date() - 86400000 * 3,
+        completed: null,
+        completedById: null,
+        value: 8,
+        communityId: 1,
+        taskId: 3,
+      },
+      {
+        createdAt: new Date() - 86400000 * 4,
+        completed: null,
+        completedById: null,
+        value: 9,
+        communityId: 1,
+        taskId: 4,
+      },
+    ]
+    try {
+      const TaskItemPromises = taskItems.map(taskItem => {
+        return TaskItem.create(taskItem)
+      })
+      await Promise.all(TaskItemPromises)
+      console.log('seeded the taskItems')
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  await createTaskItems()
 
   const createUsers = async () => {
     const users = [
@@ -90,13 +202,13 @@ async function seed () {
       const userPromises = users.map(user => {
         return User.create(user)
       })
-      const createdUsers = await Promise.all(userPromises)
+      await Promise.all(userPromises)
       console.log('seeded the users')
     }
     catch (err) {
       console.log(err)
     }
-  
+
   }
   await createUsers()
 
