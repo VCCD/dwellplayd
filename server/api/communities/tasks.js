@@ -1,29 +1,8 @@
 const router = require('express').Router()
 const { Community, User, CommunityTask, Task, TaskItem } = require('../db/models')
-const sendEmail = require('../mailer')
 module.exports = router
 
-//mailer takes --> email, user, community, status
-
-router.param('communityId', async (req, res, next, communityId) => {
-  try {
-    req.community = await Community.findById(communityId, {
-      include: [User, TaskItem]
-    })
-    next()
-  }
-  catch (err) {
-    next(err)
-  }
-})
-
-router.use('/:communityId/tasks', require('./tasks'))
-
-router.get('/:communityId', (req, res, next) => {
-  res.json(req.community)
-})
-
-router.get('/:communityId/tasks', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const communityId = req.params.communityId
     const communityTasks = await CommunityTask.findAll({
@@ -39,7 +18,8 @@ router.get('/:communityId/tasks', async (req, res, next) => {
   }
 })
 
-router.post('/:communityId/tasks', async (req, res, next) => {
+
+router.post('/', async (req, res, next) => {
   try {
     const taskIds = req.body
     await req.community.setTasks(taskIds)
@@ -50,21 +30,7 @@ router.post('/:communityId/tasks', async (req, res, next) => {
   }
 })
 
-router.post('/:communityId/inviteUsers', (req, res, next) => {
-  try {
-    const user = req.body.user
-    const emails = req.body.emails
-    emails.forEach(email => {
-      sendEmail(email, user, req.community, 'invite')
-    })
-  }
-  catch (err) {
-    next(err)
-  }
-})
-
-
-router.put('/:communityId/tasks', async (req, res, next) => {
+router.put('/', async (req, res, next) => {
   try {
     const tasks = req.body
     
