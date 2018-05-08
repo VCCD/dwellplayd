@@ -60,8 +60,9 @@ class Stats extends React.Component{
     
     style={{
       data: {
-        width: 60,
+        width: 40,
         fill: "#93B7BE",
+        padding: 20
   
       },
       labels: {
