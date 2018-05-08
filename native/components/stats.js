@@ -4,14 +4,30 @@ import {StyleSheet, View, ScrollView} from 'react-native'
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel } from "victory-native";
 import { Container } from 'native-base';
 
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
 
 class Stats extends React.Component{
 
     constructor(){
       super()
     }
+    score = userId => {
+      let score = 0;
+      const { taskItems } = this.props.community
+      taskItems.forEach(taskItem => {
+        if (taskItem.userId === userId) score += taskItem.points
+      })
+      return roundToTenths(score)
+    }
 
     render(){
+      const { users, taskItems } = this.props.community
+      console.log(users, 'users <<<<<<<')
+      const totalScore = users.reduce( (sum, user)=>sum += this.score(user.id), 0)
+      console.log('totalscore', totalScore)
+      
       return (
       <Container style={styles.container}>
       <ScrollView>
@@ -20,12 +36,15 @@ class Stats extends React.Component{
         padding={40}
         labelRadius={50}
         animate={{ duration: 1000 }}
-      data={[
-        { x: "Cody", y: 35 },
-        { x: "Chris", y: 40 },
-        { x: "Dave", y: 55 },
-        { x: "Vi", y: 20 }
-      ]}
+      data={
+      //   [
+      //   { x: "Cody", y: 35 },
+      //   { x: "Chris", y: 40 },
+      //   { x: "Dave", y: 55 },
+      //   { x: "Vi", y: 20 }
+      // ]
+      users.map(user => {return{'x':user.firstName, 'y':this.score(user.id)/totalScore}})
+    }
       style={{ labels: { fill: "white", fontSize: 20 } }}
     />
 
@@ -55,13 +74,16 @@ class Stats extends React.Component{
           }
         }}
        
-        data={[
-          { x: "Cody", y: 35 },
-          { x: "Chris", y: 40 },
-          { x: "Dave", y: 55 },
-          { x: "Vi", y: 20 }
+        data={
+          //[
+        //   { x: "Cody", y: 35 },
+        //   { x: "Chris", y: 40 },
+        //   { x: "Dave", y: 55 },
+        //   { x: this.props.user.firstName, y: this.score(this.props.user.id) }
     
-        ]}
+        // ]
+        users.map(user => {return { 'x': user.firstName, 'y': this.score(user.id)}})
+      }
       />
     </VictoryChart>
     </ScrollView>
@@ -79,6 +101,18 @@ const styles = StyleSheet.create({
 })
 
 
-const mapState = null;
-const mapDispatch = null;
+const mapState = state => {
+  return {
+    user: state.user,
+    community: state.community,
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    getCommunity: id => {
+      dispatch(fetchCommunity(id))
+    }
+  }
+}
 export default connect(mapState ,mapDispatch)(Stats)
