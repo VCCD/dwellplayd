@@ -26,16 +26,24 @@ router.get('/:communityId', (req, res, next) => {
   res.json(req.community)
 })
 
-router.post('/:communityId/inviteUsers', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
-    const user = req.body.user
-    const emails = req.body.emails
-    emails.forEach(email => {
-      sendEmail(email, user, req.community, 'invite')
-    })
+    const name = req.body.name
+    console.log(req.body)
+    const newCommunity = await Community.create({name})
+    res.json(newCommunity)
   }
   catch (err) {
     next(err)
   }
+})
+
+router.post('/:communityId/inviteUsers', (req, res, next) => {
+  const user = req.body.user
+  const emails = req.body.emails
+  emails.forEach(email => {
+    sendEmail(email, user, req.community, 'invite')
+  })
+
 })
 

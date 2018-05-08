@@ -61,8 +61,8 @@ class SelectTasks extends Component {
 
   handleSubmitTasks = async () => {
     const taskIds = this.props.suggestedTasks.filter(task => task.selected).map(task => task.id)
-    await store.dispatch(addCommunityTasksThunkerator(1, taskIds))
-    this.props.navigation.navigate('Tasks');
+    await store.dispatch(addCommunityTasksThunkerator(this.props.community.id, taskIds))
+    this.props.navigation.navigate('FrequencySelector');
   }
 
   render() {

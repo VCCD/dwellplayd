@@ -3,24 +3,12 @@ import { connect } from 'react-redux'
 import { StyleSheet, Text, TextInput } from 'react-native';
 import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup } from '../store/auth';
+import { signup, addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
 
-const Email = t.refinement(t.String, email => {
-  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
-  return reg.test(email);
-});
 
-const Password = t.refinement(t.String, password => {
-  if (password.length < 3) return false
-  else return true
-})
-
-const UserSignup = t.struct({
-  firstName: t.String,
-  lastName: t.String,
-  email: Email,
-  password: Password,
+const JoinCommunityForm = t.struct({
+  communityId: t.String,
 })
 
 const Form = t.form.Form
@@ -28,23 +16,9 @@ const Form = t.form.Form
 const options = {
   stylesheet: customFormStyle,
   fields: {
-    firstName: {
-      error: 'First name cannot be empty',
-      autoCapitalize: 'none'
+    communityId: {
+      error: 'First name cannot be empty'
     },
-    lastName: {
-      error: 'Last name cannot be empty',
-      autoCapitalize: 'none'
-    },
-    email: {
-      error: 'Insert a valid email',
-      autoCapitalize: 'none'
-    },
-    password: {
-      error: 'Password must be at least 3 characters',
-      secureTextEntry: true,
-      autoCapitalize: 'none'
-    }
   }
 }
 
@@ -82,34 +56,31 @@ const styles = StyleSheet.create({
 })
 
 
-class Signup extends React.Component {
+class JoinCommunity extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      communityId: '',
     }
   }
 
   handleSubmit = async () => {
     const form = this._form.getValue()
-    if (form) this.props.signupSubmit(form)
+    if (form) this.props.signupSubmit(form.communityId, this.props.user)
   }
 
   render() {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>dwellcome home</Text>
+          <Text style={styles.title}>Enter your community ID</Text>
           <Form
             ref={c => {this._form = c}}
-            type={UserSignup}
+            type={JoinCommunityForm}
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
+            <Text style={styles.buttonText}>Join</Text>
           </Button>
         </Content>
       </Container>
@@ -117,15 +88,15 @@ class Signup extends React.Component {
   }
 }
 
-const mapState = null
+const mapState = ({ user }) => ({ user })
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    signupSubmit: (form) => {
-      dispatch(signup(form))
-      ownProps.navigation.navigate('NoCommunity')
+    signupSubmit: (communityId, user) => {
+      dispatch(addUserToCommunity(+communityId, user))
+      ownProps.navigation.navigate('Tasks')
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(Signup)
+export default connect(mapState, mapDispatch)(JoinCommunity)
