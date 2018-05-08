@@ -19,6 +19,7 @@ router.param('communityId', async (req, res, next, communityId) => {
 
 router.use('/:communityId/tasks', require('./tasks'))
 router.use('/:communityId/users', require('./users'))
+router.use('/:communityId/task-items', require('./task-items'))
 
 
 router.get('/:communityId', (req, res, next) => {

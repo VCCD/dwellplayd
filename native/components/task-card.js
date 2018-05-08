@@ -1,19 +1,22 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
-import { Card, CardItem} from 'native-base'
+import { Card, CardItem } from 'native-base'
+import { connect } from 'react-redux'
+
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
 
 const TaskCard = (props) => {
-
-  const {task} = props
-  console.log(task, 'this is the tasks')
+  const { taskItem } = props
   return (
     <Card>
-      <CardItem style={styles.header} button onPress={() => props.handleClick(task)}>
+      <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
         <View style={styles.left}>
-          <Text style={styles.text}>{task}</Text>
-          <Text style={styles.text}>Last completed {task.daysSinceCompleted} days ago</Text>
+          <Text style={styles.text}>{taskItem.task.name}</Text>
+          <Text style={styles.text}>Last completed {roundToTenths(taskItem.days)} days ago</Text>
         </View>
-        <Text style={styles.score} >{task.pts}</Text>
+        <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
       </CardItem>
     </Card>
   )
@@ -43,4 +46,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TaskCard
+const mapState = state => {
+  return {
+    tasks: state.tasks,
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapState, mapDispatch)(TaskCard)
