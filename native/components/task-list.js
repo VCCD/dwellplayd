@@ -1,21 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {Container, Header, Content, Button, ActionSheet} from 'native-base'
+import { Container, Header, Content, Button, ActionSheet } from 'native-base'
 import TaskCard from './task-card'
-import {getAllCommunityTasksFromServerThunkerator} from '../store'
-
-
-let dummyTasks = [
-  {id: 1, task: 'Clean bathroom', daysSinceCompleted: 6, pts: 7},
-  {id: 2, task: 'Take out trash', daysSinceCompleted: 1, pts: 0},
-  {id: 3, task: 'Vacuum living room', daysSinceCompleted: 10, pts: 10},
-  {id: 4, task: 'Sweep kitchen', daysSinceCompleted: 2, pts: 1},
-  {id: 5, task: 'Random task 1', daysSinceCompleted: 16, pts: 17},
-  {id: 6, task: 'Random task 2', daysSinceCompleted: 11, pts: 20},
-  {id: 7, task: 'Random task 3', daysSinceCompleted: 13, pts: 12},
-  {id: 8, task: 'Random task 4', daysSinceCompleted: 7, pts: 19},
-]
+import { fetchCommunity, fetchCommunityTaskItems } from '../store'
 
 const BUTTONS = [
   "Complete",
@@ -24,24 +12,18 @@ const BUTTONS = [
 const CANCEL_INDEX = 1;
 
 class TaskList extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      tasks: {},
-    }
-  }
 
   static navigationOptions = {
     title: 'Current Tasks'
   }
-  componentDidMount = (communityId) =>{
-    this.props.getCommunityTasks(this.props.user.communityId)
+
+  componentDidMount = () => {
+    const { getTaskItems, user } = this.props
+    getTaskItems(user.communityId)
   }
 
-  handleClick = (clickedTask) => {
-    console.log(this.props.communityTasks, '>>>>>>>>>>>community tasks')
-
-    const listTask = this.props.communityTasks
+  handleClick = clickedTask => {
+    let { taskItems } = this.props
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -50,26 +32,26 @@ class TaskList extends React.Component {
       },
       buttonIndex => {
         if (buttonIndex === 0) {
-          clickedTask.daysSinceCompleted = 0
-          clickedTask.pts = 0
-          dummyTasks = dummyTasks.map(task => (task.id === clickedTask.id ? clickedTask : task))
+          console.log(clickedTask)
         }
       }
     )
   }
 
   render() {
-    const listTask = this.props.communityTasks
-    const sortedTasks = listTask.sort((a,b) => b['pts'] - a['pts'])
+    const { taskItems } = this.props
+    const filteredTaskItems = taskItems && taskItems.filter(taskItem => !taskItem.completed)
+    const sortedTaskItems = filteredTaskItems && filteredTaskItems.sort((a, b) => b.points - a.points)
+
     return (
       <Container style={styles.list}>
-          <Content contentContainerStyle={styles.content}>
-          {sortedTasks.map(task => {
+        <Content contentContainerStyle={styles.content}>
+          {sortedTaskItems && sortedTaskItems.map(taskItem => {
             return (
-              <TaskCard style={styles.card} key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
+              <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
             )
           })}
-          </Content>
+        </Content>
       </Container>
     );
   }
@@ -93,15 +75,18 @@ const styles = StyleSheet.create({
 const mapState = state => {
   return {
     user: state.user,
-   // community: state.community,
-    communityTasks: state.communityTasks,
-
+    community: state.community,
+    taskItems: state.taskItems,
   }
 }
+
 const mapDispatch = dispatch => {
   return {
-    getCommunityTasks: communityId => {
-      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
+    getCommunity: id => {
+      dispatch(fetchCommunity(id))
+    },
+    getTaskItems: communityId => {
+      dispatch(fetchCommunityTaskItems(communityId))
     }
   }
 }
