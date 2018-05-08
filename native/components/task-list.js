@@ -34,7 +34,7 @@ class TaskList extends React.Component {
   static navigationOptions = {
     title: 'Current Tasks'
   }
-  componentDidMount = (communityId) =>{
+  componentDidMount = () =>{
     this.props.getCommunityTasks(this.props.user.communityId)
   }
 
