@@ -4,6 +4,10 @@ import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity } from '../store'
 
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
+
 class PlayerDetail extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -18,6 +22,15 @@ class PlayerDetail extends React.Component {
         </Button>
       ),
     }
+  }
+
+  score = userId => {
+    let score = 0;
+    const { taskItems } = this.props.community
+    taskItems.forEach(taskItem => {
+      if (taskItem.userId === userId) score += taskItem.points
+    })
+    return roundToTenths(score)
   }
 
   render() {
@@ -38,12 +51,12 @@ class PlayerDetail extends React.Component {
             </CardItem>
             <CardItem bordered>
               <Text>
-                Score: {user.score}
+                Score: {this.score(user.id)}
               </Text>
             </CardItem>
             <CardItem bordered>
               <Text>
-                Community: {community.name}
+                Dwelling: {community.name}
               </Text>
             </CardItem>
           </Card>

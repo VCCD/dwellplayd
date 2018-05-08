@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Button, ActionSheet } from 'native-base'
 import TaskCard from './task-card'
-import { fetchCommunity, fetchCommunityTaskItems } from '../store'
+import { fetchCommunityTaskItems, completeTaskItem, getAllCommunityTasksFromServerThunkerator} from '../store'
 
 const BUTTONS = [
   "Complete",
@@ -18,21 +18,25 @@ class TaskList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getTaskItems, user } = this.props
+    const { getTaskItems, getCommunityTasks, user } = this.props
     getTaskItems(user.communityId)
+    getCommunityTasks(user.communityId)
   }
 
   handleClick = clickedTask => {
-    let { taskItems } = this.props
+    const { user } = this.props
+    const { completeTask } = this.props
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: clickedTask.task
+        title: clickedTask.task.name
       },
       buttonIndex => {
         if (buttonIndex === 0) {
-          console.log(clickedTask)
+          clickedTask.userId = user.id
+          clickedTask.completed = new Date()
+          completeTask(clickedTask)
         }
       }
     )
@@ -76,17 +80,21 @@ const mapState = state => {
   return {
     user: state.user,
     community: state.community,
+    communityTasks: state.communityTasks,
     taskItems: state.taskItems,
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getCommunity: id => {
-      dispatch(fetchCommunity(id))
-    },
     getTaskItems: communityId => {
       dispatch(fetchCommunityTaskItems(communityId))
+    },
+    completeTask: taskItem => {
+      dispatch(completeTaskItem(taskItem))
+    },
+    getCommunityTasks: communityId => {
+      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
     }
   }
 }
