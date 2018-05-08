@@ -1,21 +1,37 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
+const calcPoints = (days, value) => {
+  return (days / value) * 100
+}
+
 const TaskItem = db.define('taskItem', {
   completed: {
     type: Sequelize.DATE,
   },
-  completedById: {
+  value: {
     type: Sequelize.INTEGER,
   },
-  pointsAwarded: {
-    type: Sequelize.INTEGER,
+  days: {
+    type: Sequelize.VIRTUAL,
     get: function () {
-      return this.getDataValue('price') / 10;
-    },
-    set: function (price) {
-      this.setDataValue('price', price * 10);
-    },
+      const now = new Date()
+      const created = this.getDataValue(`createdAt`)
+      const completed = this.getDataValue(`completed`)
+      if (completed) return (completed - created) / 86400000
+      else return (now - created) / 86400000
+    }
+  },
+  points: {
+    type: Sequelize.VIRTUAL,
+    get: function () {
+      const now = new Date()
+      const created = this.getDataValue(`createdAt`)
+      const completed = this.getDataValue(`completed`)
+      const value = this.getDataValue(`value`)
+      const days = completed ? (completed - created) / 86400000 : (now - created) / 86400000
+      return calcPoints(days, value)
+    }
   },
 })
 
