@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {StyleSheet, View, ScrollView} from 'react-native'
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel } from "victory-native";
 import { Container } from 'native-base';
 
 
@@ -20,7 +20,7 @@ class Stats extends React.Component{
       colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         padding={40}
         labelRadius={50}
-        animate={{duration: 2000, onLoad: {duration: 1000}, onEnter: {duration: 500, before: () => ({y: 0})}}}
+        animate={{ duration: 1000 }}
       data={[
         { x: "Cody", y: 35 },
         { x: "Chris", y: 40 },
@@ -31,17 +31,33 @@ class Stats extends React.Component{
       style={{ labels: { fill: "white", fontSize: 20 } }}
 
     />
+    <VictoryAnimation duration={1000} data={this.state}>
+            {(newProps) => {
+              return (
+                <VictoryLabel
+                  textAnchor="middle" verticalAnchor="middle"
+                  x={200} y={200}
+                  text={`${Math.round(100)}%`}
+                  style={{ fontSize: 45 }}
+                />
+              );
+            }}
+          </VictoryAnimation>
+        
 
     <VictoryChart
   domainPadding={{ x: 15 }}
   padding={40}
   labelRadius={50}
+  style={{ parent: { maxWidth: "50%" } }}
+  
 >
   <VictoryBar
     
     colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
     padding={40}
     labelRadius={40}
+    
     style={{
       data: {
         width: 60,
