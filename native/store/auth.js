@@ -7,6 +7,7 @@ const apiURL = CONFIG.API_URL
 
 const LOGIN_USER = 'LOGIN_USER'
 const LOGOUT_USER = 'LOGOUT_USER'
+const UPDATE_USER = 'UPDATE_USER'
 
 
 const defaultUser = {}
@@ -34,13 +35,20 @@ export const updateUser = (userId, form) => dispatch => {
     .catch(err => console.log(err))
 }
 
+export const addUserToCommunity = (communityId, user) => dispatch => {
+    user.communityId = communityId
+    axios.
+    put(`${apiURL}/users/${user.id}`, user)
+    .then(res => dispatch(loginUser(res.data || defaultUser)))
+    .catch(err => console.log(err))
+}
+
 export const auth = (body) => (dispatch) => {
     return axios
     .post(`${authURL}/login`, body)
     .then(
         res => {
             dispatch(loginUser(res.data))
-            dispatch(fetchCommunity(res.data.communityId))
             console.log('Logging in');
             //history.push('/home');
             console.log(res)
@@ -82,6 +90,13 @@ export const logout = () => dispatch =>
       //history.push('/login');
     })
     .catch(err => console.log(err));
+
+export const joinCommunityThunkerator = (communityId, user) => {
+  return (dispatch) => {
+    user.communityId = communityId
+    axios.put(`${authURL}/users/${user.id}`, user)
+  }
+}
 
 export default function(state = defaultUser, action) {
     switch (action.type) {

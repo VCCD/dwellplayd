@@ -22,7 +22,7 @@ export const clearActiveCommunityTask = () => ({
 export const saveEditedCommunityTaskThunkerator = (communityId, task) => {
   return async (dispatch) => {
     try {
-      const updatedTask = await axios.put(`${apiURL}/community-tasks/${communityId}`, task)
+      const updatedTask = await axios.put(`${apiURL}/communities/${communityId}/tasks`, task)
       dispatch(editCommunityTask(updatedTask))
     }
     catch (err) {

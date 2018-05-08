@@ -10,10 +10,10 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User, Community, Task} = require('../server/db/models')
+const { User, Community, Task, CommunityTask, TaskItem } = require('../server/db/models')
 
-async function seed () {
-  await db.sync({force: true})
+async function seed() {
+  await db.sync({ force: true })
   console.log('db synced!')
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
@@ -21,38 +21,6 @@ async function seed () {
   await Community.create({
     name: 'Community',
   })
-
-  const createTasks = async () => {
-    const tasks = [
-      {
-        name: 'Clean the dishes',
-      },
-      {
-        name: 'Wipe the counters',
-      },
-      {
-        name: 'Sweep the floors',
-      },
-      {
-        name: 'Vacuum the carpet',
-      },
-      {
-        name: 'Feed the dog',
-      }
-    ]
-    try {
-      const taskPromises = tasks.map(task => {
-        return Task.create(task)
-      })
-      const createdTasks = await Promise.all(taskPromises)
-      console.log('seeded the tasks')
-    }
-    catch (err) {
-      console.log(err)
-    }
-  
-  }
-  await createTasks()
 
 
   const createUsers = async () => {
@@ -90,15 +58,161 @@ async function seed () {
       const userPromises = users.map(user => {
         return User.create(user)
       })
-      const createdUsers = await Promise.all(userPromises)
+      await Promise.all(userPromises)
       console.log('seeded the users')
     }
     catch (err) {
       console.log(err)
     }
-  
+
   }
   await createUsers()
+  
+  const createTasks = async () => {
+    const tasks = [
+      { name: 'Clean the dishes' },
+      { name: 'Wipe the counters' },
+      { name: 'Sweep the floors' },
+      { name: 'Vacuum the carpet' },
+      { name: 'Feed the dog' }
+    ]
+    try {
+      const taskPromises = tasks.map(task => {
+        return Task.create(task)
+      })
+      await Promise.all(taskPromises)
+      console.log('seeded the tasks')
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  await createTasks()
+
+  const createCommunityTasks = async () => {
+    const communityTasks = [
+      {
+        value: 2,
+        communityId: 1,
+        taskId: 3
+      },
+      {
+        value: 5,
+        communityId: 1,
+        taskId: 1
+      },
+      {
+        value: 8,
+        communityId: 1,
+        taskId: 2
+      },
+      {
+        value: 15,
+        communityId: 1,
+        taskId: 5
+      },
+      {
+        value: 21,
+        communityId: 1,
+        taskId: 4
+      },
+    ]
+    try {
+      const CommunityTaskPromises = communityTasks.map(task => {
+        return CommunityTask.create(task)
+      })
+      await Promise.all(CommunityTaskPromises)
+      console.log('seeded the communityTasks')
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  await createCommunityTasks()
+
+  const createTaskItems = async () => {
+    const taskItems = [
+      {
+        createdAt: new Date() - 3600000 * 23 * 5,
+        completed: new Date() - 3600000 * 21 * 3,
+        userId: 1,
+        value: 2,
+        communityId: 1,
+        taskId: 1,
+      },
+      {
+        createdAt: new Date() - 3600000 * 18 * 10,
+        completed: new Date() - 3600000 * 11 * 6,
+        userId: 2,
+        value: 3,
+        communityId: 1,
+        taskId: 2,
+      },
+      {
+        createdAt: new Date() - 3600000 * 16 * 15,
+        completed: new Date() - 3600000 * 22 * 9,
+        userId: 3,
+        value: 4,
+        communityId: 1,
+        taskId: 3,
+      },
+      {
+        createdAt: new Date() - 3600000 * 3 * 20,
+        completed: new Date() - 3600000 * 7 * 12,
+        userId: 4,
+        value: 5,
+        communityId: 1,
+        taskId: 4,
+      },
+      {
+        createdAt: new Date() - 3600000 * 9 * 1,
+        completed: null,
+        userId: null,
+        value: 6,
+        communityId: 1,
+        taskId: 1,
+      },
+      {
+        createdAt: new Date() - 3600000 * 11 * 2,
+        completed: null,
+        userId: null,
+        value: 7,
+        communityId: 1,
+        taskId: 2,
+      },
+      {
+        createdAt: new Date() - 3600000 * 19 * 3,
+        completed: null,
+        userId: null,
+        value: 8,
+        communityId: 1,
+        taskId: 3,
+      },
+      {
+        createdAt: new Date() - 3600000 * 13 * 4,
+        completed: null,
+        userId: null,
+        value: 9,
+        communityId: 1,
+        taskId: 4,
+      },
+    ]
+    try {
+      const TaskItemPromises = taskItems.map(taskItem => {
+        return TaskItem.create(taskItem)
+      })
+      await Promise.all(TaskItemPromises)
+      console.log('seeded the taskItems')
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  await createTaskItems()
+
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
