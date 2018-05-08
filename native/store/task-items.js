@@ -12,13 +12,29 @@ export const getCommunityTaskItems = taskItems => ({
   taskItems
 })
 
-
 //thunks
 
 export const fetchCommunityTaskItems = communityId => {
   return async (dispatch) => {
     try {
       const taskItems = await axios.get(`${apiURL}/communities/${communityId}/task-items`)
+      dispatch(getCommunityTaskItems(taskItems.data))
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export const completeTaskItem = taskItem => {
+  return async (dispatch) => {
+    try {
+      await axios.put(`${apiURL}/task-items/${taskItem.id}/`, taskItem)
+      await axios.post(`${apiURL}/task-items/`, {
+        communityId: taskItem.communityId,
+        taskId: taskItem.taskId,
+      })
+      const taskItems = await axios.get(`${apiURL}/communities/${taskItem.communityId}/task-items`)
       dispatch(getCommunityTaskItems(taskItems.data))
     }
     catch (err) {
