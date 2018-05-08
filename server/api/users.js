@@ -25,9 +25,9 @@ router.get('/:userId', (req, res, next) => {
 
 router.put('/:userId', (req, res, next) => {
   const { userId } = req.params
-  const { firstName, lastName, email } = req.body
+  const { firstName, lastName, email, communityId } = req.body
   User.findById(userId)
-    .then(user => user.update({ firstName, lastName, email }))
+    .then(user => user.update({ firstName, lastName, email, communityId }))
     .then(user => res.json(user))
     .catch(next)
 })
