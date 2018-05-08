@@ -51,7 +51,7 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
 export const addCommunityTasksThunkerator = (communityId, taskIds) => {
   return async (dispatch) => {
     try {
-      await axios.post(`${apiURL}/community-tasks/${communityId}`, taskIds)
+      await axios.post(`${apiURL}/communities/${communityId}/tasks`, taskIds)
       dispatch(clearCommunityTasks())
     }
     catch (err) {
