@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 20,
+    height: 400,
   },
   titleText: {
     color: '#DBD56E',
