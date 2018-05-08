@@ -4,6 +4,10 @@ import { Container, Content, List, ListItem } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity } from '../store';
 
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
+
 class Scores extends React.Component {
   static navigationOptions = {
     title: 'Scores'
@@ -20,7 +24,7 @@ class Scores extends React.Component {
     taskItems.forEach(taskItem => {
       if (taskItem.userId === userId) score += taskItem.points
     })
-    return Math.floor(score)
+    return roundToTenths(score)
   }
 
   render() {
