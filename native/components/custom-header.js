@@ -1,7 +1,6 @@
 import React from 'react'
-import {Icon, Container, Header, Content, Body, Text, Button} from 'native-base'
-import {StyleSheet, Image, View} from 'react-native'
-import store, { logoutUser } from '../store'
+import { Container, Header, Content, Body, Text } from 'native-base'
+import { StyleSheet, Image } from 'react-native'
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux'
 
@@ -15,7 +14,6 @@ const CustomHeader = (props) => (
     </Header>
     <Content>
       <DrawerItems {...props} />
-      <Button rounded onPress={() => store.dispatch(logoutUser())} style={styles.button}><Text>Logout</Text></Button>
     </Content>
   </Container>
 )

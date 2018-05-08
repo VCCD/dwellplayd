@@ -1,13 +1,10 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
-import {CustomHeader} from './components'
 import {
   TaskList,
   FrequencySelector,
-  Signup,
   Scores,
-  LoginScreen,
   PlayerDetail,
   PlayerDetailEdit,
   SelectTasks,
@@ -16,6 +13,8 @@ import {
   NoCommunity,
   CreateCommunity,
   JoinCommunity,
+  Logout,
+  CustomHeader,
 } from './components'
 import {Icon} from 'native-base'
 
@@ -44,6 +43,9 @@ const DrawerStack = DrawerNavigator({
   },
   Stats: {
     screen: Stats
+  },
+  Logout: {
+    screen: Logout
   }
 }, {
   contentComponent: CustomHeader,

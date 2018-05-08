@@ -20,7 +20,10 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    set (email) {
+      this.setDataValue('email', email.toLowerCase())
+    }
   },
   score: {
     type: Sequelize.INTEGER,

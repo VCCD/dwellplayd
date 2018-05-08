@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {StyleSheet, View, ScrollView} from 'react-native'
+<<<<<<< HEAD
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel } from "victory-native";
+=======
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie } from "victory-native";
+>>>>>>> master
 import { Container } from 'native-base';
 
 
@@ -15,6 +19,10 @@ class Stats extends React.Component{
       return (
       <Container style={styles.container}>
       <ScrollView>
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
       <VictoryPie
       colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         padding={40}
@@ -28,6 +36,7 @@ class Stats extends React.Component{
       ]}
       style={{ labels: { fill: "white", fontSize: 20 } }}
     />
+<<<<<<< HEAD
 
     <VictoryChart
       domainPadding={{ x: 15 }}
@@ -64,6 +73,8 @@ class Stats extends React.Component{
         ]}
       />
     </VictoryChart>
+=======
+>>>>>>> master
     </ScrollView>
       </Container>
 )
