@@ -13,6 +13,8 @@ import {
   Invite,
   Stats,
   NoCommunity,
+  CreateCommunity,
+  JoinCommunity,
 } from './components'
 import {Icon, Container, Header, Content, Body, Text, Button} from 'native-base'
 import store, { logoutUser } from './store'
@@ -49,6 +51,12 @@ const DrawerStack = DrawerNavigator({
   },
   Login: {
     screen: LoginScreen
+  },
+  CreateCommunity: {
+    screen: CreateCommunity
+  },
+  JoinCommunity: {
+    screen: JoinCommunity
   },
   PlayerDetail: {
     screen: PlayerDetail

@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 })
 
 
-class Signup extends React.Component {
+class CreateCommunity extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -98,14 +98,14 @@ class Signup extends React.Component {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>dwellcome home</Text>
+          <Text style={styles.title}>Create your dwelling</Text>
           <Form
             ref={c => {this._form = c}}
             type={UserSignup}
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
+            <Text style={styles.buttonText}>Create</Text>
           </Button>
         </Content>
       </Container>
@@ -119,9 +119,8 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     signupSubmit: (form) => {
       dispatch(signup(form))
-      ownProps.navigation.navigate('NoCommunity')
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(Signup)
+export default connect(mapState, mapDispatch)(CreateCommunity)

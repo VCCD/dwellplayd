@@ -78,20 +78,14 @@ class NoCommunity extends React.Component {
     }
   }
 
-  handleJoin = async () => {
-    const form = this._form.getValue()
-    if (form) this.props.joinCommunity(form.communityId, this.props.user)
-    console.log('here', form)
-  }
-
   render() {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Button rounded onPress={this.handleSubmit} style={styles.button}>
+          <Button rounded onPress={() => this.props.navigation.navigate('CreateCommunity')} style={styles.button}>
             <Text style={styles.buttonText}>Create Community</Text>
           </Button>
-          <Button rounded onPress={this.handleJoin} style={styles.button}>
+          <Button rounded onPress={() => this.props.navigation.navigate('JoinCommunity')} style={styles.button}>
             <Text style={styles.buttonText}>Join a Community</Text>
           </Button>
         </Content>
@@ -102,13 +96,6 @@ class NoCommunity extends React.Component {
 
 const mapState = ({ user }) => ({ user })
 
-const mapDispatch = (dispatch, ownProps) => {
-  return {
-    joinCommunity: (communityId, user) => {
-      dispatch(addUserToCommunity(communityId, user))
-      ownProps.navigation.navigate('Tasks')
-    }
-  }
-}
+const mapDispatch = null
 
 export default connect(mapState, mapDispatch)(NoCommunity)
