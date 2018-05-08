@@ -14,9 +14,17 @@ class Scores extends React.Component {
     getCommunity(user.communityId)
   }
 
+  score = userId => {
+    let score = 0;
+    const { taskItems } = this.props.community
+    taskItems.forEach(taskItem => {
+      if (taskItem.userId === userId) score += taskItem.points
+    })
+    return Math.floor(score)
+  }
+
   render() {
-    const { users } = this.props.community
-    console.log(this.props)
+    const { users, taskItems } = this.props.community
     return (
       <Container style={styles.list}>
         <Content>
@@ -26,7 +34,7 @@ class Scores extends React.Component {
               return (
                 <ListItem key={firstName + lastName}>
                   <Text>
-                    {`${firstName} ${lastName} has ${score} points`}
+                    {`${firstName} ${lastName} has ${this.score(user.id)} points`}
                   </Text>
                 </ListItem>
               )

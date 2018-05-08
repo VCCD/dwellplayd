@@ -8,7 +8,7 @@ module.exports = router
 router.param('communityId', async (req, res, next, communityId) => {
   try {
     req.community = await Community.findById(communityId, {
-      include: [User]
+      include: [User, TaskItem]
     })
     next()
   }

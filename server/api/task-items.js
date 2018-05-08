@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { TaskItem } = require('../db/models')
+const { TaskItem, Task } = require('../db/models')
 module.exports = router
 
 router.get('/:communityId', async (req, res, next) => {
@@ -22,6 +22,16 @@ router.put('/updateTask', async (req, res, next) => {
     const incomingTask = req.body
     const updatedTask = await TaskItem.update({incomingTask})
     res.json(updatedTask)
+  }
+  catch (err) {
+    next(err)
+  }
+})
+
+router.get('/', async (req, res, next) => {
+  try {
+    const tasks = await TaskItem.findAll()
+    res.json(tasks)
   }
   catch (err) {
     next(err)
