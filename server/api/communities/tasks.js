@@ -1,10 +1,11 @@
 const router = require('express').Router()
-const { Community, User, CommunityTask, Task, TaskItem } = require('../db/models')
+const { CommunityTask, Task, TaskItem } = require('../../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const communityId = req.params.communityId
+    const communityId = req.community.id
+    console.log(communityId)
     const communityTasks = await CommunityTask.findAll({
       where: {
         communityId
