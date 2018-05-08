@@ -21,6 +21,7 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/storage": "^1.6.0",
     "axios": "^0.15.3",
     "body-parser": "^1.16.1",
     "compression": "^1.7.1",
@@ -31,6 +32,7 @@
     "history": "^4.6.3",
     "lodash": "^4.17.10",
     "morgan": "^1.8.1",
+    "multer": "^1.3.0",
     "nodemailer": "^4.6.4",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
