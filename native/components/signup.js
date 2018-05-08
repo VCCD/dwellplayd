@@ -29,17 +29,21 @@ const options = {
   stylesheet: customFormStyle,
   fields: {
     firstName: {
-      error: 'First name cannot be empty'
+      error: 'First name cannot be empty',
+      autoCapitalize: 'none'
     },
     lastName: {
-      error: 'Last name cannot be empty'
+      error: 'Last name cannot be empty',
+      autoCapitalize: 'none'
     },
     email: {
-      error: 'Insert a valid email'
+      error: 'Insert a valid email',
+      autoCapitalize: 'none'
     },
     password: {
       error: 'Password must be at least 3 characters',
-      secureTextEntry: true
+      secureTextEntry: true,
+      autoCapitalize: 'none'
     }
   }
 }

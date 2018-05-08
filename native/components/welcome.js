@@ -7,7 +7,7 @@ const Welcome = (props) => {
   return (
     <Container style={styles.container}>
       <Content contentContainerStyle={styles.content}>
-        <Image style={styles.logo} source={require('../dwellplayd_logo.png')} />
+        <Image style={styles.logo} source={require('../public/dwellplayd_logo.png')} />
         <Button style={styles.login} rounded onPress={() => props.navigation.navigate('Login')}>
           <Text style={styles.textLogin}>Log In</Text>
         </Button>
