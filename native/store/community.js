@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { addUserToCommunity } from '../store'
 import CONFIG from '../api-routes'
 const apiURL = CONFIG.API_URL
 
@@ -21,6 +21,17 @@ export const fetchCommunity = id => dispatch => {
   .then(res => {
       dispatch(getCommunity(res.data || defaultCommunity))})
     .catch(err => console.log(err))
+}
+
+export const createCommunityThunkerator = (name, user) => async dispatch => {
+  try {
+    const newCommunity = await axios.post(`${apiURL}/communities`, {name})
+    dispatch(addUserToCommunity(newCommunity.data.id, user))
+    dispatch(getCommunity(newCommunity.data || defaultCommunity))
+  }
+  catch (err) {
+    console.log(err)
+  }
 }
 
 export const sendInvitations = (emails, user, communityId) => {

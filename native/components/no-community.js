@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, Text, TextInput } from 'react-native';
 import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup, addUserToCommunity } from '../store/auth';
+import store, { signup, addUserToCommunity, fetchCommunity } from '../store';
 import customFormStyle from '../customFormStyle'
 
 const CommunityInput = t.struct({
@@ -73,7 +73,9 @@ class NoCommunity extends React.Component {
   }
 
   componentDidMount () {
+    ///fetchCommunityTaskItems = (communityId)
     if (this.props.user.communityId) {
+      store.dispatch(fetchCommunity(this.props.user.communityId))
       this.props.navigation.navigate('Tasks')
     }
   }

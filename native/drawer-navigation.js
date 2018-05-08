@@ -34,29 +34,14 @@ const CustomDrawer = (props) => (
 )
 
 const DrawerStack = DrawerNavigator({
-  NoCommunity: {
-    screen: NoCommunity
-  },
   Tasks: {
     screen: TaskList
   },
   FrequencySelector: {
     screen: FrequencySelector
   },
-  Signup: {
-    screen: Signup
-  },
   Scores: {
     screen: Scores
-  },
-  Login: {
-    screen: LoginScreen
-  },
-  CreateCommunity: {
-    screen: CreateCommunity
-  },
-  JoinCommunity: {
-    screen: JoinCommunity
   },
   PlayerDetail: {
     screen: PlayerDetail
@@ -82,8 +67,17 @@ const DrawerStack = DrawerNavigator({
 
 
 const MainNavigation = StackNavigator({
+  NoCommunity: {
+    screen: NoCommunity
+  },
   DrawerStack: {
     screen: DrawerStack
+  },
+  CreateCommunity: {
+    screen: CreateCommunity
+  },
+  JoinCommunity: {
+    screen: JoinCommunity
   },
 }, {
   headerMode: 'float',
