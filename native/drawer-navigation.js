@@ -32,6 +32,9 @@ const CustomDrawer = (props) => (
 )
 
 const DrawerStack = DrawerNavigator({
+  NoCommunity: {
+    screen: NoCommunity
+  },
   Tasks: {
     screen: TaskList
   },
@@ -56,13 +59,10 @@ const DrawerStack = DrawerNavigator({
   SelectTasks: {
     screen: SelectTasks
   },
-  NoCommunity: {
-    screen: NoCommunity
-  },
   Invite: {
     screen: Invite
   },
-  Stats:{
+  Stats: {
     screen: Stats
   }
 }, {

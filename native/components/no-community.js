@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     margin: 10,
-    width: 150,
+    width: 250,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -72,6 +72,12 @@ class NoCommunity extends React.Component {
     }
   }
 
+  componentDidMount () {
+    if (this.props.user.communityId) {
+      this.props.navigation.navigate('Tasks')
+    }
+  }
+
   handleJoin = async () => {
     const form = this._form.getValue()
     if (form) this.props.joinCommunity(form.communityId, this.props.user)
@@ -82,20 +88,11 @@ class NoCommunity extends React.Component {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.messageText}>Would you like to create a community?</Text>
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Create</Text>
+            <Text style={styles.buttonText}>Create Community</Text>
           </Button>
-          </Content>
-          <Content style={styles.form}>
-          <Text style={styles.messageText}>You can also enter an invite code to join an existing community.</Text>
-          <Form
-            ref={c => {this._form = c}}
-            type={CommunityInput}
-            options={options}
-            />
           <Button rounded onPress={this.handleJoin} style={styles.button}>
-            <Text style={styles.buttonText}>Join</Text>
+            <Text style={styles.buttonText}>Join a Community</Text>
           </Button>
         </Content>
       </Container>
