@@ -14,6 +14,10 @@ class Stats extends React.Component{
     render(){
       return (
       <Container style={styles.container}>
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
       <VictoryPie
       colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         padding={40}
