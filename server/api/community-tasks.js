@@ -21,14 +21,3 @@ router.param('communityTaskId', async (req, res, next, communityTaskId) => {
     next(err)
   }
 })
-
-router.post('/:communityId', async (req, res, next) => {
-  try {
-    const taskIds = req.body
-    await req.community.setTasks(taskIds)
-    res.json(201)
-  }
-  catch (err) {
-    next(err)
-  }
-})
