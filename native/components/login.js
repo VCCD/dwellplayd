@@ -71,13 +71,16 @@ class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: '#8C9A9E',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   form: {
+    flex: 1,
+    justifyContent: 'center',
     margin: 20,
-    height: 400,
+    height: 600,
   },
   titleText: {
     color: '#DBD56E',
