@@ -7,11 +7,11 @@ const TaskCard = (props) => {
   const {task} = props
   console.log(task, 'this is the tasks')
   return (
-    <Card >
+    <Card>
       <CardItem style={styles.header} button onPress={() => props.handleClick(task)}>
         <View style={styles.left}>
-          <Text>{task}</Text>
-          <Text>Last completed {task.daysSinceCompleted} days ago</Text>
+          <Text style={styles.text}>{task}</Text>
+          <Text style={styles.text}>Last completed {task.daysSinceCompleted} days ago</Text>
         </View>
         <Text style={styles.score} >{task.pts}</Text>
       </CardItem>
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
   },
   header: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
   },
   left: {
     height: 50,
@@ -35,6 +36,10 @@ const styles = StyleSheet.create({
   score: {
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 16
   }
 });
 

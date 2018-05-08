@@ -18,7 +18,7 @@ let dummyTasks = [
 ]
 
 const BUTTONS = [
-  "Completed",
+  "Complete",
   "Cancel"
 ];
 const CANCEL_INDEX = 1;
@@ -60,13 +60,13 @@ class TaskList extends React.Component {
 
   render() {
     const listTask = this.props.communityTasks
-    const sortedTasks = dummyTasks.sort((a,b) => b['pts'] - a['pts'])
+    const sortedTasks = listTask.sort((a,b) => b['pts'] - a['pts'])
     return (
       <Container style={styles.list}>
-          <Content>
-          {listTask.map(task => {
+          <Content contentContainerStyle={styles.content}>
+          {sortedTasks.map(task => {
             return (
-              <TaskCard key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
+              <TaskCard style={styles.card} key={task.task.id} task={task.task.name} handleClick={this.handleClick} />
             )
           })}
           </Content>
@@ -77,11 +77,14 @@ class TaskList extends React.Component {
 
 const styles = StyleSheet.create({
   list: {
-    backgroundColor: '#fff',
+    backgroundColor: '#8C9A9E',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  content: {
+    margin: 5,
   }
 });
 
@@ -92,7 +95,7 @@ const mapState = state => {
     user: state.user,
    // community: state.community,
     communityTasks: state.communityTasks,
-    
+
   }
 }
 const mapDispatch = dispatch => {

@@ -76,7 +76,7 @@ const MainNavigation = StackNavigator({
 }, {
   headerMode: 'float',
   navigationOptions: ({navigation}) => ({
-    headerStyle: {backgroundColor: '#4A8EBF'},
+    headerStyle: {backgroundColor: '#747578'},
     headerTitle: (<Image style={styles.logo} source={require('./dwellplayd_logo.png')} />),
     headerTintColor: 'white',
     headerLeft: <Icon name='menu' style={styles.menu} onPress={() =>
