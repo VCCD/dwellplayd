@@ -1,15 +1,7 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import DrawerNavigation from './drawer-navigation'
 import {
-  HomeScreen,
-  TaskList,
   LoginScreen,
-  FrequencySelector,
-  Scores,
-  SelectTasks,
-  PlayerDetail,
-  PlayerDetailEdit,
   Signup,
   Welcome,
 } from './components'
