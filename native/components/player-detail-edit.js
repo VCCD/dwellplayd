@@ -70,17 +70,17 @@ class PlayerDetailEdit extends React.Component {
     const { id } = this.props.user
     const {user} = this.props
     const form = this._form.getValue()
-    let imgUrl = await this._uploadToCloud(this.state.imgUrl)
-    console.log('woo', imgUrl)
-    var obj = {
-      firstName: form.firstName || user.firstName,
-      lastName: form.lastName || user.lastName,
-      email: form.email || user.email,
-      imgUrl: imgUrl
-    }
-    if (obj) {
+    this._uploadToCloud(this.state.imgUrl)
+    .then(res => res.json())
+    .then(res => {
+      var obj = {
+        firstName: form.firstName || user.firstName,
+        lastName: form.lastName || user.lastName,
+        email: form.email || user.email,
+        imgUrl: res.imgUrl
+      }
       this.props.updateUserInfo(id, obj)
-    }
+    })
   }
 
   value = {
@@ -99,17 +99,13 @@ class PlayerDetailEdit extends React.Component {
     const imgBody = new FormData()
     imgBody.append('image', image)
     const url = `${apiURL}/cloud/image-upload`
-    fetch(url, {
+    return fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data'
       },
       body: imgBody
-    })
-    .then(res => res.json())
-    .then(res => {
-      return res.imgUrl
     })
   }
 
