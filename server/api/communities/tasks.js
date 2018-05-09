@@ -5,7 +5,6 @@ module.exports = router
 router.get('/', async (req, res, next) => {
   try {
     const communityId = req.community.id
-    console.log(communityId)
     const communityTasks = await CommunityTask.findAll({
       where: {
         communityId
@@ -22,9 +21,10 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const taskIds = req.body
-    console.log(req.community)
-    await req.community.setTasks(taskIds)
+    await CommunityTask.create({
+      taskId: req.body.id,
+      communityId: req.community.id,
+    })
     res.json(201)
   }
   catch (err) {
@@ -37,25 +37,13 @@ router.put('/', async (req, res, next) => {
     const tasks = req.body
     
     const communityTaskPromises = tasks.map(task => {
-      CommunityTask.update({
-        value: task.value
-      }, {
+      CommunityTask.update(task, {
         where: {
           id: task.id,
         }
       })
     })
-    const taskItemPromises = tasks.map(task => {
-      TaskItem.findOrCreate({
-        where: {
-          taskId: task.taskId,
-          communityId: req.community.id,
-          completed: null,
-        }
-      })
-    })
     await Promise.all(communityTaskPromises)
-    await Promise.all(taskItemPromises)
     res.json(201)
   }
   catch (err) {

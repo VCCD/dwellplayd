@@ -74,15 +74,10 @@ export const addTasksToCommunityThunkerator = (communityId, taskIds) => {
   }
 }
 
-export const addTaskFromServerThunkerator = (task, addedFlag) => {
+export const addTaskFromServerThunkerator = (task) => {
   return async (dispatch) => {
     try {
       const newTask = await axios.post(`${apiURL}/tasks`, task)
-      //if this was added from the select-task cmoponent, we will add a 'selected prop
-      //so that it shows up immediately checked
-      if (addedFlag) {
-        newTask.data.selected = true
-      }
       dispatch(addTaskFromServer(newTask.data))
     }
     catch (err) {

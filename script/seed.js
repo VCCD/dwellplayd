@@ -70,11 +70,11 @@ async function seed() {
   
   const createTasks = async () => {
     const tasks = [
-      { name: 'Clean the dishes' },
-      { name: 'Wipe the counters' },
-      { name: 'Sweep the floors' },
-      { name: 'Vacuum the carpet' },
-      { name: 'Feed the dog' }
+      { name: 'clean the dishes' },
+      { name: 'wipe the counters' },
+      { name: 'sweep the floors' },
+      { name: 'vacuum the carpet' },
+      { name: 'feed the dog' }
     ]
     try {
       const taskPromises = tasks.map(task => {
@@ -106,11 +106,6 @@ async function seed() {
         value: 8,
         communityId: 1,
         taskId: 2
-      },
-      {
-        value: 15,
-        communityId: 1,
-        taskId: 5
       },
       {
         value: 21,
