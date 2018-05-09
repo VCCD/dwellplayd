@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { Container, Content, Button, Text } from 'native-base'
+import { Container, Content, Button, Text, ActionSheet } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
@@ -10,6 +10,13 @@ import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL
 
+const BUTTONS = [
+  "Take a photo",
+  "Upload from Camera Roll",
+  "Cancel"
+]
+
+const CANCEL_INDEX = 1;
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -49,6 +56,15 @@ class PlayerDetailEdit extends React.Component {
   }
   static navigationOptions = {
     title: 'Edit'
+  }
+
+  changePicture = () => {
+    ActionSheet.show({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    }, buttonIndex => {
+      if (buttonIndex === 0) this
+    })
   }
 
   handleSubmit = () => {
