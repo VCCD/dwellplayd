@@ -15,9 +15,4 @@ const CommunityTask = db.define('communityTask', {
   },
 })
 
-// CommunityTask.afterUpdate((communityTask, options) => {
-//   //make a new taskItem
-//   TaskItem.create({value: communityTask.value})
-// })
-
 module.exports = CommunityTask

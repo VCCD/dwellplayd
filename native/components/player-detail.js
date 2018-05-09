@@ -11,6 +11,7 @@ class PlayerDetail extends React.Component {
       headerRight: (
         <Button
           transparent
+          style={{marginRight: 20}}
           onPress={() => navigation.navigate('PlayerDetailEdit')}>
           <Text style={styles.edit}>
             Edit
@@ -93,7 +94,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   edit: {
-    marginRight: 20
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#D4F5F5'
   },
   profileImg: {
     height: 140,
