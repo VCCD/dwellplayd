@@ -20,6 +20,9 @@ import store, {
   clearTasks,
   editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
+  getAllCommunityTasks,
+  getAllCommunityTasksFromServerThunkerator,
+  getSuggestedTasksFromServerThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -34,7 +37,10 @@ class SelectTasks extends Component {
   }
 
   componentDidMount() {
-    store.dispatch(getAllTasksFromServerThunkerator(this.props.community.id))
+    store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.community.id))
+    if (!this.props.communityTasks.length) {
+      store.dispatch(getSuggestedTasksFromServerThunkerator(this.props.community.id))
+    }
   }
 
   componentWillUnmount () {
@@ -57,7 +63,8 @@ class SelectTasks extends Component {
       name: this.state.taskInput,
     }
     this.setState({ taskInput: '' })
-    store.dispatch(addTaskFromServerThunkerator(newTask, true))
+    store.dispatch(addTaskFromServerThunkerator(newTask))
+
   }
 
   handleSubmitTasks = async () => {

@@ -36,6 +36,21 @@ export const clearCommunityTasks = () => ({
 })
 
 //thunks
+export const addCustomCommunityTaskThunkerator = (task) => {
+  return async (dispatch) => {
+    try {
+      // new task in the task model
+      const newTask = await axios.post(`${apiURL}/tasks`, task)
+
+      dispatch(addTaskFromServer(newTask.data))
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+
 export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
@@ -48,10 +63,10 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
   }
 }
 
-export const addCommunityTasksThunkerator = (communityId, taskIds) => {
+export const submitCommunityTaskFrequenciesThunkerator = (communityId, tasks) => {
   return async (dispatch) => {
     try {
-      await axios.post(`${apiURL}/communities/${communityId}/tasks`, taskIds)
+      await axios.put(`${apiURL}/communities/${communityId}/tasks`, tasks)
       dispatch(clearCommunityTasks())
     }
     catch (err) {
@@ -60,11 +75,14 @@ export const addCommunityTasksThunkerator = (communityId, taskIds) => {
   }
 }
 
-export const submitCommunityTaskFrequenciesThunkerator = (communityId, tasks) => {
+export const getSuggestedTasksFromServerThunkerator = (communityId) => {
   return async (dispatch) => {
     try {
-      await axios.put(`${apiURL}/communities/${communityId}/tasks`, tasks)
-      dispatch(clearCommunityTasks())
+      console.log('i hit')
+      const popularTasks = await axios.get(`${apiURL}/tasks/?popular=5`)
+      const taskIds = popularTasks.data.map(task => task.id)
+      await axios.post(`${apiURL}/communities/${communityId}/tasks`, taskIds)
+      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
     }
     catch (err) {
       console.log(err)
