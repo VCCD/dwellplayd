@@ -48,7 +48,7 @@ router.put('/', async (req, res, next) => {
       TaskItem.findOrCreate({
         where: {
           taskId: task.taskId,
-          communityId: req.params.communityId,
+          communityId: req.community.id,
           completed: null,
         }
       })

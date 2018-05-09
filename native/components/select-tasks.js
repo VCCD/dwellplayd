@@ -18,6 +18,8 @@ import store, {
   getAllTasksFromServerThunkerator,
   addCommunityTasksThunkerator,
   clearTasks,
+  editCommunityTask,
+  submitCommunityTaskFrequenciesThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -36,6 +38,7 @@ class SelectTasks extends Component {
   }
 
   componentWillUnmount () {
+    store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
     store.dispatch(clearTasks())
   }
 
@@ -61,6 +64,10 @@ class SelectTasks extends Component {
     const taskIds = this.props.communityTasks.filter(comTask => comTask.selected).map(comTask => comTask.id)
     await store.dispatch(addCommunityTasksThunkerator(this.props.community.id, taskIds))
     this.props.navigation.navigate('FrequencySelector');
+  }
+
+  change = (value) => {
+    store.dispatch(editCommunityTask({...this.state.activeTask, value}))
   }
 
   deleteRow(secId, rowId, rowMap, data) {
