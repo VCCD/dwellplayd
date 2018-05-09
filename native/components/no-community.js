@@ -1,25 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, TextInput } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import { StyleSheet, Text } from 'react-native';
+import { Container, Content, Button } from 'native-base';
 import t from 'tcomb-form-native'
-import store, { signup, addUserToCommunity, fetchCommunity } from '../store';
+import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator } from '../store';
 import customFormStyle from '../customFormStyle'
-
-const CommunityInput = t.struct({
-  communityId: t.String,
-})
-
-const Form = t.form.Form
-
-const options = {
-  stylesheet: customFormStyle,
-  fields: {
-    communityId: {
-      error: 'First name cannot be empty'
-    },
-  }
-}
 
 const styles = StyleSheet.create({
   title: {
@@ -76,6 +61,7 @@ class NoCommunity extends React.Component {
     ///fetchCommunityTaskItems = (communityId)
     if (this.props.user.communityId) {
       store.dispatch(fetchCommunity(this.props.user.communityId))
+      store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       this.props.navigation.navigate('Tasks')
     }
   }

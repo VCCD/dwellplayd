@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Image, View} from 'react-native'
+import {StyleSheet, Image, View, Button} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import {
   TaskList,
@@ -17,6 +17,8 @@ import {
   CustomHeader,
   CameraComponent,
   ConfirmImage,
+  Push,
+  Play,
 } from './components'
 import {Icon} from 'native-base'
 
@@ -45,6 +47,9 @@ const DrawerStack = DrawerNavigator({
   },
   Stats: {
     screen: Stats
+  },
+  Push:{
+    screen:Push
   },
   Logout: {
     screen: Logout
@@ -75,7 +80,10 @@ const MainNavigation = StackNavigator({
   },
   ConfirmImage: {
     screen: ConfirmImage
-  }
+  },
+  Play: {
+    screen: Play
+  },
 }, {
   headerMode: 'float',
   navigationOptions: ({navigation}) => ({

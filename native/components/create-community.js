@@ -67,7 +67,7 @@ class CreateCommunity extends React.Component {
 
   handleSubmit = async () => {
     const form = this._form.getValue()
-    console.log(form.name)
+    //console.log(form.name)
     if (form) this.props.submitCreateCommunity(form.name, this.props.user)
   }
 
