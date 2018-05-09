@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
       where: {
         communityId: req.community.id,
       },
-      include: [Task]
+      include: [Task],
     })
     res.json(communityTaskItems)
   }
