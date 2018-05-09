@@ -101,7 +101,6 @@ class SelectTasks extends Component {
     return (
       <Container>
         <Content>
-<<<<<<< HEAD
           <Item
             rounded
             style={{
@@ -152,43 +151,6 @@ class SelectTasks extends Component {
             rightOpenValue={-75}
           />
 
-=======
-          {
-            this.props.suggestedTasks.length && this.props.suggestedTasks.sort((a, b) => {
-              var nameA = a.name.toUpperCase()
-              var nameB = b.name.toUpperCase()
-              if (nameA < nameB) {
-                return -1;
-              }
-              if (nameA > nameB) {
-                return 1;
-              }
-              return 0;
-            }).map(task => (
-              <ListItem
-                key={task.id}
-                value={task.id}
-                onPress={() => this.handleClick(task.id)}>
-                <Text>{task.name}</Text>
-                <Right>
-                  <Radio
-                    selected={task.selected || false} />
-                </Right>
-              </ListItem>
-            ))
-          }
-          <Form>
-            <Item floatingLabel>
-              <Input
-                onChangeText={this.handleChangeTask}
-                onSubmitEditing={this.handleAddTask}
-                placeholder="Enter a custom task"
-                value={this.state.taskInput}
-              />
-            </Item>
-          </Form>
-          <Button rounded style={styles.button} onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
->>>>>>> master
         </Content>
       </Container>
 
