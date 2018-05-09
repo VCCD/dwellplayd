@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dwellplayd-1",
+  "private_key_id": "fc4d26287481c09115003e05c2e21f3d46c811b0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDBPIGZEuVozdjj\n1LD3MtjKa8Sb8Mpz3R1JICq4MXTvvUoIEKMcRw2L+r0JF6aPb4e8uiBzSycodVgu\nX5Qs20Zdsz6g9qqnrfmhwYRUD6ppZqMelbh81aHRmtb2dwTUqGww4c61Pk5K0wCr\ndqeobIs7r9CNh5pabQ8UDmYRkkwg7zB57oAWIG2EPt0FVxBk+mnAaKH9PqIzolhg\nbrJrVM4yQtvCB7IY8+sqaUJf3aELBLb7JYM7GX7IVsuw9aVoiPN+u80egCzB8eIH\nUCm6ay8v5mLPT/zgGDO3+4RGSSvJESeiAI9ao8N9DFdpymCf76kNCVBMuxSfiGAl\nVGiEKdgZAgMBAAECggEAFEAXBMeqKvWHiTi84ur9NRleHUl6rfG6I/OvBmaIbqdT\nnsy/izMXBFhefxlvZxC1FN4ckHiLvf2uJA34JUtFcIRcR9oRwEjHJGB3Uafin/EV\nnxrpnot0zdaAOIv4gaC01dqUIwJIiibapx1kLI5TeQnPvUU8s8VCE0P/BlBikgDQ\nOgupTkihOEowNVWFdhBcuGb5UvCw3qFRRISTETsxZ0ijU8KOyXs4H0JjZ0OZ8YeU\nywmK+MTBwvDLaEdYV4sMZjlpfMpzvqPhOYpQrt0GMXmO+LQW7QzTCz6iRfOyk/oD\nAVqzlZ1BfdfMh7s9gEqp+UHG1+edizwA4t5dfcjTEQKBgQDxUDh9cFCVdwe0ZxA1\n78wslaHa4oTChYNupwUFzTl1PvahYoASCBGIYGfHxM4ubVR9fQVGzsThaXoruft0\nF52Jle4h7PLU1V/CDoFacX1OXyPqtEAZ1/7llCbsSke66MHf//E/DyezVOanSgGC\n33DOjuCzDN+FKQ3Xw8HxQd3K/wKBgQDM/zjxIX2PjlsSkdZUb0xAt4ki4IDGzmSx\nvpAB+6fZFOrrVjcquZZvhOFS4l2tw/MVKhja+fuokGp6WixqUAw3nb1tiMa51x1j\nA0MFz4AabEb//4OZoiApAx2YQsDcr4hsCVITAQ3DtBn4TgNqXjv5NbTpOfOC1RkE\nxTJvDZRU5wKBgDyS+YsrXV8XgPyc/mm7pxHuAbITOGYn46UsEcuyB2FSC9DZC/L6\nyYPlR0fTNDpdQV86uc9bafp3Yq6FQgSTRP1bgGpNs2sPoLjysS/F20GIClkJJCoY\nmSiB9v9LahQWB0y2T5WXtUyD3F5T6msysXt4TBlF+vnPI2VtA0sPUKB7AoGAUdSb\ntV3KEnEgF7SRmxjmlnrtSjfWEAY5md5Y/AGqCfTYpeK/mNWGoLOpgn2MKZ4rvcoV\nK+xYMfycFIVEb5fOmLDl+gB8W5jsSSb3LS2clG+ek/g6Xyyhq91rhek3taB4U7AQ\nzDdCeFm/eCgkIuTFCgEPW35fn11TZF0Xec8w5AcCgYAPeDKHDqv6GduBEdps2KSJ\n1cBUMx/rBFmjKbCyBfpTtUpK0KUGEB2oSyCxHUj89vxOZ4FdkJ+1OIVVatgBMP+L\nig0dGJ5922k63O067h4CxlJkE20tqa0kUDp1lhVF56Sq/KeTsY7F/lLFanbDDPnj\nH20cTgcmnXyeElqWRnZ/YQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "dwellplayd@dwellplayd-1.iam.gserviceaccount.com",
+  "client_id": "116840494162886147547",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dwellplayd%40dwellplayd-1.iam.gserviceaccount.com"
+}

@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
-import { fetchCommunity } from '../store'
+import { fetchCommunity, updateUser } from '../store'
 
 const roundToTenths = num => {
   return Math.round(num * 10) / 10
@@ -24,6 +24,14 @@ class PlayerDetail extends React.Component {
     }
   }
 
+  constructor(props){
+    super(props)
+    this.state = {
+      image: null,
+      hasCameraPermission: null,
+    }
+  }
+
   score = userId => {
     let score = 0;
     const { taskItems } = this.props.community
@@ -37,6 +45,7 @@ class PlayerDetail extends React.Component {
     const { user, community } = this.props
     return (
       <Container style={styles.list}>
+        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
         <Content>
           <Card>
             <CardItem bordered>
@@ -77,6 +86,9 @@ const mapDispatch = dispatch => {
   return {
     getCommunity: id => {
       dispatch(fetchCommunity(id))
+    },
+    updateUser: (id, data) => {
+      dispatch(updateUser(id, data))
     }
   }
 }
@@ -96,6 +108,13 @@ const styles = StyleSheet.create({
   },
   edit: {
     marginRight: 20
+  },
+  profileImg: {
+    height: 140,
+    width: 140,
+    borderRadius: 70,
+    alignSelf: 'center',
+    margin: 15
   },
   button: {
     padding: 10,
