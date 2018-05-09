@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 const CustomHeader = (props) => (
   <Container>
     <Header style={styles.drawerHead}>
-      <Image style={styles.profileImg} source={require('../public/profile.jpg')} />
+      <Image style={styles.profileImg} source={{uri: props.user.imgUrl}} />
       <Body>
           <Text>{props.user.firstName} {props.user.lastName}</Text>
       </Body>

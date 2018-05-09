@@ -8,6 +8,7 @@ import community from './community'
 import suggestedTasks from './suggested-tasks'
 import communityTasks from './community-tasks'
 import taskItems from './task-items'
+import userScores from './scores'
 
 const reducer = combineReducers({
   user,
@@ -15,7 +16,8 @@ const reducer = combineReducers({
   community,
   suggestedTasks,
   communityTasks,
-  taskItems
+  taskItems,
+  userScores
 })
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -30,4 +32,4 @@ export * from './community'
 export * from './suggested-tasks'
 export * from './community-tasks'
 export * from './task-items'
-
+export * from './scores'

@@ -28,6 +28,7 @@ class TaskList extends React.Component {
     const { getTaskItems, getCommunityTasks, user } = this.props
     getTaskItems(user.communityId)
     getCommunityTasks(user.communityId)
+    if (!this.props.communityTasks.length) this.props.navigation.navigate('SelectTasks')
   }
 
   handleClick = clickedTask => {

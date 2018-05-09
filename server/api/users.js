@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
     // explicitly select only the id and email fields - even though
     // users' passwords are encrypted, it won't help if we just
     // send everything to anyone who asks!
-    attributes: ['id', 'email', 'firstName', 'lastName', 'score'],
+    attributes: ['id', 'email', 'firstName', 'lastName'],
     include: [TaskItem]
   })
     .then(users => res.json(users))
@@ -25,9 +25,9 @@ router.get('/:userId', (req, res, next) => {
 
 router.put('/:userId', (req, res, next) => {
   const { userId } = req.params
-  const { firstName, lastName, email, communityId } = req.body
+  const { firstName, lastName, email, communityId, imgUrl } = req.body
   User.findById(userId)
-    .then(user => user.update({ firstName, lastName, email, communityId }))
+    .then(user => user.update({ firstName, lastName, email, communityId, imgUrl }))
     .then(user => res.json(user))
     .catch(next)
 })
