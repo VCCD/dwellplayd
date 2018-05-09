@@ -1,9 +1,15 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { Container, Content, Button, Text } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
+import customFormStyle from '../customFormStyle'
+import { ImagePicker, Permissions, Camera } from 'expo'
+import CONFIG from '../api-routes'
+
+const apiURL = CONFIG.API_URL
+
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -18,7 +24,9 @@ const UserEdit = t.struct({
 
 const Form = t.form.Form
 
+
 const options = {
+  stylesheet: customFormStyle,
   fields: {
     firstName: {
       error: 'First name cannot be empty',
@@ -33,14 +41,27 @@ const options = {
 }
 
 class PlayerDetailEdit extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      imgUrl: this.props.user.imgUrl
+    }
+  }
   static navigationOptions = {
     title: 'Edit'
   }
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
     const { id } = this.props.user
+    const {user} = this.props
     const form = this._form.getValue()
-    if (form) this.props.updateUserInfo(id, form)
+    var obj = {
+      firstName: form.firstName || user.firstName,
+      lastName: form.lastName || user.lastName,
+      email: form.email || user.email,
+      imgUrl: this.state.imgUrl
+    }
+    if (obj) this.props.updateUserInfo(id, obj)
   }
 
   value = {
@@ -49,20 +70,56 @@ class PlayerDetailEdit extends React.Component {
     email: this.props.user.email,
   }
 
+  _uploadToCloud = (image) => {
+    const imgBody = new FormData()
+    imgBody.append('image', image)
+    const url = `${apiURL}/cloud/image-upload`
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data'
+      },
+      body: imgBody
+    })
+    .then(res => res.json())
+    .then(res => {
+      this.props.user.imgUrl = res.imgUrl
+      this.setState({imgUrl: res.imgUrl})
+    })
+  }
+
+  _pickImage = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    })
+
+    const image = {
+      uri: result.uri,
+      type: 'image/jpeg',
+      name: `user-${Date.now()}.jpg`
+    }
+    this._uploadToCloud(image)
+  }
+
   render() {
     return (
-      <Container>
-        <Content style={styles.form}>
+      <Container style={styles.container}>
+        <Content contentContainerStyle={styles.form}>
+        <Image style={styles.profileImg} source={{uri: this.state.imgUrl}} />
           <Form
             ref={c => { this._form = c }}
             type={UserEdit}
             value={this.value}
             options={options}
           />
-          <Button full onPress={this.handleSubmit} style={styles.button}>
+          <Button onPress={this._pickImage}><Text>Pick Image</Text></Button>
+        </Content>
+          <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.titleText}>Update</Text>
           </Button>
-        </Content>
       </Container>
     );
   }
@@ -85,19 +142,36 @@ const mapDispatch = (dispatch, ownProps) => {
 export default connect(mapState, mapDispatch)(PlayerDetailEdit)
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#8C9A9E',
+  },
   form: {
     margin: 20,
   },
-  button: {
-    padding: 10,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#3B9EA5',
+  profileImg: {
+    height: 140,
+    width: 140,
+    borderRadius: 70,
+    alignSelf: 'center',
+    margin: 15
   },
   titleText: {
     color: '#F5EE9E',
     fontWeight: 'bold',
     fontSize: 20,
   },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#93B7BE',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
+  }
 });

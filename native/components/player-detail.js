@@ -3,10 +3,6 @@ import { StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity, updateUser } from '../store'
-import { ImagePicker, Permissions, Camera } from 'expo'
-import CONFIG from '../api-routes'
-
-const apiURL = CONFIG.API_URL
 
 const roundToTenths = num => {
   return Math.round(num * 10) / 10
@@ -45,38 +41,6 @@ class PlayerDetail extends React.Component {
     return roundToTenths(score)
   }
 
-  _pickImage = async () => {
-    await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    })
-
-    const image = {
-      uri: result.uri,
-      type: 'image/jpeg',
-      name: `user-${Date.now()}.jpg`
-    }
-
-    const imgBody = new FormData()
-    imgBody.append('image', image)
-    const url = `${apiURL}/cloud/image-upload`
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data'
-      },
-      body: imgBody
-    })
-    .then(res => res.json())
-    .then(res => {
-      let user = this.props.user
-      user.imgUrl = res.imgUrl
-      this.props.updateUser(this.props.user.id, user)
-    })
-  }
-
   render() {
     const { user, community } = this.props
     return (
@@ -105,7 +69,6 @@ class PlayerDetail extends React.Component {
               </Text>
             </CardItem>
           </Card>
-        <Button onPress={this._pickImage}><Text>Pick Image</Text></Button>
         </Content>
       </Container>
     );
@@ -133,6 +96,13 @@ const mapDispatch = dispatch => {
 export default connect(mapState, mapDispatch)(PlayerDetail)
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#8C9A9E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   list: {
     backgroundColor: '#fff',
   },
@@ -140,8 +110,23 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   profileImg: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
+    height: 140,
+    width: 140,
+    borderRadius: 70,
+    alignSelf: 'center',
+    margin: 15
+  },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
   }
 });

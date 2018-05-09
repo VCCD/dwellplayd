@@ -34,10 +34,8 @@ ImgUpload.uploadToGcs = (req, res, next) => {
   })
 
   stream.on('finish', () => {
-    console.log('finish')
     req.file.cloudStorageObject = gcsname
     req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
-    console.log('pubUrl', req.file.cloudStoragePublicUrl)
     next()
   })
 

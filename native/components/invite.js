@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ListView } from 'react-native';
 import { Container, Button, Icon, ListItem, List } from 'native-base';
 import t from 'tcomb-form-native'
 import { sendInvitations } from '../store/community';
+import customFormStyle from '../customFormStyle'
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -17,6 +18,7 @@ const InviteForm = t.struct({
 const Form = t.form.Form
 
 const options = {
+  stylesheet: customFormStyle,
   fields: {
     email: {
       error: 'Insert a valid email'
@@ -26,32 +28,43 @@ const options = {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    color: '#3B9EA5',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowColor: '#F5EE9E',
-    textShadowRadius: 5
+    color: 'white',
+    fontFamily: 'Entypo'
+
+
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#8C9A9E',
+    alignItems: 'center',
   },
   form: {
     margin: 20,
+    
   },
-  container: {
-  },
-  button: {
-    padding: 10,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#3B9EA5',
-  },
+  
   titleText: {
     color: '#F5EE9E',
     fontWeight: 'bold',
     fontSize: 20,
   },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#93B7BE',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
+  }
 })
 
 class Invite extends React.Component {
@@ -105,12 +118,12 @@ class Invite extends React.Component {
             type={InviteForm}
             options={options}
           />
-          <Button full onPress={this.addEmail} style={styles.button}>
+          <Button rounded onPress={this.addEmail} style={styles.button}>
             <Text style={styles.titleText}>Add</Text>
           </Button>
           {
             this.state.emailList.length
-              ? <Button full onPress={this.handleSubmit} style={styles.button}>
+              ? <Button rounded onPress={this.handleSubmit} style={styles.button}>
                 <Text style={styles.titleText}>Send Invites</Text>
               </Button>
               : ''
