@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity, fetchUserScores } from '../store'
@@ -30,6 +30,7 @@ class PlayerDetail extends React.Component {
     const userScore = userScores.find(score => score.id === user.id)
     return (
       <Container style={styles.list}>
+        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
         <Content>
           <Card>
             <CardItem bordered>
@@ -81,10 +82,37 @@ const mapDispatch = dispatch => {
 export default connect(mapState, mapDispatch)(PlayerDetail)
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#8C9A9E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   list: {
     backgroundColor: '#fff',
   },
   edit: {
     marginRight: 20
+  },
+  profileImg: {
+    height: 140,
+    width: 140,
+    borderRadius: 70,
+    alignSelf: 'center',
+    margin: 15
+  },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
   }
 });

@@ -63,8 +63,8 @@ class FrequencySelector extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-            <Button
-              style={{ margin: 30 }}
+            <Button rounded
+              style={styles.button}
               onPress={this.handleSubmit}><Text>Submit</Text></Button>
           </View>
         </Content>
@@ -78,10 +78,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
+    backgroundColor: '#8C9A9E',
   },
   list: {
     backgroundColor: '#fff',
   },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  }
 })
 
 const mapState = ({ communityTasks, community }) => ({ communityTasks, community })
