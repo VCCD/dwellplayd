@@ -34,16 +34,13 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    const tasks = req.body
-    
-    const communityTaskPromises = tasks.map(task => {
-      CommunityTask.update(task, {
+    const task = req.body
+    console.log('tasssslllllkkkkkkkkkkk', task)
+    await CommunityTask.update(task, {
         where: {
           id: task.id,
         }
       })
-    })
-    await Promise.all(communityTaskPromises)
     res.json(201)
   }
   catch (err) {

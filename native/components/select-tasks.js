@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, Slider } from 'react-native';
+import { StyleSheet, Text, ListView, Slider } from 'react-native';
 import {
   Container,
   Content,
@@ -8,8 +8,6 @@ import {
   Body,
   Icon,
   List,
-  Header,
-  Right,
   Item,
   Input,
   Button,
@@ -21,6 +19,7 @@ import store, {
   getAllCommunityTasksFromServerThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
+  playThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -29,23 +28,19 @@ class SelectTasks extends Component {
     super(props)
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      inActiveTasks: false,
       taskInput: '',
       activeTask: {},
     }
   }
 
   componentDidMount() {
-    store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.community.id))
     if (!this.props.communityTasks.length) {
-      this.setState({ inActiveTasks: true });
       store.dispatch(getSuggestedTasksFromServerThunkerator(this.props.community.id))
     }
   }
 
   componentWillUnmount() {
     store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
-    store.dispatch(clearTasks())
   }
 
   handleChangeTask = (taskInput) => {
@@ -57,7 +52,6 @@ class SelectTasks extends Component {
       name: this.state.taskInput,
     }
     this.setState({ taskInput: '', inActiveTasks: true })
-
     store.dispatch(addCustomCommunityTaskThunkerator(newTask, this.props.community.id))
   }
 
@@ -72,8 +66,19 @@ class SelectTasks extends Component {
     this.setState({ emailList: newData });
   }
 
-  static navigationOptions = {
-    headerRight: <Button transparent style={{marginRight: 20}}><Text style={{fontWeight: 'bold', fontSize: 18, color: '#D4F5F5'}}>Play!</Text></Button>
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+        <Button
+          transparent
+          style={{marginRight: 20}}
+          onPress={() => navigation.navigate('Play')}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, color: '#D4F5F5'}}>
+            Play!
+          </Text>
+        </Button>
+      ),
+    }
   }
 
   render() {

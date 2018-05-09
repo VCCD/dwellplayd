@@ -15,6 +15,7 @@ import {
   JoinCommunity,
   Logout,
   CustomHeader,
+  Play,
 } from './components'
 import {Icon} from 'native-base'
 
@@ -67,6 +68,9 @@ const MainNavigation = StackNavigator({
   },
   JoinCommunity: {
     screen: JoinCommunity
+  },
+  Play: {
+    screen: Play
   },
 }, {
   headerMode: 'float',
