@@ -6,10 +6,19 @@ import { connect } from 'react-redux'
 import { updateUser } from '../store'
 import customFormStyle from '../customFormStyle'
 import { ImagePicker, Permissions, Camera } from 'expo'
+import {NavigationActions} from 'react-navigation'
 import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL
 
+const resetAction = NavigationActions.reset({
+  index: 1,
+  actions: [
+    NavigationActions.navigate({
+      routeName: 'DrawerStack'
+    }),
+  ]
+})
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -23,7 +32,6 @@ const UserEdit = t.struct({
 })
 
 const Form = t.form.Form
-
 
 const options = {
   stylesheet: customFormStyle,
@@ -51,17 +59,28 @@ class PlayerDetailEdit extends React.Component {
     title: 'Edit'
   }
 
-  handleSubmit = () => {
+  componentWillMount(){
+    let newImg = this.props.navigation.getParam('img')
+    if (newImg) {
+      this.setState({imgUrl: newImg})
+    }
+  }
+
+  handleSubmit = async () => {
     const { id } = this.props.user
     const {user} = this.props
     const form = this._form.getValue()
+    let imgUrl = await this._uploadToCloud(this.state.imgUrl)
+    console.log('woo', imgUrl)
     var obj = {
       firstName: form.firstName || user.firstName,
       lastName: form.lastName || user.lastName,
       email: form.email || user.email,
-      imgUrl: this.state.imgUrl
+      imgUrl: imgUrl
     }
-    if (obj) this.props.updateUserInfo(id, obj)
+    if (obj) {
+      this.props.updateUserInfo(id, obj)
+    }
   }
 
   value = {
@@ -70,7 +89,13 @@ class PlayerDetailEdit extends React.Component {
     email: this.props.user.email,
   }
 
-  _uploadToCloud = (image) => {
+  _uploadToCloud = (uri) => {
+    const image = {
+      uri: uri,
+      type: 'image/jpeg',
+      name: `user-${Date.now()}.jpg`
+    }
+
     const imgBody = new FormData()
     imgBody.append('image', image)
     const url = `${apiURL}/cloud/image-upload`
@@ -84,8 +109,7 @@ class PlayerDetailEdit extends React.Component {
     })
     .then(res => res.json())
     .then(res => {
-      this.props.user.imgUrl = res.imgUrl
-      this.setState({imgUrl: res.imgUrl})
+      return res.imgUrl
     })
   }
 
@@ -96,12 +120,11 @@ class PlayerDetailEdit extends React.Component {
       aspect: [4, 3],
     })
 
-    const image = {
-      uri: result.uri,
-      type: 'image/jpeg',
-      name: `user-${Date.now()}.jpg`
-    }
-    this._uploadToCloud(image)
+    this.setState({imgUrl: result.uri})
+  }
+
+  _takePicture = () => {
+    this.props.navigation.navigate('Camera')
   }
 
   render() {
@@ -116,6 +139,7 @@ class PlayerDetailEdit extends React.Component {
             options={options}
           />
           <Button onPress={this._pickImage}><Text>Pick Image</Text></Button>
+          <Button onPress={this._takePicture}><Text>Take a picture</Text></Button>
         </Content>
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.titleText}>Update</Text>

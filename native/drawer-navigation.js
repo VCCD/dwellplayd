@@ -15,6 +15,8 @@ import {
   JoinCommunity,
   Logout,
   CustomHeader,
+  CameraComponent,
+  ConfirmImage,
 } from './components'
 import {Icon} from 'native-base'
 
@@ -68,6 +70,12 @@ const MainNavigation = StackNavigator({
   JoinCommunity: {
     screen: JoinCommunity
   },
+  Camera: {
+    screen: CameraComponent
+  },
+  ConfirmImage: {
+    screen: ConfirmImage
+  }
 }, {
   headerMode: 'float',
   navigationOptions: ({navigation}) => ({
@@ -75,7 +83,8 @@ const MainNavigation = StackNavigator({
     headerTitle: (<Image style={styles.logo} source={require('./public/dwellplayd_logo.png')} />),
     headerTintColor: 'white',
     headerLeft: <Icon name='menu' style={styles.menu} onPress={() =>
-      navigation.navigate('DrawerToggle')} />
+      navigation.navigate('DrawerToggle')} />,
+    gesturesEnabled: false
   }),
 })
 
