@@ -29,8 +29,7 @@ router.get('/:communityId', (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const name = req.body.name
-    console.log(req.body)
-    const newCommunity = await Community.create({name})
+    const newCommunity = await Community.create({ name })
     res.json(newCommunity)
   }
   catch (err) {
@@ -44,6 +43,30 @@ router.post('/:communityId/inviteUsers', (req, res, next) => {
   emails.forEach(email => {
     sendEmail(email, user, req.community, 'invite')
   })
+})
 
+const score = (userId, taskItems, month) => {
+  const roundToTenths = num => {
+    return Math.round(num * 10) / 10
+  }
+  let totalScore = 0;
+  const completedTaskItems = taskItems.filter(taskItem => taskItem.completed)
+  completedTaskItems.forEach(taskItem => {
+    const monthCompleted = taskItem.completed.getMonth()
+    if (taskItem.userId === userId && month === monthCompleted) {
+      totalScore += taskItem.points
+    }
+  })
+  return roundToTenths(totalScore)
+}
+
+router.get(`/:communityId/scores/:month`, (req, res, next) => {
+  const month = +req.params.month
+  const { taskItems, users } = req.community
+  const usersWithScores = users.map(user => {
+    user.dataValues.score = score(user.id, taskItems, month)
+    return user
+  })
+  res.json(usersWithScores)
 })
 
