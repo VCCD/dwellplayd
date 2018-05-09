@@ -3,7 +3,6 @@ import {StyleSheet, Image, View, Button} from 'react-native'
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import {
   TaskList,
-  FrequencySelector,
   Scores,
   PlayerDetail,
   PlayerDetailEdit,
@@ -19,6 +18,7 @@ import {
   ConfirmImage,
   Push,
   Play,
+  LoadingScreen,
 } from './components'
 import {Icon} from 'native-base'
 
@@ -26,9 +26,6 @@ import {Icon} from 'native-base'
 const DrawerStack = DrawerNavigator({
   Tasks: {
     screen: TaskList
-  },
-  FrequencySelector: {
-    screen: FrequencySelector
   },
   Scores: {
     screen: Scores
@@ -63,6 +60,9 @@ const DrawerStack = DrawerNavigator({
 
 
 const MainNavigation = StackNavigator({
+  LoadingScreen: {
+    screen: LoadingScreen,
+  },
   NoCommunity: {
     screen: NoCommunity
   },
