@@ -8,19 +8,16 @@ import {
   Body,
   Icon,
   List,
+  Header,
+  Right,
   Item,
   Input,
   Button,
 } from 'native-base';
 import store, {
-  editSingleTask,
-  addTaskFromServerThunkerator,
-  getAllTasksFromServerThunkerator,
-  addCommunityTasksThunkerator,
   clearTasks,
   editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
-  getAllCommunityTasks,
   getAllCommunityTasksFromServerThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
@@ -32,6 +29,7 @@ class SelectTasks extends Component {
     super(props)
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
+      inActiveTasks: false,
       taskInput: '',
       activeTask: {},
     }
@@ -40,19 +38,14 @@ class SelectTasks extends Component {
   componentDidMount() {
     store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.community.id))
     if (!this.props.communityTasks.length) {
+      this.setState({ inActiveTasks: true });
       store.dispatch(getSuggestedTasksFromServerThunkerator(this.props.community.id))
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
     store.dispatch(clearTasks())
-  }
-
-  handleClick = (id) => {
-    const taskArr = this.props.communityTasks.filter(task => task.id === id)
-    taskArr[0].selected = !taskArr[0].selected
-    store.dispatch(editSingleTask(taskArr[0]))
   }
 
   handleChangeTask = (taskInput) => {
@@ -63,18 +56,13 @@ class SelectTasks extends Component {
     const newTask = {
       name: this.state.taskInput,
     }
-    this.setState({ taskInput: '' })
+    this.setState({ taskInput: '', inActiveTasks: true })
+
     store.dispatch(addCustomCommunityTaskThunkerator(newTask, this.props.community.id))
   }
 
-  handleSubmitTasks = async () => {
-    const taskIds = this.props.communityTasks.filter(comTask => comTask.selected).map(comTask => comTask.id)
-    await store.dispatch(addCommunityTasksThunkerator(this.props.community.id, taskIds))
-    this.props.navigation.navigate('FrequencySelector');
-  }
-
   change = (value) => {
-    store.dispatch(editCommunityTask({...this.state.activeTask, value}))
+    store.dispatch(editCommunityTask({ ...this.state.activeTask, value }))
   }
 
   deleteRow(secId, rowId, rowMap, data) {
@@ -82,6 +70,10 @@ class SelectTasks extends Component {
     const newData = [...this.state.emailList];
     newData.splice(rowId, 1);
     this.setState({ emailList: newData });
+  }
+
+  static navigationOptions = {
+    headerRight: <Button transparent style={{marginRight: 20}}><Text style={{fontWeight: 'bold', fontSize: 18, color: '#D4F5F5'}}>Play!</Text></Button>
   }
 
   render() {
@@ -98,6 +90,8 @@ class SelectTasks extends Component {
         return 0;
       })
 
+
+
     return (
       <Container>
         <Content>
@@ -107,7 +101,7 @@ class SelectTasks extends Component {
               marginLeft: 10,
               margin: 10,
               paddingLeft: 10,
-              }}>
+            }}>
             <Input
               onChangeText={this.handleChangeTask}
               onSubmitEditing={this.handleAddTask}
@@ -121,7 +115,7 @@ class SelectTasks extends Component {
               <Card key={comTask.id} >
                 <CardItem>
                   <Body>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
                       {comTask.task.name}
                     </Text>
                     <Text>
@@ -134,7 +128,7 @@ class SelectTasks extends Component {
                   </Body>
                 </CardItem>
                 <Slider
-                  style={{marginLeft: 20, marginRight: 20}}
+                  style={{ marginLeft: 20, marginRight: 20 }}
                   step={1}
                   maximumValue={30}
                   minimumValue={1}
