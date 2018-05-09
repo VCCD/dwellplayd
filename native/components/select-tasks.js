@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ListView, Slider } from 'react-native';
 import {
   Container,
-  Header,
   Content,
-  ListItem,
-  Right,
-  Radio,
-  Left,
+  Card,
+  CardItem,
   Body,
-  Title,
-  Form,
+  Icon,
+  List,
   Item,
-  Label,
   Input,
   Button,
 } from 'native-base';
@@ -28,8 +24,10 @@ import { connect } from 'react-redux';
 class SelectTasks extends Component {
   constructor(props) {
     super(props)
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       taskInput: '',
+      activeTask: {},
     }
   }
 
@@ -42,7 +40,7 @@ class SelectTasks extends Component {
   }
 
   handleClick = (id) => {
-    const taskArr = this.props.suggestedTasks.filter(task => task.id === id)
+    const taskArr = this.props.communityTasks.filter(task => task.id === id)
     taskArr[0].selected = !taskArr[0].selected
     store.dispatch(editSingleTask(taskArr[0]))
   }
@@ -60,50 +58,85 @@ class SelectTasks extends Component {
   }
 
   handleSubmitTasks = async () => {
-    const taskIds = this.props.suggestedTasks.filter(task => task.selected).map(task => task.id)
+    const taskIds = this.props.communityTasks.filter(comTask => comTask.selected).map(comTask => comTask.id)
     await store.dispatch(addCommunityTasksThunkerator(this.props.community.id, taskIds))
     this.props.navigation.navigate('FrequencySelector');
   }
 
+  deleteRow(secId, rowId, rowMap, data) {
+    rowMap[`${secId}${rowId}`].props.closeRow();
+    const newData = [...this.state.emailList];
+    newData.splice(rowId, 1);
+    this.setState({ emailList: newData });
+  }
+
   render() {
+    const communityTasks =
+      this.props.communityTasks.sort((a, b) => {
+        var nameA = a.task.name.toUpperCase()
+        var nameB = b.task.name.toUpperCase()
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      })
+
     return (
       <Container>
         <Content>
-          {
-            this.props.suggestedTasks.length && this.props.suggestedTasks.sort((a, b) => {
-              var nameA = a.name.toUpperCase()
-              var nameB = b.name.toUpperCase()
-              if (nameA < nameB) {
-                return -1;
-              }
-              if (nameA > nameB) {
-                return 1;
-              }
-              return 0;
-            }).map(task => (
-              <ListItem
-                key={task.id}
-                value={task.id}
-                onPress={() => this.handleClick(task.id)}>
-                <Text>{task.name}</Text>
-                <Right>
-                  <Radio
-                    selected={task.selected || false} />
-                </Right>
-              </ListItem>
-            ))
-          }
-          <Form>
-            <Item floatingLabel>
-              <Input
-                onChangeText={this.handleChangeTask}
-                onSubmitEditing={this.handleAddTask}
-                placeholder="Enter a custom task"
-                value={this.state.taskInput}
-              />
-            </Item>
-          </Form>
-          <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
+          <Item
+            rounded
+            style={{
+              marginLeft: 10,
+              margin: 10,
+              paddingLeft: 10,
+              }}>
+            <Input
+              onChangeText={this.handleChangeTask}
+              onSubmitEditing={this.handleAddTask}
+              placeholder="Enter a custom task"
+              value={this.state.taskInput}
+            />
+          </Item>
+          <List
+            dataSource={this.ds.cloneWithRows(communityTasks)}
+            renderRow={comTask => (
+              <Card key={comTask.id} >
+                <CardItem>
+                  <Body>
+                    <Text>
+                      {comTask.task.name}
+                    </Text>
+                    <Text>
+                      {
+                        comTask.value === 1
+                          ? `Every day`
+                          : `Every ${comTask.value} days`
+                      }
+                    </Text>
+                  </Body>
+                </CardItem>
+                <Slider
+                  style={{marginLeft: 20, marginRight: 20}}
+                  step={1}
+                  maximumValue={30}
+                  minimumValue={1}
+                  onTouchStart={() => this.setState({ activeTask: comTask })}
+                  onTouchEnd={() => this.setState({ activeTask: {} })}
+                  onValueChange={this.change}
+                  value={comTask.value} />
+              </Card>
+            )}
+            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+              (<Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
+                <Icon active name="trash" />
+              </Button>)}
+            rightOpenValue={-75}
+          />
+
         </Content>
       </Container>
 
@@ -126,7 +159,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapState = ({ suggestedTasks, community }) => ({ suggestedTasks, community })
+const mapState = ({ communityTasks, suggestedTasks, community }) => ({ communityTasks, suggestedTasks, community })
 
 const mapDispatch = null
 
