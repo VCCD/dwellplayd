@@ -17,8 +17,8 @@ async function getToken() {
   if (status !== 'granted') {
     return;
   }
-  let value = await Expo.Notifications.getExpoPushTokenAsync();
-  console.log('Our token', value);
+  let token = await Expo.Notifications.getExpoPushTokenAsync();
+  console.log('Our expo push token', token);
   /// Send this to a server
 }
 
@@ -33,9 +33,9 @@ export default class Push extends Component {
     this.listener && this.listener.remove();
   }
 
-  handleNotification = ({ origin, data }) => {
+  handleNotification = ({  data }) => {
     console.log(
-      `Push notification ${origin} with data: ${JSON.stringify(data)}`,
+      `Push notification with data: ${JSON.stringify(data)}`,
     );
   };
 
