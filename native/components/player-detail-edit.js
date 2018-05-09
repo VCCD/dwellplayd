@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
-import { Container, Content, Button, Text } from 'native-base'
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Container, Content, Button, Text, ActionSheet } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
@@ -11,14 +11,13 @@ import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL
 
-const resetAction = NavigationActions.reset({
-  index: 1,
-  actions: [
-    NavigationActions.navigate({
-      routeName: 'DrawerStack'
-    }),
-  ]
-})
+const BUTTONS = [
+  'Take photo',
+  'Choose from Library',
+  'Cancel'
+]
+
+const CANCEL_INDEX = 2;
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -55,8 +54,15 @@ class PlayerDetailEdit extends React.Component {
       imgUrl: this.props.user.imgUrl
     }
   }
-  static navigationOptions = {
-    title: 'Edit'
+
+  changePicture = () => {
+    ActionSheet.show({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    }, buttonIndex => {
+      if (buttonIndex === 0) this._takePicture()
+      if (buttonIndex === 1) this._pickImage()
+    })
   }
 
   componentWillMount(){
@@ -66,7 +72,7 @@ class PlayerDetailEdit extends React.Component {
     }
   }
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
     const { id } = this.props.user
     const {user} = this.props
     const form = this._form.getValue()
@@ -128,19 +134,17 @@ class PlayerDetailEdit extends React.Component {
     return (
       <Container style={styles.container}>
         <Content contentContainerStyle={styles.form}>
-        <Image style={styles.profileImg} source={{uri: this.state.imgUrl}} />
+        <TouchableOpacity onPress={() => this.changePicture()}>
+          <Image style={styles.profileImg} source={{uri: this.state.imgUrl}} />
+        </TouchableOpacity>
           <Form
             ref={c => { this._form = c }}
             type={UserEdit}
             value={this.value}
             options={options}
           />
-          <Button onPress={this._pickImage}><Text>Pick Image</Text></Button>
-          <Button onPress={this._takePicture}><Text>Take a picture</Text></Button>
+          <Button rounded style={styles.button} onPress={this.handleSubmit}><Text style={styles.text}>Update</Text></Button>
         </Content>
-          <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.titleText}>Update</Text>
-          </Button>
       </Container>
     );
   }
@@ -153,8 +157,8 @@ const mapState = state => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    updateUserInfo: (userId, form) => {
-      dispatch(updateUser(userId, form))
+    updateUserInfo: async (userId, form) => {
+      await dispatch(updateUser(userId, form))
       ownProps.navigation.navigate('PlayerDetail')
     }
   }
@@ -189,10 +193,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#93B7BE',
+    backgroundColor: '#D4F5F5',
   },
   text: {
     color: '#747578',
     fontSize: 20,
-  }
+  },
+  edit: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#D4F5F5',
+    justifyContent: 'flex-end'
+  },
 });
