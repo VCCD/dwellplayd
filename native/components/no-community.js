@@ -58,7 +58,6 @@ class NoCommunity extends React.Component {
   }
 
   componentDidMount () {
-    ///fetchCommunityTaskItems = (communityId)
     if (this.props.user.communityId) {
       store.dispatch(fetchCommunity(this.props.user.communityId))
       store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
