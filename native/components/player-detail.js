@@ -64,15 +64,15 @@ class PlayerDetail extends React.Component {
     imgBody.append('image', image)
     console.log('imgBody', imgBody)
     const url = `${apiURL}/cloud/image-upload`
-    var res = await fetch(url, {
+    fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        'x-goog-acl': 'publicRead'
       },
       body: imgBody
     })
-    console.log('res', res)
   }
 
   render() {

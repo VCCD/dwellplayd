@@ -19,6 +19,7 @@ router.post('/image-upload', multer.single('image'), imgUpload.uploadToGcs, func
   if (request.file && request.file.cloudStoragePublicUrl) {
     data.imageUrl = request.file.cloudStoragePublicUrl;
   }
+  console.log(data)
   response.send(data);
 })
 
