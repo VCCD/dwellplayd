@@ -6,6 +6,7 @@ router.use('/communities', require('./communities'))
 router.use('/tasks', require('./tasks'))
 router.use('/community-tasks', require('./community-tasks'))
 router.use('/task-items', require('./task-items'))
+router.use('/cloud', require('./cloud'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')

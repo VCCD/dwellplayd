@@ -24,9 +24,9 @@ class Stats extends React.Component{
 
     render(){
       const { users, taskItems } = this.props.community
-      console.log(users, 'users <<<<<<<')
+     
       const totalScore = users.reduce( (sum, user)=>sum += this.score(user.id), 0)
-      console.log('totalscore', totalScore)
+      
       
       return (
       <Container style={styles.container}>
@@ -37,12 +37,6 @@ class Stats extends React.Component{
         labelRadius={50}
         animate={{ duration: 1000 }}
       data={
-      //   [
-      //   { x: "Cody", y: 35 },
-      //   { x: "Chris", y: 40 },
-      //   { x: "Dave", y: 55 },
-      //   { x: "Vi", y: 20 }
-      // ]
       users.map(user => {return{'x':user.firstName, 'y':this.score(user.id)/totalScore}})
     }
       style={{ labels: { fill: "white", fontSize: 20 } }}
@@ -75,13 +69,6 @@ class Stats extends React.Component{
         }}
        
         data={
-          //[
-        //   { x: "Cody", y: 35 },
-        //   { x: "Chris", y: 40 },
-        //   { x: "Dave", y: 55 },
-        //   { x: this.props.user.firstName, y: this.score(this.props.user.id) }
-    
-        // ]
         users.map(user => {return { 'x': user.firstName, 'y': this.score(user.id)}})
       }
       />
