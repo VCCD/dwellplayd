@@ -13,13 +13,10 @@ import {
   Button,
 } from 'native-base';
 import store, {
-  clearTasks,
   editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
-  getAllCommunityTasksFromServerThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
-  playThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 

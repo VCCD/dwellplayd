@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Image, View, Button} from 'react-native'
-import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
+import { StyleSheet, Image } from 'react-native'
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import {
   TaskList,
   Scores,
