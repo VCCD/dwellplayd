@@ -84,10 +84,30 @@ const mapDispatch = dispatch => {
 export default connect(mapState, mapDispatch)(PlayerDetail)
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#8C9A9E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   list: {
     backgroundColor: '#fff',
   },
   edit: {
     marginRight: 20
+  },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
   }
 });

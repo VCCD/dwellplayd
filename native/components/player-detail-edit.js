@@ -4,6 +4,7 @@ import { Container, Content, Button, Text } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
+import customFormStyle from '../customFormStyle'
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -18,7 +19,9 @@ const UserEdit = t.struct({
 
 const Form = t.form.Form
 
+
 const options = {
+  stylesheet: customFormStyle,
   fields: {
     firstName: {
       error: 'First name cannot be empty',
@@ -51,7 +54,7 @@ class PlayerDetailEdit extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <Content style={styles.form}>
           <Form
             ref={c => { this._form = c }}
@@ -59,7 +62,7 @@ class PlayerDetailEdit extends React.Component {
             value={this.value}
             options={options}
           />
-          <Button full onPress={this.handleSubmit} style={styles.button}>
+          <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.titleText}>Update</Text>
           </Button>
         </Content>
@@ -85,19 +88,32 @@ const mapDispatch = (dispatch, ownProps) => {
 export default connect(mapState, mapDispatch)(PlayerDetailEdit)
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#8C9A9E',
+    alignItems: 'center',
+  },
   form: {
     margin: 20,
   },
-  button: {
-    padding: 10,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#3B9EA5',
-  },
+  
   titleText: {
     color: '#F5EE9E',
     fontWeight: 'bold',
     fontSize: 20,
   },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#93B7BE',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 20,
+  }
 });
