@@ -103,7 +103,7 @@ class SelectTasks extends Component {
               />
             </Item>
           </Form>
-          <Button onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
+          <Button rounded style={styles.button} onPress={this.handleSubmitTasks}><Text>Submit Tasks</Text></Button>
         </Content>
       </Container>
 
@@ -124,6 +124,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
 
   },
+  button: {
+    padding: 10,
+    margin: 10,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#D4F5F5',
+  }
 });
 
 const mapState = ({ suggestedTasks, community }) => ({ suggestedTasks, community })
