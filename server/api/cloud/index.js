@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Multer = require('multer');
 const imgUpload = require('./upload');
+const {User} = require('../../db/models')
 
 // Handles the multipart/form-data
 // Adds a .file key to the request object
@@ -14,13 +15,12 @@ const multer = Multer({
 
 // the multer accessing the key 'image', as defined in the `FormData` object on the front end
 // Passing the uploadToGcs function as middleware to handle the uploading of request.file
-router.post('/image-upload', multer.single('image'), imgUpload.uploadToGcs, function(request, response, next) {
-  const data = request.body;
-  if (request.file && request.file.cloudStoragePublicUrl) {
-    data.imageUrl = request.file.cloudStoragePublicUrl;
+router.post('/image-upload', multer.single('image'), imgUpload.uploadToGcs, (req, res, next) => {
+  const data = req.body;
+  if (req.file && req.file.cloudStoragePublicUrl) {
+    data.imgUrl = req.file.cloudStoragePublicUrl;
   }
-  console.log(data)
-  response.send(data);
+  res.json(data)
 })
 
 module.exports = router

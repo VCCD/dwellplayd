@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
-import { fetchCommunity } from '../store'
+import { fetchCommunity, updateUser } from '../store'
 import { ImagePicker, Permissions, Camera } from 'expo'
 import CONFIG from '../api-routes'
 
@@ -52,8 +52,6 @@ class PlayerDetail extends React.Component {
       aspect: [4, 3],
     })
 
-    console.log(result)
-
     const image = {
       uri: result.uri,
       type: 'image/jpeg',
@@ -62,16 +60,20 @@ class PlayerDetail extends React.Component {
 
     const imgBody = new FormData()
     imgBody.append('image', image)
-    console.log('imgBody', imgBody)
     const url = `${apiURL}/cloud/image-upload`
     fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-        'x-goog-acl': 'publicRead'
+        'Content-Type': 'multipart/form-data'
       },
       body: imgBody
+    })
+    .then(res => res.json())
+    .then(res => {
+      let user = this.props.user
+      user.imgUrl = res.imgUrl
+      this.props.updateUser(this.props.user.id, user)
     })
   }
 
@@ -79,7 +81,7 @@ class PlayerDetail extends React.Component {
     const { user, community } = this.props
     return (
       <Container style={styles.list}>
-        <Image style={styles.profileImg} source={require('../public/profile.jpg')}/>
+        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
         <Content>
           <Card>
             <CardItem bordered>
@@ -121,6 +123,9 @@ const mapDispatch = dispatch => {
   return {
     getCommunity: id => {
       dispatch(fetchCommunity(id))
+    },
+    updateUser: (id, data) => {
+      dispatch(updateUser(id, data))
     }
   }
 }
