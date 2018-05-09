@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const gcs = storage({
   projectId: 'dwellplayd-1',
-  keyFilename: '/Users/cody/Desktop/Fullstack/gameOfHomes/server/api/cloud/key-file.json'
+  keyFilename: './server/api/cloud/key-file.json'
 })
 
 const bucketName = 'dwellplayd'
