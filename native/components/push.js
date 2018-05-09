@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import {Button} from 'native-base'
+import {sendPushNotifications} from '../store/push'
 
 import Expo from 'expo';
 
@@ -7,7 +9,6 @@ const PUSH_ENDPOINT = 'http://172.17.20.52:8080/api';
 
 
 async function getToken() {
-  // Remote notifications do not work in simulators, only on device
   if (!Expo.Constants.isDevice) {
     return;
   }
@@ -25,7 +26,6 @@ async function getToken() {
 export default class Push extends Component {
   componentDidMount() {
     getToken();
-
     this.listener = Expo.Notifications.addListener(this.handleNotification);
   }
 
@@ -33,16 +33,18 @@ export default class Push extends Component {
     this.listener && this.listener.remove();
   }
 
-  handleNotification = ({  data }) => {
+  handleNotifications = ({  data }) => {
+    pushNotifications()
     console.log(
       `Push notification with data: ${JSON.stringify(data)}`,
+
     );
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.paragraph}>Expo Notifications Test</Text>
+        <Button rounded onPress={this.handleNotifications}><Text>Push test</Text></Button>
       </View>
     );
   }
