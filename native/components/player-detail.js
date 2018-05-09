@@ -23,7 +23,8 @@ class PlayerDetail extends React.Component {
 
   componentDidMount = () => {
     const { getScores, user } = this.props
-    getScores(user.communityId)
+    const month = new Date().getMonth()
+    getScores(user.communityId, month)
   }
 
   render() {
@@ -74,8 +75,8 @@ const mapDispatch = dispatch => {
     getCommunity: id => {
       dispatch(fetchCommunity(id))
     },
-    getScores: communityId => {
-      dispatch(fetchUserScores(communityId))
+    getScores: (communityId, month) => {
+      dispatch(fetchUserScores(communityId, month))
     }
   }
 }

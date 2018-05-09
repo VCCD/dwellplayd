@@ -128,39 +128,21 @@ async function seed() {
   await createCommunityTasks()
 
   const createTaskItems = async () => {
-    const taskItems = [
-      {
-        createdAt: new Date() - 3600000 * 24 * 5.12,
-        completed: new Date() - 3600000 * 24 * 3.33,
-        userId: 1,
-        value: 2,
-        communityId: 1,
-        taskId: 1,
-      },
-      {
-        createdAt: new Date() - 3600000 * 24 * 10.31,
-        completed: new Date() - 3600000 * 24 * 6.41,
-        userId: 2,
-        value: 3,
-        communityId: 1,
-        taskId: 2,
-      },
-      {
-        createdAt: new Date() - 3600000 * 24 * 15.33,
-        completed: new Date() - 3600000 * 24 * 9.51,
-        userId: 3,
-        value: 4,
-        communityId: 1,
-        taskId: 3,
-      },
-      {
-        createdAt: new Date() - 3600000 * 24 * 20.54,
-        completed: new Date() - 3600000 * 24 * 12.81,
-        userId: 4,
-        value: 5,
-        communityId: 1,
-        taskId: 4,
-      },
+    let taskItems = []
+    for (let i = 0; i < 50; i++) {
+      const randomDays = Math.random() * 120
+      taskItems.push(
+        {
+          createdAt: new Date() - 3600000 * 24 * randomDays,
+          completed: new Date() - 3600000 * 24 * (randomDays - Math.random() * 21),
+          userId: Math.floor(Math.random() * 4) + 1,
+          value: Math.floor(Math.random() * 30) + 1,
+          communityId: 1,
+          taskId: Math.floor(Math.random() * 5) + 1,
+        },
+      )
+    }
+    taskItems.push(
       {
         createdAt: new Date() - 3600000 * 24 * 1.53,
         completed: null,
@@ -168,32 +150,31 @@ async function seed() {
         value: 6,
         communityId: 1,
         taskId: 1,
-      },
-      {
+      })
+      taskItems.push({
         createdAt: new Date() - 3600000 * 24 * 2.66,
         completed: null,
         userId: null,
         value: 7,
         communityId: 1,
         taskId: 2,
-      },
-      {
+      })
+      taskItems.push({
         createdAt: new Date() - 3600000 * 24 * 3.87,
         completed: null,
         userId: null,
         value: 8,
         communityId: 1,
         taskId: 3,
-      },
-      {
+      })
+      taskItems.push({
         createdAt: new Date() - 3600000 * 24 * 4.21,
         completed: null,
         userId: null,
         value: 9,
         communityId: 1,
         taskId: 4,
-      },
-    ]
+      })
     try {
       const TaskItemPromises = taskItems.map(taskItem => {
         return TaskItem.create(taskItem)
