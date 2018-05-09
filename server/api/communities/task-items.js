@@ -28,7 +28,6 @@ router.post('/', async (req, res, next) => {
       }
     })
     if (!taskItemIsActive) {
-      console.log('created', task)
       await TaskItem.create({
         taskId: task.taskId,
         communityId: task.communityId,
