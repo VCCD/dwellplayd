@@ -40,7 +40,6 @@ export const clearCommunityTasks = () => ({
 export const playThunkerator = (tasks) => {
   return async (dispatch) => {
     try {
-      console.log('tasks', tasks)
       const taskPromises = tasks.map(task => {
         return axios.post(`${apiURL}/communities/${task.communityId}/task-items`, task)
       })
@@ -67,7 +66,6 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
 export const addCustomCommunityTaskThunkerator = (task, communityId) => {
   return async (dispatch) => {
     try {
-      // new task in the task model
       const newTask = await axios.post(`${apiURL}/tasks`, task)
       await axios.post(`${apiURL}/communities/${communityId}/tasks`, newTask.data)
       dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
