@@ -35,7 +35,6 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const task = req.body
-    console.log('tasssslllllkkkkkkkkkkk', task)
     await CommunityTask.update(task, {
         where: {
           id: task.id,
