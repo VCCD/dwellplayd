@@ -21,8 +21,10 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const taskIds = req.body
-    await req.community.setTasks(taskIds)
+    await CommunityTask.create({
+      taskId: req.body.id,
+      communityId: req.community.id,
+    })
     res.json(201)
   }
   catch (err) {

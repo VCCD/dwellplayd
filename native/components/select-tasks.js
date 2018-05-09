@@ -23,6 +23,7 @@ import store, {
   getAllCommunityTasks,
   getAllCommunityTasksFromServerThunkerator,
   getSuggestedTasksFromServerThunkerator,
+  addCustomCommunityTaskThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -63,8 +64,7 @@ class SelectTasks extends Component {
       name: this.state.taskInput,
     }
     this.setState({ taskInput: '' })
-    store.dispatch(addTaskFromServerThunkerator(newTask))
-
+    store.dispatch(addCustomCommunityTaskThunkerator(newTask, this.props.community.id))
   }
 
   handleSubmitTasks = async () => {
@@ -121,7 +121,7 @@ class SelectTasks extends Component {
               <Card key={comTask.id} >
                 <CardItem>
                   <Body>
-                    <Text>
+                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                       {comTask.task.name}
                     </Text>
                     <Text>
