@@ -42,6 +42,7 @@ export default class Push extends Component {
   };
 
   render() {
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <Button rounded onPress={this.handleNotifications}><Text>Push test</Text></Button>
