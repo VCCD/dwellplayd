@@ -14,12 +14,19 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { communityId } = req.body
-    const { value } = await CommunityTask.findById(communityId)
-    const taskItem = req.body
-    taskItem.value = value
-    await TaskItem.create(taskItem)
-    res.send(`Created new taskItem`)
+    const { communityId, taskId } = req.body
+    const value = await CommunityTask.findOne({
+      where: { taskId, communityId }
+    })
+    if (value) {
+      const taskItem = req.body
+      taskItem.value = value.value
+      await TaskItem.create(taskItem)
+      res.send(`Created new taskItem`)
+    }
+    else {
+      res.send(`No task`)
+    }
   }
   catch (err) {
     next(err)
