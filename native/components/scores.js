@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
-import { fetchUserScores } from '../store';
+import { fetchUserScores, fetchPastWinners } from '../store';
 
 class Scores extends React.Component {
   static navigationOptions = {
@@ -10,13 +10,14 @@ class Scores extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getCurrentScores, user } = this.props
+    const { getCurrentScores, getPastWinners, user } = this.props
     const month = new Date().getMonth()
     getCurrentScores(user.communityId, month)
+    getPastWinners(user.communityId)
   }
 
   render() {
-    const { userScores } = this.props
+    const { userScores, pastWinners } = this.props
     const sortedScores = userScores.sort((a, b) => b.score - a.score)
     const date = new Date()
     return (
@@ -25,18 +26,29 @@ class Scores extends React.Component {
           <Text style={styles.month}>
             {`${month[date.getMonth()]} scores:`}
           </Text>
-          {sortedScores.map(user => {
-            const { firstName, lastName, score } = user
-            return (
-              <View key={firstName + lastName}>
-                <Card>
-                  <CardItem>
+          <View>
+            <Card >
+              {sortedScores.map(user => {
+                const { firstName, lastName, score } = user
+                return (
+                  <CardItem key={firstName + lastName}>
                     <Text>
-                      {`${firstName} ${lastName} has ${score} points`}
+                      {`${firstName} has ${score} points`}
                     </Text>
                   </CardItem>
-                </Card>
-              </View>
+                )
+              })}
+            </Card>
+          </View>
+          {pastWinners.map(winner => {
+            return (
+              <Card key={winner}>
+                <CardItem>
+                  <Text>
+                    {`${winner.firstName} won in ${month[winner.month]} with ${winner.score} points`}
+                  </Text>
+                </CardItem>
+              </Card>
             )
           })}
         </Content>
@@ -49,6 +61,7 @@ const mapState = state => {
   return {
     user: state.user,
     userScores: state.userScores,
+    pastWinners: state.pastWinners,
   }
 }
 
@@ -56,6 +69,9 @@ const mapDispatch = dispatch => {
   return {
     getCurrentScores: (communityId, month) => {
       dispatch(fetchUserScores(communityId, month))
+    },
+    getPastWinners: communityId => {
+      dispatch(fetchPastWinners(communityId))
     }
   }
 }
