@@ -77,6 +77,7 @@ class PlayerDetailEdit extends React.Component {
         firstName: form.firstName || user.firstName,
         lastName: form.lastName || user.lastName,
         email: form.email || user.email,
+        communityId: user.communityId,
         imgUrl: res.imgUrl
       }
       this.props.updateUserInfo(id, obj)
