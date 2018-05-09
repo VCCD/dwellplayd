@@ -28,27 +28,29 @@ const options = {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
     color: 'white',
-    textShadowOffset: { width: 1, height: 1 },
-    //textShadowColor: '#F5EE9E',
-    //textShadowRadius: 5,
     fontFamily: 'Entypo'
 
 
   },
-  form: {
-    margin: 20,
-  },
   container: {
     flex: 1,
-    flexDirection: 'row',
     backgroundColor: '#8C9A9E',
-    justifyContent: 'center',
     alignItems: 'center',
+  },
+  form: {
+    margin: 20,
+    
+  },
+  
+  titleText: {
+    color: '#F5EE9E',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   button: {
     padding: 10,
@@ -59,11 +61,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#93B7BE',
   },
-  titleText: {
-    color: '#F5EE9E',
-    fontWeight: 'bold',
+  text: {
+    color: '#747578',
     fontSize: 20,
-  },
+  }
 })
 
 class Invite extends React.Component {
