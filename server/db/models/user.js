@@ -25,11 +25,6 @@ const User = db.define('user', {
       this.setDataValue('email', email.toLowerCase())
     }
   },
-  score: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
-  },
   password: {
     type: Sequelize.STRING,
     // Making `.password` act like a func hides it when serializing to JSON.
