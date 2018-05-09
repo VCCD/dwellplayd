@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native';
 import { Container } from 'native-base';
 import { connect } from 'react-redux'
-import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator } from '../store'
+import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems } from '../store'
 
 class Play extends React.Component {
   constructor(props) {
@@ -13,7 +13,10 @@ class Play extends React.Component {
     if (this.props.user.communityId) {
       await store.dispatch(fetchCommunity(this.props.user.communityId))
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
-      this.props.navigation.navigate('Tasks')
+      await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
+      if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
+      else this.props.navigation.navigate('SelectTasks')
+      
     }
     else {
       this.props.navigation.navigate('NoCommunity')
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = ({ user, communityTasks }) => ({ user, communityTasks })
+const mapState = ({ user, communityTasks, taskItems }) => ({ user, communityTasks, taskItems })
 
 const mapDispatch = null
 
