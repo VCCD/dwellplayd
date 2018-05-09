@@ -34,6 +34,7 @@
     "nodemailer": "^4.6.4",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
+    "paypal-rest-sdk": "^1.8.1",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.5.8",

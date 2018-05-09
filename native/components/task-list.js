@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, RefreshControl, ScrollView } from 'react-native';
 import { Container, Header, Content, Button, ActionSheet } from 'native-base'
 import TaskCard from './task-card'
-import { fetchCommunityTaskItems, completeTaskItem, getAllCommunityTasksFromServerThunkerator} from '../store'
+import { fetchCommunityTaskItems, completeTaskItem, getAllCommunityTasksFromServerThunkerator } from '../store'
 
 const BUTTONS = [
   "Complete",
@@ -12,6 +12,13 @@ const BUTTONS = [
 const CANCEL_INDEX = 1;
 
 class TaskList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+    };
+  }
 
   static navigationOptions = {
     title: 'Current Tasks'
@@ -41,6 +48,12 @@ class TaskList extends React.Component {
       }
     )
   }
+  refresh = () => {
+    const { getTaskItems, user } = this.props
+    console.log(`refresh`)
+    getTaskItems(user.communityId)
+    this.setState({ refreshing: false })
+  }
 
   render() {
     const { taskItems } = this.props
@@ -49,13 +62,17 @@ class TaskList extends React.Component {
 
     return (
       <Container style={styles.list}>
-        <Content contentContainerStyle={styles.content}>
-          {sortedTaskItems && sortedTaskItems.map(taskItem => {
-            return (
-              <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
-            )
-          })}
-        </Content>
+        <ScrollView refreshControl={<RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this.refresh} />}>
+          <Content contentContainerStyle={styles.content}>
+            {sortedTaskItems && sortedTaskItems.map(taskItem => {
+              return (
+                <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
+              )
+            })}
+          </Content>
+        </ScrollView>
       </Container>
     );
   }

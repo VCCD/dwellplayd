@@ -23,6 +23,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const taskIds = req.body
+    console.log(req.community)
     await req.community.setTasks(taskIds)
     res.json(201)
   }
