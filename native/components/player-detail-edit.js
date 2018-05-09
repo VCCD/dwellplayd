@@ -1,22 +1,23 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Container, Content, Button, Text, ActionSheet } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
 import customFormStyle from '../customFormStyle'
 import { ImagePicker, Permissions, Camera } from 'expo'
+import {NavigationActions} from 'react-navigation'
 import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL
 
 const BUTTONS = [
-  "Take a photo",
-  "Upload from Camera Roll",
-  "Cancel"
+  'Take photo',
+  'Choose from Library',
+  'Cancel'
 ]
 
-const CANCEL_INDEX = 1;
+const CANCEL_INDEX = 2;
 
 const Email = t.refinement(t.String, email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
@@ -30,7 +31,6 @@ const UserEdit = t.struct({
 })
 
 const Form = t.form.Form
-
 
 const options = {
   stylesheet: customFormStyle,
@@ -54,30 +54,40 @@ class PlayerDetailEdit extends React.Component {
       imgUrl: this.props.user.imgUrl
     }
   }
-  static navigationOptions = {
-    title: 'Edit'
-  }
 
   changePicture = () => {
     ActionSheet.show({
       options: BUTTONS,
       cancelButtonIndex: CANCEL_INDEX,
     }, buttonIndex => {
-      if (buttonIndex === 0) this
+      if (buttonIndex === 0) this._takePicture()
+      if (buttonIndex === 1) this._pickImage()
     })
+  }
+
+  componentWillMount(){
+    let newImg = this.props.navigation.getParam('img')
+    if (newImg) {
+      this.setState({imgUrl: newImg})
+    }
   }
 
   handleSubmit = () => {
     const { id } = this.props.user
     const {user} = this.props
     const form = this._form.getValue()
-    var obj = {
-      firstName: form.firstName || user.firstName,
-      lastName: form.lastName || user.lastName,
-      email: form.email || user.email,
-      imgUrl: this.state.imgUrl
-    }
-    if (obj) this.props.updateUserInfo(id, obj)
+    this._uploadToCloud(this.state.imgUrl)
+    .then(res => res.json())
+    .then(res => {
+      var obj = {
+        firstName: form.firstName || user.firstName,
+        lastName: form.lastName || user.lastName,
+        email: form.email || user.email,
+        communityId: user.communityId,
+        imgUrl: res.imgUrl
+      }
+      this.props.updateUserInfo(id, obj)
+    })
   }
 
   value = {
@@ -86,22 +96,23 @@ class PlayerDetailEdit extends React.Component {
     email: this.props.user.email,
   }
 
-  _uploadToCloud = (image) => {
+  _uploadToCloud = (uri) => {
+    const image = {
+      uri: uri,
+      type: 'image/jpeg',
+      name: `user-${Date.now()}.jpg`
+    }
+
     const imgBody = new FormData()
     imgBody.append('image', image)
     const url = `${apiURL}/cloud/image-upload`
-    fetch(url, {
+    return fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data'
       },
       body: imgBody
-    })
-    .then(res => res.json())
-    .then(res => {
-      this.props.user.imgUrl = res.imgUrl
-      this.setState({imgUrl: res.imgUrl})
     })
   }
 
@@ -112,30 +123,28 @@ class PlayerDetailEdit extends React.Component {
       aspect: [4, 3],
     })
 
-    const image = {
-      uri: result.uri,
-      type: 'image/jpeg',
-      name: `user-${Date.now()}.jpg`
-    }
-    this._uploadToCloud(image)
+    this.setState({imgUrl: result.uri})
+  }
+
+  _takePicture = () => {
+    this.props.navigation.navigate('Camera')
   }
 
   render() {
     return (
       <Container style={styles.container}>
         <Content contentContainerStyle={styles.form}>
-        <Image style={styles.profileImg} source={{uri: this.state.imgUrl}} />
+        <TouchableOpacity onPress={() => this.changePicture()}>
+          <Image style={styles.profileImg} source={{uri: this.state.imgUrl}} />
+        </TouchableOpacity>
           <Form
             ref={c => { this._form = c }}
             type={UserEdit}
             value={this.value}
             options={options}
           />
-          <Button onPress={this._pickImage}><Text>Pick Image</Text></Button>
+          <Button rounded style={styles.button} onPress={this.handleSubmit}><Text style={styles.text}>Update</Text></Button>
         </Content>
-          <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.titleText}>Update</Text>
-          </Button>
       </Container>
     );
   }
@@ -148,8 +157,8 @@ const mapState = state => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    updateUserInfo: (userId, form) => {
-      dispatch(updateUser(userId, form))
+    updateUserInfo: async (userId, form) => {
+      await dispatch(updateUser(userId, form))
       ownProps.navigation.navigate('PlayerDetail')
     }
   }
@@ -184,10 +193,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#93B7BE',
+    backgroundColor: '#D4F5F5',
   },
   text: {
     color: '#747578',
     fontSize: 20,
-  }
+  },
+  edit: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#D4F5F5',
+    justifyContent: 'flex-end'
+  },
 });
