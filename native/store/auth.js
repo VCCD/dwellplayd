@@ -7,7 +7,7 @@ const apiURL = CONFIG.API_URL
 
 const LOGIN_USER = 'LOGIN_USER'
 const LOGOUT_USER = 'LOGOUT_USER'
-const UPDATE_USER = 'UPDATE_USER'
+//const UPDATE_USER = 'UPDATE_USER'
 
 
 const defaultUser = {}
@@ -19,7 +19,7 @@ const initialUsersState = [];
 
 const loginUser = user => ({type: LOGIN_USER, user})
 export const logoutUser = () => ({type: LOGOUT_USER})
-const update = user => ({ type: UPDATE_USER, user });
+//const update = user => ({ type: UPDATE_USER, user });
 
 /*--------thunk creators-------*/
 
@@ -31,6 +31,7 @@ export const me = () => dispatch => {
 }
 
 export const updateUser = (userId, form) => dispatch => {
+  console.log('axios getting called')
     axios.
     put(`${apiURL}/users/${userId}`, form)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
