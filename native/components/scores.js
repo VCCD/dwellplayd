@@ -31,7 +31,7 @@ class Scores extends React.Component {
               {sortedScores.map(user => {
                 const { firstName, lastName, score } = user
                 return (
-                  <CardItem style={styles.cardItem} key={firstName + lastName}>
+                  <CardItem bordered style={styles.cardItem} key={firstName + lastName}>
                     <Text style={styles.nameText}>
                       {firstName}
                     </Text>
@@ -102,12 +102,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#747578',
     height: 60,
-    borderColor: '#D4F5F5',
-    borderWidth: 1,
   },
   nameText: {
     color: '#D4F5F5',
     fontSize: 20,
+    fontWeight: 'bold',
   },
   scoreText: {
     color: '#D4F5F5',
