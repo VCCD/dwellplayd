@@ -4,6 +4,7 @@ import {
   LoginScreen,
   Signup,
   Welcome,
+  NoCommunity,
 } from './components'
 
 const RootStack = StackNavigator ({
@@ -15,7 +16,7 @@ const RootStack = StackNavigator ({
   },
   Signup: {
     screen: Signup
-  }
+  },
 }, {
   // Default config for all screen
   title: 'Main',

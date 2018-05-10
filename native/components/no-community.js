@@ -6,9 +6,11 @@ import { Container, Content, Button } from 'native-base';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: '#8C9A9E',
+  },
+  content: {
     alignItems: 'center',
+    justifyContent: 'center'
   },
   button: {
     padding: 10,
@@ -28,17 +30,20 @@ const styles = StyleSheet.create({
 
 
 class NoCommunity extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       communityId: '',
     }
   }
 
+  static navigationOptions = {
+    headerLeft: null,
+  }
   render() {
     return (
       <Container style={styles.container}>
-        <Content style={styles.form}>
+        <Content contentContainerStyle={styles.content}>
           <Button rounded onPress={() => this.props.navigation.navigate('CreateCommunity')} style={styles.button}>
             <Text style={styles.buttonText}>Create Community</Text>
           </Button>

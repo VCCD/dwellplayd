@@ -65,6 +65,10 @@ class CreateCommunity extends React.Component {
     }
   }
 
+  static navigationOptions = {
+    headerLeft: null,
+  }
+  
   handleSubmit = async () => {
     const form = this._form.getValue()
     
