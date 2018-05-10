@@ -39,6 +39,7 @@ export const updateUser = (userId, form) => dispatch => {
 
 export const addUserToCommunity = (communityId, user) => dispatch => {
     user.communityId = communityId
+    console.log('api put to user to update communityId')
     axios.
     put(`${apiURL}/users/${user.id}`, user)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
