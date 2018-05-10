@@ -3,6 +3,7 @@ import { StyleSheet, Image } from 'react-native'
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import {
   TaskList,
+  PastTasks,
   Scores,
   PlayerDetail,
   PlayerDetailEdit,
@@ -26,6 +27,9 @@ import {Icon} from 'native-base'
 const DrawerStack = DrawerNavigator({
   Tasks: {
     screen: TaskList,
+  },
+  PastTasks: {
+    screen: PastTasks,
   },
   Scores: {
     screen: Scores
