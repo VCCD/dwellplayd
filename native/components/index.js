@@ -1,5 +1,6 @@
 
 export {default as TaskList} from './task-list'
+export {default as PastTasks} from './past-tasks'
 export {default as SelectTasks} from './select-tasks'
 export {default as Scores} from './scores'
 export {default as LoginScreen} from './login'

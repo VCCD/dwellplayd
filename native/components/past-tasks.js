@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
 import { Container, Content, ActionSheet } from 'native-base'
-import TaskCard from './task-card'
-import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores} from '../store'
+import TaskCard from './past-task-card'
+import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 
 const BUTTONS = [
   'Complete',
@@ -11,7 +11,7 @@ const BUTTONS = [
 ];
 const CANCEL_INDEX = 1;
 
-class TaskList extends React.Component {
+class PastTasks extends React.Component {
 
   constructor(props) {
     super(props);
@@ -21,13 +21,10 @@ class TaskList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getCurrentScores, user } = this.props
-    const month = new Date().getMonth()
-    getCurrentScores(user.communityId, month)
   }
 
   static navigationOptions = {
-    title: 'Current Tasks'
+    title: 'Past Tasks'
   }
 
   handleClick = clickedTask => {
@@ -55,17 +52,17 @@ class TaskList extends React.Component {
   }
 
   render() {
-    const { taskItems } = this.props
-    const filteredTaskItems = taskItems && taskItems.filter(taskItem => !taskItem.completed)
-    const sortedTaskItems = filteredTaskItems && filteredTaskItems.sort((a, b) => b.points - a.points)
-
+    const { taskItems, community } = this.props
+    const filteredTaskItems = taskItems && taskItems.filter(taskItem => taskItem.completed && taskItem.completed.split(`-`)[1] - 1 === new Date().getMonth())
+    const sortedTaskItems = filteredTaskItems && filteredTaskItems.sort((a, b) => Date.parse(b.completed) - Date.parse(a.completed))
     return (
       <Container style={styles.list}>
-        <ScrollView refreshControl={<RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this.refresh} />}>
-          <Content contentContainerStyle={styles.content}>
-            {sortedTaskItems && sortedTaskItems.map(taskItem => {
+      <ScrollView refreshControl={<RefreshControl
+        refreshing={this.state.refreshing}
+        onRefresh={this.refresh} />}>
+        <Content contentContainerStyle={styles.content}>
+        {sortedTaskItems && sortedTaskItems.map(taskItem => {
+          taskItem.completer = community.users.find(user => user.id === taskItem.userId)
               return (
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
@@ -115,4 +112,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(TaskList)
+export default connect(mapState, mapDispatch)(PastTasks)

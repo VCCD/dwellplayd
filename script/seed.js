@@ -134,7 +134,7 @@ async function seed() {
       taskItems.push(
         {
           createdAt: new Date() - 3600000 * 24 * randomDays,
-          completed: new Date() - 3600000 * 24 * (randomDays - Math.random() * 21),
+          completed: new Date() - 3600000 * 24 * (randomDays - Math.random() * randomDays % 30),
           userId: Math.floor(Math.random() * 4) + 1,
           value: Math.floor(Math.random() * 30) + 1,
           communityId: 1,
