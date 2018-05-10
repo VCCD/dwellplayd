@@ -15,15 +15,7 @@ class Stats extends React.Component{
       super()
       this.state={}
     }
-    
-    // score = userId => {
-    //   let score = 0;
-    //   const { taskItems } = this.props.community
-    //   taskItems.forEach(taskItem => {
-    //     if (taskItem.userId === userId) score += taskItem.points
-    //   })
-    //   return roundToTenths(score)
-    // }
+
     componentDidMount = () => {
       const { getCurrentScores, user } = this.props
       const month = new Date().getMonth()
@@ -42,16 +34,6 @@ class Stats extends React.Component{
       return (
       <Container style={styles.container}>
       <ScrollView>
-      <VictoryPie
-      colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
-        padding={40}
-        labelRadius={50}
-        animate={{ duration: 1000 }}
-      data={
-      userScores.map(user => {return{'x':user.firstName, 'y':user.score/totalScore}})
-    }
-      style={{ labels: { fill: "white", fontSize: 20 } }}
-    />
 
     <VictoryChart
       domainPadding={{ x: 15 }}
@@ -63,12 +45,12 @@ class Stats extends React.Component{
      <VictoryBar
         
        colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
-        padding={40}
+        padding={60}
         labelRadius={40}
         
         style={{
           data: {
-            width: 40,
+            width: 30,
             fill: "#93B7BE",
             padding: 20
       
@@ -82,8 +64,38 @@ class Stats extends React.Component{
         data={
         userScores.map(user => {return { 'x': user.firstName, 'y': user.score}})
       }
+      animate={{
+        onEnter: {
+          duration: 2000,
+          before: () => ({
+            _y: 0,
+          })
+        }
+      }}
       />
     </VictoryChart>
+
+    <VictoryPie
+      colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
+        padding={40}
+        labelRadius={50}
+      data={
+      userScores.map(user => {return{'x':user.firstName, 'y':user.score/totalScore}})
+      
+    }
+    animate={{
+      
+    onEnter: {
+      duration: 2000,
+      before: {
+        percent:25
+      }
+      
+    },
+    
+  }}
+      style={{ labels: { fill: "white", fontSize: 20 } }}
+    />
     </ScrollView>
       </Container>
 )
@@ -99,20 +111,7 @@ const styles = StyleSheet.create({
 })
 
 
-// const mapState = state => {
-//   return {
-//     user: state.user,
-//     community: state.community,
-//   }
-// }
 
-// const mapDispatch = dispatch => {
-//   return {
-//     getCommunity: id => {
-//       dispatch(fetchCommunity(id))
-//     }
-//   }
-// }
 
 const mapState = state => {
   return {
