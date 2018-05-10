@@ -4,13 +4,20 @@ import { StyleSheet, Image } from 'react-native'
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux'
 
+
+const getUserScore = (id, props) => {
+  const { user, userScores } = props
+  const foundUser = userScores.find(score => score.id === user.id)
+  if (foundUser) return foundUser.score
+}
+
 const CustomHeader = (props) => (
   <Container>
     <Header style={styles.drawerHead}>
       <Image style={styles.profileImg} source={{uri: props.user.imgUrl}} />
       <Body style={styles.body}>
           <Text style={styles.textName}>{props.user.firstName} {props.user.lastName}</Text>
-          <Text style={styles.text}>Current score:</Text>
+          <Text style={styles.text}>Current score: {getUserScore(props.user.id, props)}</Text>
       </Body>
     </Header>
     <Content>
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = ({user}) => ({user})
+const mapState = ({user, userScores}) => ({user, userScores})
 
 const mapDispatch = null
 
