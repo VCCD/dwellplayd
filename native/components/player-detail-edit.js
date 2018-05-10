@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
     width: 140,
     borderRadius: 70,
     alignSelf: 'center',
-    margin: 15
+    margin: 15,
+    borderColor: '#D4F5F5',
+    borderWidth: 1.5
   },
   titleText: {
     color: '#F5EE9E',

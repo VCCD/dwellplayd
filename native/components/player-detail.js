@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 import { Container, Content, Card, CardItem, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity, fetchUserScores } from '../store'
@@ -32,30 +32,32 @@ class PlayerDetail extends React.Component {
     const userScore = userScores.find(score => score.id === user.id)
     return (
       <Container style={styles.list}>
-        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
         <Content>
+        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
+        <View>
           <Card>
-            <CardItem bordered>
-              <Text>
-                Name: {`${user.firstName} ${user.lastName}`}
+            <CardItem bordered style={styles.card}>
+              <Text style={styles.text}>
+                {`${user.firstName} ${user.lastName}`}
               </Text>
             </CardItem>
-            <CardItem bordered>
-              <Text>
+            <CardItem bordered style={styles.card}>
+              <Text style={styles.text}>
                 Email: {user.email}
               </Text>
             </CardItem>
-            <CardItem bordered>
-              <Text>
+            <CardItem bordered style={styles.card}>
+              <Text style={styles.text}>
                 Score: {userScore && userScore.score}
               </Text>
             </CardItem>
-            <CardItem bordered>
-              <Text>
+            <CardItem bordered style={styles.card}>
+              <Text style={styles.text}>
                 Dwelling: {community.name}
               </Text>
             </CardItem>
           </Card>
+        </View>
         </Content>
       </Container>
     );
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   list: {
-    backgroundColor: '#fff',
+    backgroundColor: '#8C9A9E',
   },
   edit: {
     fontWeight: 'bold',
@@ -104,7 +106,9 @@ const styles = StyleSheet.create({
     width: 140,
     borderRadius: 70,
     alignSelf: 'center',
-    margin: 15
+    margin: 15,
+    borderColor: '#D4F5F5',
+    borderWidth: 1.5
   },
   button: {
     padding: 10,
@@ -116,7 +120,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4F5F5',
   },
   text: {
-    color: '#747578',
+    color: '#D4F5F5',
     fontSize: 20,
+  },
+  card: {
+    backgroundColor: '#747578',
+    height: 60,
   }
 });
