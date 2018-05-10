@@ -37,8 +37,8 @@ class Stats extends React.Component{
 
     <VictoryChart
       domainPadding={{ x: 15 }}
-      padding={40}
-      labelRadius={50}
+      padding={30}
+      labelRadius={30}
        style={{ parent: { maxWidth: "50%" } }}
      
     >
@@ -66,10 +66,17 @@ class Stats extends React.Component{
       }
       animate={{
         onEnter: {
-          duration: 2000,
+          duration: 1000,
           before: () => ({
             _y: 0,
           })
+        },
+        onExit: {
+          duration: 1000,
+      after: () => ({
+        _y: 0,
+      })
+
         }
       }}
       />

@@ -26,6 +26,7 @@ router.get('/:userId', (req, res, next) => {
 router.put('/:userId', (req, res, next) => {
   const { userId } = req.params
   const { firstName, lastName, email, communityId, imgUrl, pushToken} = req.body
+  console.log(req.body, 'dat body<<<<<<<<<<<<')
   User.findById(userId)
     .then(user => user.update({ firstName, lastName, email, communityId, imgUrl, pushToken}))
     .then(user => res.json(user))
