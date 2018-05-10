@@ -76,6 +76,14 @@ export const addCustomCommunityTaskThunkerator = (task, communityId) => {
   }
 }
 
+export const deleteCommunityTaskThunkerator = (task) => {
+  return async (dispatch) => {
+    const deletedTask = await axios.delete(`${apiURL}/communities/${task.communityId}/tasks/${task.id}`)
+    console.log('taskk----------', deletedTask.data)
+    dispatch(removeCommunityTask(deletedTask.data))
+  }
+}
+
 export const submitCommunityTaskFrequenciesThunkerator = (communityId, tasks) => {
   return async (dispatch) => {
     try {
