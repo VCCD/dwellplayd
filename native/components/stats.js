@@ -37,8 +37,8 @@ class Stats extends React.Component{
 
     <VictoryChart
       domainPadding={{ x: 15 }}
-      padding={40}
-      labelRadius={50}
+      padding={30}
+      labelRadius={30}
        style={{ parent: { maxWidth: "50%" } }}
      
     >
@@ -66,10 +66,17 @@ class Stats extends React.Component{
       }
       animate={{
         onEnter: {
-          duration: 2000,
+          duration: 1000,
           before: () => ({
             _y: 0,
           })
+        },
+        onExit: {
+          duration: 1000,
+      after: () => ({
+        _y: 0,
+      })
+
         }
       }}
       />
@@ -79,21 +86,24 @@ class Stats extends React.Component{
       colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         padding={40}
         labelRadius={50}
+
+
+        animate={{
+      
+          onEnter: {
+            duration: 2000,
+            before: () => ({_y: 25})
+            
+            
+          },
+          
+        }}
+        
       data={
-      userScores.map(user => {return{'x':user.firstName, 'y':user.score/totalScore}})
+      userScores.map(user => {return{x :user.firstName, y:user.score/totalScore}})
       
     }
-    animate={{
-      
-    onEnter: {
-      duration: 2000,
-      before: {
-        percent:25
-      }
-      
-    },
-    
-  }}
+   
       style={{ labels: { fill: "white", fontSize: 20 } }}
     />
     </ScrollView>
