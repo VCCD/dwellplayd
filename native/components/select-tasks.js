@@ -60,9 +60,6 @@ class SelectTasks extends Component {
   deleteRow(secId, rowId, rowMap, data) {
     rowMap[`${secId}${rowId}`].props.closeRow();
     store.dispatch(deleteCommunityTaskThunkerator(this.props.communityTasks[rowId]))
-    // const newData = [...this.state.emailList];
-    // newData.splice(rowId, 1);
-    // this.setState({ emailList: newData });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -115,11 +112,14 @@ class SelectTasks extends Component {
           </Item>
           <List
             dataSource={this.ds.cloneWithRows(communityTasks)}
-            renderRow={comTask => (
-              <Card key={comTask.id} >
+            renderRow={comTask => {
+              const active = this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
+              const color = active ? 'black' : 'red'
+              return (
+              <Card key={comTask.id}>
                 <CardItem>
                   <Body>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color }}>
                       {comTask.task.name}
                     </Text>
                     <Text>
@@ -141,7 +141,7 @@ class SelectTasks extends Component {
                   onValueChange={this.change}
                   value={comTask.value} />
               </Card>
-            )}
+            )}}
             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
               (<Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
                 <Icon active name="trash" />
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = ({ communityTasks, suggestedTasks, community }) => ({ communityTasks, suggestedTasks, community })
+const mapState = ({ communityTasks, suggestedTasks, community, taskItems }) => ({ communityTasks, suggestedTasks, community, taskItems })
 
 const mapDispatch = null
 

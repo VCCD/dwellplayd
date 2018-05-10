@@ -1,5 +1,6 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
+import { fetchCommunityTaskItems } from '.';
 
 const apiURL = CONFIG.API_URL
 
@@ -44,6 +45,7 @@ export const playThunkerator = (tasks) => {
         return axios.post(`${apiURL}/communities/${task.communityId}/task-items`, task)
       })
       await Promise.all(taskPromises)
+      dispatch(fetchCommunityTaskItems(tasks[0].communityId))
     }
     catch (err) {
       console.log(err)
