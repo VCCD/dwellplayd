@@ -6,7 +6,7 @@ import TaskCard from './past-task-card'
 import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 
 const BUTTONS = [
-  'Complete',
+  'Dispute',
   'Cancel'
 ];
 const CANCEL_INDEX = 1;
@@ -28,19 +28,19 @@ class PastTasks extends React.Component {
   }
 
   handleClick = clickedTask => {
-    const { user } = this.props
+    console.log(clickedTask)
+    const { user, community } = this.props
     const { completeTask } = this.props
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: clickedTask.task.name
+        title: `${clickedTask.task.name} completed by ${clickedTask.completer.firstName}`
       },
       buttonIndex => {
         if (buttonIndex === 0) {
           clickedTask.userId = user.id
           clickedTask.completed = new Date()
-          completeTask(clickedTask)
         }
       }
     )
