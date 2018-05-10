@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View, ListView } from 'react-native';
-import { Container, Button, Icon, ListItem, List } from 'native-base';
+import { Container, Button, Icon, ListItem, List, Content } from 'native-base';
 import t from 'tcomb-form-native'
 import { sendInvitations } from '../store/community';
 import customFormStyle from '../customFormStyle'
@@ -30,22 +30,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
     textAlign: 'center',
     color: 'white',
   },
   container: {
     flex: 1,
     backgroundColor: '#8C9A9E',
-    alignItems: 'center',
   },
   form: {
-    margin: 20,
-
+    margin: 10,
   },
-
+  listItem: {
+    backgroundColor: '#747578',
+    height: 60,
+  },
+  emailText: {
+    color: '#D4F5F5',
+    fontSize: 20,
+    marginLeft: 10,
+  },
   titleText: {
-    color: '#F5EE9E',
+    color: '#747578',
     fontWeight: 'bold',
     fontSize: 20,
   },
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#93B7BE',
+    backgroundColor: '#D4F5F5',
   },
   text: {
     color: '#747578',
@@ -95,13 +101,13 @@ class Invite extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       <Container style={styles.container}>
-        <View style={styles.form}>
-          <Text style={styles.title}>Invite your mates</Text>
+        <Content contentContainerStyle={styles.form}>
+          <Text style={styles.title}>Invite dwellows!</Text>
           <List
             dataSource={this.ds.cloneWithRows(this.state.emailList)}
             renderRow={data => (
-              <ListItem>
-                <Text> {data} </Text>
+              <ListItem style={styles.listItem}>
+                <Text style={styles.emailText}> {data} </Text>
               </ListItem>
             )}
             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
@@ -109,6 +115,7 @@ class Invite extends React.Component {
                 <Icon active name="trash" />
               </Button>)}
             rightOpenValue={-75}
+            style={{marginBottom: 30}}
           />
           <Form
             ref={c => { this._form = c }}
@@ -126,7 +133,7 @@ class Invite extends React.Component {
               : ''
           }
 
-        </View>
+        </Content>
       </Container>
     )
   }
