@@ -17,6 +17,7 @@ import store, {
   submitCommunityTaskFrequenciesThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
+  deleteCommunityTaskThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -58,9 +59,10 @@ class SelectTasks extends Component {
 
   deleteRow(secId, rowId, rowMap, data) {
     rowMap[`${secId}${rowId}`].props.closeRow();
-    const newData = [...this.state.emailList];
-    newData.splice(rowId, 1);
-    this.setState({ emailList: newData });
+    store.dispatch(deleteCommunityTaskThunkerator(this.props.communityTasks[rowId]))
+    // const newData = [...this.state.emailList];
+    // newData.splice(rowId, 1);
+    // this.setState({ emailList: newData });
   }
 
   static navigationOptions = ({ navigation }) => {
