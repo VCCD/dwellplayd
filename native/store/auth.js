@@ -11,6 +11,7 @@ const UPDATE_USER = 'UPDATE_USER'
 
 
 const defaultUser = {}
+const initialUsersState = [];
 
 
 /*--------action creators-------*/
@@ -18,6 +19,7 @@ const defaultUser = {}
 
 const loginUser = user => ({type: LOGIN_USER, user})
 export const logoutUser = () => ({type: LOGOUT_USER})
+const update = user => ({ type: UPDATE_USER, user });
 
 /*--------thunk creators-------*/
 

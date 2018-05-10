@@ -17,3 +17,5 @@ router.post('https://exp.host/--/api/v2/push/send', async (req, res, next)=>{
 
 
 })
+
+router.post('/')
