@@ -25,17 +25,17 @@ import { connect } from 'react-redux';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#8C9A9E',
     alignItems: 'center',
     justifyContent: 'center',
   },
   list: {
-    backgroundColor: '#fff',
+    backgroundColor: '#8C9A9E',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   left: {
     height: 50,
@@ -47,8 +47,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   text: {
-    color: '#747578',
-    fontSize: 16
+    color: '#D4F5F5',
+    fontSize: 16,
+  },
+  textSlide: {
+    color: '#8C9A9E'
+  },
+  input: {
+    borderColor: '#D4F5F5'
+  },
+  card: {
+    backgroundColor: '#fff',
+    margin: 0,
   }
 });
 
@@ -119,23 +129,23 @@ class SelectTasks extends Component {
         return 0
       })
 
-
-
     return (
-      <Container>
-        <Content>
+      <Container style={styles.list}>
+        <Content contentContainerStyle={{backgroundColor: '#8C9A9E'}}>
           <Item
             rounded
             style={{
               marginLeft: 10,
               margin: 10,
               paddingLeft: 10,
+              borderColor: '#D4F5F5'
             }}>
             <Input
               onChangeText={this.handleChangeTask}
               onSubmitEditing={this.handleAddTask}
               placeholder="Enter a custom task"
               value={this.state.taskInput}
+              style={styles.text}
             />
           </Item>
           <List
@@ -144,11 +154,12 @@ class SelectTasks extends Component {
               const inactive = !this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
               const color = inactive ? 'red' : '#747578'
               return (
-              <Card key={comTask.id}>
+                <View style={{backgroundColor: '#8C9A9E'}}>
+              <Card key={comTask.id} style={styles.card}>
                 <CardItem style={styles.header} >
                   <View style={styles.left}>
                     <Text style={{color, fontSize: 16, fontWeight: 'bold' }}>{comTask.task.name}</Text>
-                    <Text style={styles.text}>
+                    <Text style={styles.textSlide}>
                       {
                         comTask.value === 1
                           ? `Every day`
@@ -158,7 +169,7 @@ class SelectTasks extends Component {
                   </View>
                     {
                       inactive
-                        ? <Button transparent onPress={() => this.activateTask(comTask)} ><Text style={{ marginRight: 15, fontSize: 15, fontWeight: 'bold', color }}>
+                        ? <Button transparent onPress={() => this.activateTask(comTask)} ><Text style={{ marginRight: 15, fontSize: 15, fontWeight: 'bold', color, alignSelf: 'flex-start' }}>
                             Activate
                           </Text></Button>
                         : ''
@@ -174,6 +185,7 @@ class SelectTasks extends Component {
                   onValueChange={this.change}
                   value={comTask.value} />
               </Card>
+              </View>
             )}}
             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
               (<Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
