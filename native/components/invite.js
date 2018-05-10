@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     color: 'white',
-    fontFamily: 'Entypo'
-
-
   },
   container: {
     flex: 1,
@@ -44,9 +41,9 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 20,
-    
+
   },
-  
+
   titleText: {
     color: '#F5EE9E',
     fontWeight: 'bold',
