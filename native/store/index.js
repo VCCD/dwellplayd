@@ -11,6 +11,7 @@ import taskItems from './task-items'
 import userScores from './scores'
 import pastWinners from './past-winners'
 
+
 const reducer = combineReducers({
   user,
   users,
@@ -35,4 +36,5 @@ export * from './suggested-tasks'
 export * from './community-tasks'
 export * from './task-items'
 export * from './scores'
+export * from './push'
 export * from './past-winners'

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {StyleSheet, View, ScrollView} from 'react-native'
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel } from "victory-native";
 import { Container } from 'native-base';
+import { fetchUserScores } from '../store';
 
 const roundToTenths = num => {
   return Math.round(num * 10) / 10
@@ -12,20 +13,30 @@ class Stats extends React.Component{
 
     constructor(){
       super()
+      this.state={}
     }
-    score = userId => {
-      let score = 0;
-      const { taskItems } = this.props.community
-      taskItems.forEach(taskItem => {
-        if (taskItem.userId === userId) score += taskItem.points
-      })
-      return roundToTenths(score)
+    
+    // score = userId => {
+    //   let score = 0;
+    //   const { taskItems } = this.props.community
+    //   taskItems.forEach(taskItem => {
+    //     if (taskItem.userId === userId) score += taskItem.points
+    //   })
+    //   return roundToTenths(score)
+    // }
+    componentDidMount = () => {
+      const { getCurrentScores, user } = this.props
+      const month = new Date().getMonth()
+      this.setState( getCurrentScores(user.communityId, month))
+      
     }
+  
 
     render(){
-      const { users, taskItems } = this.props.community
-     
-      const totalScore = users.reduce( (sum, user)=>sum += this.score(user.id), 0)
+      //const { users, taskItems } = this.props.community
+      const { userScores } = this.props
+      const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
+      
       
       
       return (
@@ -37,7 +48,7 @@ class Stats extends React.Component{
         labelRadius={50}
         animate={{ duration: 1000 }}
       data={
-      users.map(user => {return{'x':user.firstName, 'y':this.score(user.id)/totalScore}})
+      userScores.map(user => {return{'x':user.firstName, 'y':user.score/totalScore}})
     }
       style={{ labels: { fill: "white", fontSize: 20 } }}
     />
@@ -69,7 +80,7 @@ class Stats extends React.Component{
         }}
        
         data={
-        users.map(user => {return { 'x': user.firstName, 'y': this.score(user.id)}})
+        userScores.map(user => {return { 'x': user.firstName, 'y': user.score}})
       }
       />
     </VictoryChart>
@@ -88,18 +99,34 @@ const styles = StyleSheet.create({
 })
 
 
+// const mapState = state => {
+//   return {
+//     user: state.user,
+//     community: state.community,
+//   }
+// }
+
+// const mapDispatch = dispatch => {
+//   return {
+//     getCommunity: id => {
+//       dispatch(fetchCommunity(id))
+//     }
+//   }
+// }
+
 const mapState = state => {
   return {
     user: state.user,
-    community: state.community,
+    userScores: state.userScores,
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getCommunity: id => {
-      dispatch(fetchCommunity(id))
+    getCurrentScores: (communityId, month) => {
+      dispatch(fetchUserScores(communityId, month))
     }
   }
 }
+
 export default connect(mapState ,mapDispatch)(Stats)
