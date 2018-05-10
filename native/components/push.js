@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import {Button} from 'native-base'
-import {sendPushNotifications} from '../store/push'
-import {connect} from 'react-redux'
+import { Button } from 'native-base'
+import { sendPushNotifications } from '../store/push'
+import { connect } from 'react-redux'
 import { updateUser } from '../store'
 
 import Expo from 'expo';
 
 const PUSH_ENDPOINT = 'http://172.17.20.52:8080/api';
 
-let token =''
+let token = ''
 async function getToken() {
   if (!Expo.Constants.isDevice) {
     return;
@@ -28,27 +28,20 @@ async function getToken() {
 }
 
 class Push extends Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {}
     this.pushToken = token
-    
-    
   }
-  async componentDidMount () {
   
-     
-   
-   await this.setState({"firstName": this.props.user.firstName, "lastName": this.props.user.lastName, "email": this.props.user.email})
-   if(this.props.user.pushToken === null){
-    this.state['pushToken'] = await getToken();
-   }
-   
+  async componentDidMount() {
+
+    await this.setState({ "firstName": this.props.user.firstName, "lastName": this.props.user.lastName, "email": this.props.user.email })
+    if (this.props.user.pushToken === null) {
+      this.state['pushToken'] = await getToken();
+    }
+
     this.listener = await Expo.Notifications.addListener(this.handleNotification);
-     
- 
-
-
   }
 
   componentWillUnmount() {
@@ -56,38 +49,21 @@ class Push extends Component {
   }
 
   handleNotifications = () => {
-    //pushNotifications()
-    
-  //   console.log(
-  //     `Push notification with data: ${JSON.stringify(data)}`,
+    console.log(this.props)
+    var obj = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      pushToken: this.state.pushToken,
+      imgUrl: this.props.user.imgUrl,
+      communityId: this.props.user.communityId
+    }
+    this.props.pushTokenToDBS(this.props.user.id, obj)
 
-  //   );
-  var obj = {
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    email: this.state.email, 
-    pushToken: this.state.pushToken
-  }
-
-
-   this.props.pushTokenToDBS(this.props.user.id, obj)
-   console.log('this is the state', obj)
-   
   };
-  consolelogState =  () => {
-    //pushNotifications()
-    
-  //   console.log(
-  //     `Push notification with data: ${JSON.stringify(data)}`,
-
-  //   );
-   console.log('this is the state', this.state, this.props.user.id, this.state.pushToken)
-   
-  };
-
 
   render() {
-   
+
     return (
       <View style={styles.container}>
         <Button rounded onPress={this.handleNotifications}><Text>Push test</Text></Button>
@@ -113,14 +89,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapState = ({user}) => ({user});
+const mapState = ({ user }) => ({ user });
 
 const mapDispatch = (dispatch) => {
   return {
     pushTokenToDBS: (userId, obj) => {
       dispatch(updateUser(userId, obj))
-     
+
     }
   }
 }
-export default connect (mapState, mapDispatch)(Push)
+export default connect(mapState, mapDispatch)(Push)
