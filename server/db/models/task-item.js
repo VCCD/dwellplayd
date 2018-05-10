@@ -33,6 +33,10 @@ const TaskItem = db.define('taskItem', {
       return calcPoints(days, value)
     }
   },
+  imgUrl: {
+    type: Sequelize.STRING,
+    defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Power_Clean_Ico.png'
+  },
 })
 
 module.exports = TaskItem
