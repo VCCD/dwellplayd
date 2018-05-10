@@ -65,7 +65,7 @@ const MainNavigation = StackNavigator({
     screen: LoadingScreen,
   },
   NoCommunity: {
-    screen: NoCommunity
+    screen: NoCommunity,
   },
   DrawerStack: {
     screen: DrawerStack

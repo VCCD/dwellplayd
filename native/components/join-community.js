@@ -63,6 +63,10 @@ class JoinCommunity extends React.Component {
       communityId: '',
     }
   }
+  
+  static navigationOptions = {
+    headerLeft: null,
+  }
 
   handleSubmit = async () => {
     const form = this._form.getValue()

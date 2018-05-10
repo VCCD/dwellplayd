@@ -121,9 +121,9 @@ const mapState = null
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    signupSubmit: (form) => {
-      dispatch(signup(form))
-      ownProps.navigation.navigate('NoCommunity')
+    signupSubmit: async (form) => {
+      await dispatch(signup(form))
+      ownProps.navigation.navigate('LoadingScreen')
     }
   }
 }
