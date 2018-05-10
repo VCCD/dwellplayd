@@ -108,24 +108,14 @@ class SelectTasks extends Component {
   render() {
     const communityTasks =
       this.props.communityTasks.sort((a, b) => {
-        var nameA = a.task.name.toUpperCase()
-        var nameB = b.task.name.toUpperCase()
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      }).sort((a, b) => {
         const aInactive = !this.props.taskItems.some(task => task.taskId === a.task.id && !task.completed)
         const bInactive = !this.props.taskItems.some(task => task.taskId === b.task.id && !task.completed)
-        if (aInactive && !bInactive) {
-          return -1
-        }
-        if (!aInactive && bInactive) {
-          return 1
-        }
+        var nameA = a.task.name.toUpperCase()
+        var nameB = b.task.name.toUpperCase()
+        if (aInactive && !bInactive) return -1
+        else if (!aInactive && bInactive) return 1
+        else if (nameA < nameB) return -1
+        else if (nameA > nameB) return 1
         return 0
       })
 
