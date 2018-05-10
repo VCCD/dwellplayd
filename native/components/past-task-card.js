@@ -16,7 +16,7 @@ const TaskCard = (props) => {
       <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
         <View style={styles.left}>
           <Text style={styles.text}>{taskItem.task.name}</Text>
-          <Text style={styles.text}>Completed by {`${taskItem.completer.firstName} ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
+          <Text style={styles.text}>{`${taskItem.completer.firstName} - ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
         </View>
         <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
       </CardItem>
