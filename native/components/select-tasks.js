@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ListView, Slider, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, ListView, Slider, View } from 'react-native';
+import Modal from 'react-native-modal'
 import {
   Container,
   Content,
@@ -18,6 +19,7 @@ import store, {
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
   deleteCommunityTaskThunkerator,
+  setToNotNewUser,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -28,6 +30,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#8C9A9E',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#D4F5F5',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: '#8C9A9E',
+  },
+  button: {
+    backgroundColor: '#93B7BE',
+    padding: 12,
+    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#8C9A9E',
   },
   list: {
     backgroundColor: '#8C9A9E',
@@ -71,6 +89,23 @@ class SelectTasks extends Component {
       activeTask: {},
     }
   }
+
+  _renderButton = (text, onPress) => (
+    <View>
+    <Button rounded onPress={onPress} style={styles.button} >
+        <Text style={{color: '#D4F5F5'}}>{text}</Text>
+    </Button>
+    </View>
+  );
+
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text>Each of these cards is a task.  We've added some popular ones for you.  Feel free to use them or delete by swiping left.</Text>
+      <Text>Go ahead and select how often you think each task should be done by using the slider.</Text>
+      <Text>When you're ready, activate the task!</Text>
+      {this._renderButton('All Set', () => store.dispatch(setToNotNewUser()))}
+    </View>
+  );
 
   componentDidMount() {
     if (!this.props.communityTasks.length) {
@@ -195,6 +230,15 @@ class SelectTasks extends Component {
           />
 
         </Content>
+          <Modal
+            isVisible={this.props.isNewUser}
+            animationInTiming={2000}
+            animationOutTiming={2000}
+            backdropTransitionInTiming={2000}
+            backdropTransitionOutTiming={2000}
+          >
+            {this._renderModalContent()}
+          </Modal>
       </Container>
 
     );
@@ -202,7 +246,7 @@ class SelectTasks extends Component {
 }
 
 
-const mapState = ({ communityTasks, suggestedTasks, community, taskItems }) => ({ communityTasks, suggestedTasks, community, taskItems })
+const mapState = ({ isNewUser, communityTasks, suggestedTasks, community, taskItems }) => ({ isNewUser, communityTasks, suggestedTasks, community, taskItems })
 
 const mapDispatch = null
 

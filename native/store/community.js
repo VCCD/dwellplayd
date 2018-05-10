@@ -3,8 +3,6 @@ import { addUserToCommunity } from '../store'
 import CONFIG from '../api-routes'
 const apiURL = CONFIG.API_URL
 
-const defaultCommunity = {}
-
 /*--------actions-------*/
 
 const GET_COMMUNITY = 'GET_COMMUNITY'
@@ -19,15 +17,16 @@ export const fetchCommunity = id => dispatch => {
   axios.
   get(`${apiURL}/communities/${id}`)
   .then(res => {
-      dispatch(getCommunity(res.data || defaultCommunity))})
+      dispatch(getCommunity(res.data))})
     .catch(err => console.log(err))
 }
 
 export const createCommunityThunkerator = (name, user) => async dispatch => {
   try {
     const newCommunity = await axios.post(`${apiURL}/communities`, {name})
-    dispatch(addUserToCommunity(newCommunity.data.id, user))
-    dispatch(getCommunity(newCommunity.data || defaultCommunity))
+    console.log('adding user to community and getting community')
+    await dispatch(addUserToCommunity(newCommunity.data.id, user))
+    await dispatch(getCommunity(newCommunity.data))
   }
   catch (err) {
     console.log(err)
@@ -51,7 +50,7 @@ export const sendInvitations = (emails, user, communityId) => {
 
 /*--------reducer-------*/
 
-export default function (state = defaultCommunity, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case GET_COMMUNITY:
       return action.community;
