@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import store, { logoutUser } from '../store'
+import store, { logout } from '../store'
 
 export default class Logout extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class Logout extends React.Component {
   }
 
   componentDidMount () {
-    store.dispatch(logoutUser())
+    store.dispatch(logout())
   }
   render() {
     return <View></View>

@@ -1,6 +1,13 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
-import { fetchCommunity } from '../store'
+import {
+  fetchCommunity,
+  clearCommunityTasks,
+  clearCommunity,
+  clearPastWinners,
+  clearUserScores,
+  clearCommunityTaskItems,
+} from '../store'
 
 const authURL = CONFIG.AUTH_URL
 const apiURL = CONFIG.API_URL
@@ -86,8 +93,13 @@ export const signup = (body) => (dispatch) => {
 
 export const logout = () => dispatch =>
   axios
-    .post('/auth/logout' )
+    .post(`${authURL}/logout` )
     .then(_ => {
+      dispatch(clearCommunityTasks())
+      dispatch(clearCommunity())
+      dispatch(clearPastWinners())
+      dispatch(clearUserScores())
+      dispatch(clearCommunityTaskItems())
       dispatch(logoutUser());
 
       //history.push('/login');
