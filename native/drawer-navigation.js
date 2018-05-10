@@ -25,7 +25,7 @@ import {Icon} from 'native-base'
 
 const DrawerStack = DrawerNavigator({
   Tasks: {
-    screen: TaskList
+    screen: TaskList,
   },
   Scores: {
     screen: Scores

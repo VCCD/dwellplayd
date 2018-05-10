@@ -9,23 +9,33 @@ const CustomHeader = (props) => (
     <Header style={styles.drawerHead}>
       <Image style={styles.profileImg} source={{uri: props.user.imgUrl}} />
       <Body>
-          <Text>{props.user.firstName} {props.user.lastName}</Text>
+          <Text style={styles.text}>{props.user.firstName} {props.user.lastName}</Text>
       </Body>
     </Header>
     <Content>
-      <DrawerItems {...props} />
+      <DrawerItems style={styles.drawerItems} {...props} />
     </Content>
   </Container>
 )
 
 const styles = StyleSheet.create({
   drawerHead: {
-    height: 100,
+    height: 110,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
   },
   profileImg: {
     height: 80,
     width: 80,
     borderRadius: 40,
+    borderColor: '#D4F5F5',
+    borderWidth: 1.5
+  },
+  text: {
+    color: '#D4F5F5',
+  },
+  drawerItems: {
+    backgroundColor: '#8C9A9E'
   }
 });
 
