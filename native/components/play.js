@@ -1,5 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Container } from 'native-base'
 import { connect } from 'react-redux'
 import store, { playThunkerator, submitCommunityTaskFrequenciesThunkerator } from '../store'
 
@@ -8,15 +9,22 @@ class Play extends React.Component {
     super(props)
   }
 
-  componentDidMount () {
-    store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
-    store.dispatch(playThunkerator(this.props.communityTasks))
+  componentDidMount = async () => {
+    await store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
+    await store.dispatch(playThunkerator(this.props.communityTasks))
     this.props.navigation.navigate('Tasks')
   }
   render() {
-    return <View></View>
+    return <Container style={styles.container} />
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#8C9A9E',
+    alignItems: 'center',
+  }
+});
 
 const mapState = ({ community, communityTasks }) => ({ community, communityTasks })
 
