@@ -48,7 +48,7 @@ class Scores extends React.Component {
           </Text>
           {pastWinners.map(winner => {
             return (
-              <Card key={winner}>
+              <Card key={winner.month}>
                 <CardItem style={styles.cardItem}>
                   <Text style={styles.nameText}>
                     {month[winner.month]} - {winner.firstName}
