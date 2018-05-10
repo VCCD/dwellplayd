@@ -31,21 +31,30 @@ class Scores extends React.Component {
               {sortedScores.map(user => {
                 const { firstName, lastName, score } = user
                 return (
-                  <CardItem key={firstName + lastName}>
-                    <Text>
-                      {`${firstName} has ${score} points`}
+                  <CardItem style={styles.cardItem} key={firstName + lastName}>
+                    <Text style={styles.nameText}>
+                      {firstName}
+                    </Text>
+                    <Text style={styles.scoreText}>
+                      {score}
                     </Text>
                   </CardItem>
                 )
               })}
             </Card>
           </View>
+          <Text style={styles.month}>
+            {`Previous winners:`}
+          </Text>
           {pastWinners.map(winner => {
             return (
               <Card key={winner}>
-                <CardItem>
-                  <Text>
-                    {`${winner.firstName} won in ${month[winner.month]} with ${winner.score} points`}
+                <CardItem style={styles.cardItem}>
+                  <Text style={styles.nameText}>
+                    {month[winner.month]} - {winner.firstName}
+                  </Text>
+                  <Text style={styles.scoreText}>
+                    {winner.score}
                   </Text>
                 </CardItem>
               </Card>
@@ -80,11 +89,29 @@ export default connect(mapState, mapDispatch)(Scores)
 
 const styles = StyleSheet.create({
   list: {
-    backgroundColor: '#fff',
+    backgroundColor: '#8C9A9E',
   },
   month: {
     fontSize: 24,
-    margin: 10
+    fontWeight: 'bold',
+    margin: 10,
+    color: '#D4F5F5'
+  },
+  cardItem: {
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: '#747578',
+    height: 60,
+    borderColor: '#D4F5F5',
+    borderWidth: 1,
+  },
+  nameText: {
+    color: '#D4F5F5',
+    fontSize: 20,
+  },
+  scoreText: {
+    color: '#D4F5F5',
+    fontSize: 30,
   }
 });
 
