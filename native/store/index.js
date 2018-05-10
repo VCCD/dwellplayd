@@ -37,5 +37,4 @@ export * from './community-tasks'
 export * from './task-items'
 export * from './scores'
 export * from './push'
-
 export * from './past-winners'
