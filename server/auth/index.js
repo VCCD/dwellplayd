@@ -4,7 +4,6 @@ const sendEmail = require('../mailer')
 module.exports = router
 
 router.post('/login', (req, res, next) => {
-  console.log(req.body)
   User.findOne({where: {email: req.body.email}})
     .then(user => {
       if (!user) {
