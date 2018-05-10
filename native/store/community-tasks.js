@@ -1,5 +1,6 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
+import { fetchCommunityTaskItems } from '.';
 
 const apiURL = CONFIG.API_URL
 
@@ -40,11 +41,11 @@ export const clearCommunityTasks = () => ({
 export const playThunkerator = (tasks) => {
   return async (dispatch) => {
     try {
-      console.log('tasks', tasks)
       const taskPromises = tasks.map(task => {
         return axios.post(`${apiURL}/communities/${task.communityId}/task-items`, task)
       })
       await Promise.all(taskPromises)
+      dispatch(fetchCommunityTaskItems(tasks[0].communityId))
     }
     catch (err) {
       console.log(err)
@@ -67,7 +68,6 @@ export const getAllCommunityTasksFromServerThunkerator = (communityId) => {
 export const addCustomCommunityTaskThunkerator = (task, communityId) => {
   return async (dispatch) => {
     try {
-      // new task in the task model
       const newTask = await axios.post(`${apiURL}/tasks`, task)
       await axios.post(`${apiURL}/communities/${communityId}/tasks`, newTask.data)
       dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
@@ -75,6 +75,14 @@ export const addCustomCommunityTaskThunkerator = (task, communityId) => {
     catch (err) {
       console.log(err)
     }
+  }
+}
+
+export const deleteCommunityTaskThunkerator = (task) => {
+  return async (dispatch) => {
+    const deletedTask = await axios.delete(`${apiURL}/communities/${task.communityId}/tasks/${task.id}`)
+    console.log('taskk----------', deletedTask.data)
+    dispatch(removeCommunityTask(deletedTask.data))
   }
 }
 

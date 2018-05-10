@@ -45,7 +45,7 @@ class LoginScreen extends React.Component {
   render() {
     const { name, loginSubmit } = this.props
     return (
-      <Container style={styles.container}>
+      <View style={styles.container}>
         <Content contentContainerStyle={styles.form}>
           <Form
             ref={c => this._form = c}
@@ -63,7 +63,7 @@ class LoginScreen extends React.Component {
             <Text style={styles.text}>Dev Login</Text>
           </Button>
         </Content>
-      </Container>
+      </View>
     );
   }
 }
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     //flexDirection: 'column',
     backgroundColor: '#8C9A9E',
     //justifyContent: 'center',
-    alignItems: 'center',
   },
   form: {
     flex: 1,

@@ -46,3 +46,14 @@ router.put('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.delete('/:communityTaskId', async (req, res, next) => {
+  try {
+    const communityTask = await CommunityTask.findById(req.params.communityTaskId)
+    communityTask.destroy()
+    res.json(communityTask)
+  }
+  catch (err) {
+    next(err)
+  }
+})

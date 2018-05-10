@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, Image, View, Button} from 'react-native'
-import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
+import { StyleSheet, Image } from 'react-native'
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import {
   TaskList,
-  FrequencySelector,
   Scores,
   PlayerDetail,
   PlayerDetailEdit,
@@ -15,27 +14,24 @@ import {
   JoinCommunity,
   Logout,
   CustomHeader,
+  CameraComponent,
+  ConfirmImage,
   Push,
   Play,
+  LoadingScreen,
 } from './components'
 import {Icon} from 'native-base'
 
 
 const DrawerStack = DrawerNavigator({
   Tasks: {
-    screen: TaskList
-  },
-  FrequencySelector: {
-    screen: FrequencySelector
+    screen: TaskList,
   },
   Scores: {
     screen: Scores
   },
-  PlayerDetail: {
+  Profile: {
     screen: PlayerDetail
-  },
-  PlayerDetailEdit: {
-    screen: PlayerDetailEdit
   },
   SelectTasks: {
     screen: SelectTasks
@@ -61,6 +57,9 @@ const DrawerStack = DrawerNavigator({
 
 
 const MainNavigation = StackNavigator({
+  LoadingScreen: {
+    screen: LoadingScreen,
+  },
   NoCommunity: {
     screen: NoCommunity
   },
@@ -73,8 +72,17 @@ const MainNavigation = StackNavigator({
   JoinCommunity: {
     screen: JoinCommunity
   },
+  Camera: {
+    screen: CameraComponent
+  },
+  ConfirmImage: {
+    screen: ConfirmImage
+  },
   Play: {
     screen: Play
+  },
+  PlayerDetailEdit: {
+    screen: PlayerDetailEdit
   },
 }, {
   headerMode: 'float',
@@ -82,8 +90,9 @@ const MainNavigation = StackNavigator({
     headerStyle: {backgroundColor: '#747578'},
     headerTitle: (<Image style={styles.logo} source={require('./public/dwellplayd_logo.png')} />),
     headerTintColor: 'white',
-    headerLeft: <Icon name='menu' style={styles.menu} onPress={() =>
-      navigation.navigate('DrawerToggle')} />
+    headerLeft: <Icon name="menu" style={styles.menu} onPress={() =>
+      navigation.navigate('DrawerToggle')} />,
+    gesturesEnabled: false
   }),
 })
 

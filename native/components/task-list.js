@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, TouchableOpacity, RefreshControl, ScrollView } from 'react-native';
-import { Container, Header, Content, Button, ActionSheet } from 'native-base'
+import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
+import { Container, Content, ActionSheet } from 'native-base'
 import TaskCard from './task-card'
-import { fetchCommunityTaskItems, completeTaskItem, getAllCommunityTasksFromServerThunkerator } from '../store'
+import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores} from '../store'
 
 const BUTTONS = [
-  "Complete",
-  "Cancel"
+  'Complete',
+  'Cancel'
 ];
 const CANCEL_INDEX = 1;
 
@@ -20,15 +20,14 @@ class TaskList extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    title: 'Current Tasks'
+  componentDidMount = () => {
+    const { getCurrentScores, user } = this.props
+    const month = new Date().getMonth()
+    getCurrentScores(user.communityId, month)
   }
 
-  componentDidMount = () => {
-    const { getTaskItems, getCommunityTasks, user } = this.props
-    getTaskItems(user.communityId)
-    getCommunityTasks(user.communityId)
-    if (!this.props.communityTasks.length) this.props.navigation.navigate('SelectTasks')
+  static navigationOptions = {
+    title: 'Current Tasks'
   }
 
   handleClick = clickedTask => {
@@ -111,8 +110,8 @@ const mapDispatch = dispatch => {
     completeTask: taskItem => {
       dispatch(completeTaskItem(taskItem))
     },
-    getCommunityTasks: communityId => {
-      dispatch(getAllCommunityTasksFromServerThunkerator(communityId))
+    getCurrentScores: (communityId, month) => {
+      dispatch(fetchUserScores(communityId, month))
     }
   }
 }
