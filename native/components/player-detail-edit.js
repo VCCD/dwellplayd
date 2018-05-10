@@ -1,12 +1,11 @@
 import React from 'react';
 import { StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Container, Content, Button, Text, ActionSheet } from 'native-base'
+import { Container, Content, Button, Text, ActionSheet, Icon } from 'native-base'
 import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
 import customFormStyle from '../customFormStyle'
 import { ImagePicker, Permissions, Camera } from 'expo'
-import {NavigationActions} from 'react-navigation'
 import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL
@@ -52,6 +51,16 @@ class PlayerDetailEdit extends React.Component {
     super(props)
     this.state = {
       imgUrl: this.props.user.imgUrl
+    }
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button transparent onPress={() => navigation.goBack()}>
+          <Icon style={{color: '#D4F5F5'}} name="arrow-back" />
+        </Button>
+      )
     }
   }
 
@@ -123,7 +132,7 @@ class PlayerDetailEdit extends React.Component {
       aspect: [4, 3],
     })
 
-    this.setState({imgUrl: result.uri})
+    if (!result.cancelled) this.setState({imgUrl: result.uri})
   }
 
   _takePicture = () => {
@@ -159,7 +168,7 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     updateUserInfo: async (userId, form) => {
       await dispatch(updateUser(userId, form))
-      ownProps.navigation.navigate('PlayerDetail')
+      ownProps.navigation.navigate('Profile')
     }
   }
 }

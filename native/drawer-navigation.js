@@ -30,11 +30,8 @@ const DrawerStack = DrawerNavigator({
   Scores: {
     screen: Scores
   },
-  PlayerDetail: {
+  Profile: {
     screen: PlayerDetail
-  },
-  PlayerDetailEdit: {
-    screen: PlayerDetailEdit
   },
   SelectTasks: {
     screen: SelectTasks
@@ -84,13 +81,16 @@ const MainNavigation = StackNavigator({
   Play: {
     screen: Play
   },
+  PlayerDetailEdit: {
+    screen: PlayerDetailEdit
+  },
 }, {
   headerMode: 'float',
   navigationOptions: ({navigation}) => ({
     headerStyle: {backgroundColor: '#747578'},
     headerTitle: (<Image style={styles.logo} source={require('./public/dwellplayd_logo.png')} />),
     headerTintColor: 'white',
-    headerLeft: <Icon name='menu' style={styles.menu} onPress={() =>
+    headerLeft: <Icon name="menu" style={styles.menu} onPress={() =>
       navigation.navigate('DrawerToggle')} />,
     gesturesEnabled: false
   }),

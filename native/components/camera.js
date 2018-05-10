@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import {Icon} from 'native-base'
+import {Icon, Button} from 'native-base'
 import { Camera, Permissions } from 'expo';
 
 class CameraComponent extends Component {
@@ -8,6 +8,16 @@ class CameraComponent extends Component {
     hasCameraPermission: null,
     type: Camera.Constants.Type.front,
   };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button transparent onPress={() => navigation.goBack()}>
+          <Icon style={{color: '#D4F5F5'}} name="arrow-back" />
+        </Button>
+      )
+    }
+  }
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -35,6 +45,7 @@ class CameraComponent extends Component {
                   flex: 0.1,
                   alignSelf: 'flex-end',
                   alignItems: 'center',
+                  margin: 10,
                 }}
                 onPress={() => {
                   this.setState({
@@ -43,16 +54,14 @@ class CameraComponent extends Component {
                       : Camera.Constants.Type.back,
                   });
                 }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
+                <Icon name="sync" active style={{color: 'white', fontSize: 30}} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   flex: 1,
                   alignSelf: 'flex-end',
                   alignItems: 'center',
+                  margin: 7,
                 }}
                 onPress={async () => {
                   if(this.camera){
