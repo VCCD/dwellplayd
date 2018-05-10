@@ -38,14 +38,11 @@ export const clearCommunityTasks = () => ({
 
 //thunks
 
-export const playThunkerator = (tasks) => {
+export const playThunkerator = (task) => {
   return async (dispatch) => {
     try {
-      const taskPromises = tasks.map(task => {
-        return axios.post(`${apiURL}/communities/${task.communityId}/task-items`, task)
-      })
-      await Promise.all(taskPromises)
-      dispatch(fetchCommunityTaskItems(tasks[0].communityId))
+      const newTask = await axios.post(`${apiURL}/communities/${task.communityId}/task-items`, task)
+      dispatch(fetchCommunityTaskItems(newTask.data.communityId))
     }
     catch (err) {
       console.log(err)

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ListView, Slider } from 'react-native';
+import { StyleSheet, Text, ListView, Slider, View } from 'react-native';
 import {
   Container,
   Content,
   Card,
   CardItem,
-  Body,
   Icon,
   List,
   Item,
@@ -13,6 +12,7 @@ import {
   Button,
 } from 'native-base';
 import store, {
+  playThunkerator,
   editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
   getSuggestedTasksFromServerThunkerator,
@@ -20,6 +20,37 @@ import store, {
   deleteCommunityTaskThunkerator,
 } from '../store'
 import { connect } from 'react-redux';
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  list: {
+    backgroundColor: '#fff',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+  },
+  left: {
+    height: 50,
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  score: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  text: {
+    color: '#747578',
+    fontSize: 16
+  }
+});
 
 class SelectTasks extends Component {
   constructor(props) {
@@ -62,18 +93,15 @@ class SelectTasks extends Component {
     store.dispatch(deleteCommunityTaskThunkerator(this.props.communityTasks[rowId]))
   }
 
+  activateTask = async (task) => {
+    console.log(task)
+    await store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
+    await store.dispatch(playThunkerator(task))
+  }
+
   static navigationOptions = ({ navigation }) => {
     return {
-      headerRight: (
-        <Button
-          transparent
-          style={{marginRight: 20}}
-          onPress={() => navigation.navigate('Play')}>
-          <Text style={{fontWeight: 'bold', fontSize: 18, color: '#D4F5F5'}}>
-            Play!
-          </Text>
-        </Button>
-      ),
+      title: 'Add / Edit Tasks'
     }
   }
 
@@ -89,6 +117,16 @@ class SelectTasks extends Component {
           return 1;
         }
         return 0;
+      }).sort((a, b) => {
+        const aInactive = !this.props.taskItems.some(task => task.taskId === a.task.id && !task.completed)
+        const bInactive = !this.props.taskItems.some(task => task.taskId === b.task.id && !task.completed)
+        if (aInactive && !bInactive) {
+          return -1
+        }
+        if (!aInactive && bInactive) {
+          return 1
+        }
+        return 0
       })
 
 
@@ -113,23 +151,28 @@ class SelectTasks extends Component {
           <List
             dataSource={this.ds.cloneWithRows(communityTasks)}
             renderRow={comTask => {
-              const active = this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
-              const color = active ? 'black' : 'red'
+              const inactive = !this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
+              const color = inactive ? 'red' : '#747578'
               return (
               <Card key={comTask.id}>
-                <CardItem>
-                  <Body>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold', color }}>
-                      {comTask.task.name}
-                    </Text>
-                    <Text>
+                <CardItem style={styles.header} >
+                  <View style={styles.left}>
+                    <Text style={{color, fontSize: 16, fontWeight: 'bold' }}>{comTask.task.name}</Text>
+                    <Text style={styles.text}>
                       {
                         comTask.value === 1
                           ? `Every day`
                           : `Every ${comTask.value} days`
                       }
                     </Text>
-                  </Body>
+                  </View>
+                    {
+                      inactive
+                        ? <Button transparent onPress={() => this.activateTask(comTask)} ><Text style={{ marginRight: 15, fontSize: 15, fontWeight: 'bold', color }}>
+                            Activate
+                          </Text></Button>
+                        : ''
+                    }
                 </CardItem>
                 <Slider
                   style={{ marginLeft: 20, marginRight: 20 }}
@@ -156,29 +199,6 @@ class SelectTasks extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  titleText: {
-    color: '#DBD56E',
-    fontWeight: 'bold',
-
-  },
-  button: {
-    padding: 10,
-    margin: 10,
-    width: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: '#D4F5F5',
-  }
-});
 
 const mapState = ({ communityTasks, suggestedTasks, community, taskItems }) => ({ communityTasks, suggestedTasks, community, taskItems })
 

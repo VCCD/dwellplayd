@@ -20,21 +20,12 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const task = req.body
-    const taskItemIsActive = await TaskItem.findOne({
-      where: {
-        taskId: task.taskId,
-        communityId: task.communityId,
-        completed: null,
-      }
+    const createdTask = await TaskItem.create({
+      taskId: task.taskId,
+      communityId: task.communityId,
+      value: task.value,
     })
-    if (!taskItemIsActive) {
-      await TaskItem.create({
-        taskId: task.taskId,
-        communityId: task.communityId,
-        value: task.value,
-      })
-    }
-    res.send(201)
+    res.json(createdTask)
   }
   catch (err) {
     next(err)
