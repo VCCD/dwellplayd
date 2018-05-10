@@ -46,9 +46,9 @@ const DrawerStack = DrawerNavigator({
   Stats: {
     screen: Stats
   },
-  // Push:{
-  //   screen:Push
-  // },
+  Push:{
+    screen:Push
+  },
   Logout: {
     screen: Logout
   }
