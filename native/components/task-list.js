@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { Container, Content, ActionSheet, Text, Button } from 'native-base'
-import TaskCard from './task-card'
+import { TaskCard } from '../components'
 import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores} from '../store'
 import Modal from 'react-native-modal'
 
