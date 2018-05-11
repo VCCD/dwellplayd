@@ -46,8 +46,6 @@ class TaskList extends React.Component {
             action: 'proof',
             task: clickedTask,
           })
-          // clickedTask.completed = new Date()
-          // completeTask(clickedTask)
         }
       }
     )
