@@ -4,12 +4,16 @@ import CONFIG from '../api-routes'
 const apiURL = CONFIG.API_URL
 
 const GET_COMMUNITY_TASK_ITEMS = 'GET_COMMUNITY_TASK_ITEMS'
+const CLEAR_COMMUNITY_TASK_ITEMS = 'CLEAR_COMMUNITY_TASK_ITEMS'
 
 //action creators
 
 export const getCommunityTaskItems = taskItems => ({
   type: GET_COMMUNITY_TASK_ITEMS,
   taskItems
+})
+export const clearCommunityTaskItems = () => ({
+  type: CLEAR_COMMUNITY_TASK_ITEMS
 })
 
 //thunks
@@ -36,6 +40,7 @@ export const completeTaskItem = taskItem => {
       })
       const taskItems = await axios.get(`${apiURL}/communities/${taskItem.communityId}/task-items`)
       dispatch(getCommunityTaskItems(taskItems.data))
+      await axios.post(`${apiURL}/push/`, taskItem)
     }
     catch (err) {
       console.log(err)
@@ -48,6 +53,8 @@ export default (prevState = [], action) => {
   switch (action.type) {
     case GET_COMMUNITY_TASK_ITEMS:
       return action.taskItems
+    case CLEAR_COMMUNITY_TASK_ITEMS:
+      return []
     default: return prevState
   }
 }
