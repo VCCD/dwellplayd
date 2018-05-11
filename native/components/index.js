@@ -1,5 +1,6 @@
 
 export {default as TaskList} from './task-list'
+export {default as TaskCard} from './task-card'
 export {default as PastTasks} from './past-tasks'
 export {default as SelectTasks} from './select-tasks'
 export {default as Scores} from './scores'
@@ -20,3 +21,5 @@ export {default as ConfirmImage} from './confirm-image'
 export {default as Push} from './push'
 export {default as Play} from './play'
 export {default as LoadingScreen} from './loading-screen'
+export {default as FrequencySlider} from './frequency-slider'
+export {default as SelectTaskItem} from './select-task-item'

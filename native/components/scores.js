@@ -1,12 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchUserScores, fetchPastWinners } from '../store';
+import { TaskCard } from '../components'
 
 class Scores extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      userBeingViewed: 0,
+    }
+  }
   static navigationOptions = {
-    title: 'Scores'
+    title: 'Scores',
   }
 
   componentDidMount = () => {
@@ -14,6 +21,11 @@ class Scores extends React.Component {
     const month = new Date().getMonth()
     getCurrentScores(user.communityId, month)
     getPastWinners(user.communityId)
+  }
+
+  changeUserBeingViewed (userId) {
+    if (userId === this.state.userBeingViewed) this.setState({userBeingViewed: 0})
+    else this.setState({userBeingViewed: userId})
   }
 
   render() {
@@ -27,18 +39,36 @@ class Scores extends React.Component {
             {`${month[date.getMonth()]} scores:`}
           </Text>
           <View>
-            <Card >
+            <Card>
               {sortedScores.map(user => {
-                const { firstName, lastName, score } = user
+                const { id, firstName, lastName, score } = user
                 return (
-                  <CardItem bordered style={styles.cardItem} key={firstName + lastName}>
-                    <Text style={styles.nameText}>
-                      {firstName}
-                    </Text>
-                    <Text style={styles.scoreText}>
-                      {score}
-                    </Text>
-                  </CardItem>
+                  <View key={firstName + lastName + id}>
+                  <TouchableOpacity transparent onPress={() => this.changeUserBeingViewed(id)}>
+                    <CardItem bordered style={styles.cardItem}>
+                      <Text style={styles.nameText}>
+                        {firstName}
+                      </Text>
+                      <Text style={styles.scoreText}>
+                        {score}
+                      </Text>
+                    </CardItem>
+                  </TouchableOpacity>
+                  {
+                    this.state.userBeingViewed === id
+                      ? <View style={{backgroundColor: '#8C9A9E'}}>
+                          {this.props.taskItems
+                            .filter(taskItem => taskItem.completed && taskItem.completed.split(`-`)[1] - 1 === new Date().getMonth())
+                            .filter(taskItem => taskItem.userId === id)
+                            .map(taskItem => {
+                            return (
+                              <TaskCard key={taskItem.id} taskItem={taskItem} handleClick={() => {}} />
+                            )
+                          })}
+                        </View>
+                      : ''
+                  }
+                  </View>
                 )
               })}
             </Card>
@@ -66,13 +96,7 @@ class Scores extends React.Component {
   }
 }
 
-const mapState = state => {
-  return {
-    user: state.user,
-    userScores: state.userScores,
-    pastWinners: state.pastWinners,
-  }
-}
+const mapState = ({ user, userScores, pastWinners, taskItems }) => ({ user, userScores, pastWinners, taskItems })
 
 const mapDispatch = dispatch => {
   return {

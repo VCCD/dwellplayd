@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, ListView, Slider, View } from 'react-native';
+import { StyleSheet, Text, ListView, View } from 'react-native';
+import { SelectTaskItem } from '../components'
 import Modal from 'react-native-modal'
 import {
   Container,
   Content,
-  Card,
-  CardItem,
   Icon,
   List,
   Item,
@@ -14,7 +13,6 @@ import {
 } from 'native-base';
 import store, {
   playThunkerator,
-  editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
@@ -40,9 +38,12 @@ const styles = StyleSheet.create({
     borderColor: '#8C9A9E',
   },
   button: {
+    height: 45,
+    alignSelf: 'flex-end',
     backgroundColor: '#93B7BE',
-    padding: 12,
-    margin: 16,
+    padding: 5,
+    margin: 5,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#8C9A9E',
@@ -92,9 +93,9 @@ class SelectTasks extends Component {
 
   _renderButton = (text, onPress) => (
     <View>
-    <Button rounded onPress={onPress} style={styles.button} >
-        <Text style={{color: '#D4F5F5'}}>{text}</Text>
-    </Button>
+      <Button rounded onPress={onPress} style={styles.button} >
+        <Text style={{ color: '#D4F5F5' }}>{text}</Text>
+      </Button>
     </View>
   );
 
@@ -129,10 +130,6 @@ class SelectTasks extends Component {
     store.dispatch(addCustomCommunityTaskThunkerator(newTask, this.props.community.id))
   }
 
-  change = (value) => {
-    store.dispatch(editCommunityTask({ ...this.state.activeTask, value }))
-  }
-
   deleteRow(secId, rowId, rowMap, data) {
     rowMap[`${secId}${rowId}`].props.closeRow();
     store.dispatch(deleteCommunityTaskThunkerator(this.props.communityTasks[rowId]))
@@ -153,25 +150,27 @@ class SelectTasks extends Component {
   render() {
     const communityTasks =
       this.props.communityTasks.sort((a, b) => {
-        const aInactive = !this.props.taskItems.some(task => task.taskId === a.task.id && !task.completed)
-        const bInactive = !this.props.taskItems.some(task => task.taskId === b.task.id && !task.completed)
-        var nameA = a.task.name.toUpperCase()
-        var nameB = b.task.name.toUpperCase()
-        if (aInactive && !bInactive) return -1
-        else if (!aInactive && bInactive) return 1
-        else if (nameA < nameB) return -1
-        else if (nameA > nameB) return 1
+        var dateA = a.task.createdAt
+        var dateB = b.task.createdAt
+        if (dateA < dateB) return 1
+        if (dateA > dateB) return -1
         return 0
       })
 
     return (
       <Container style={styles.list}>
-        <Content contentContainerStyle={{backgroundColor: '#8C9A9E'}}>
+        <Content contentContainerStyle={{ backgroundColor: '#8C9A9E' }}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
           <Item
             rounded
             style={{
+              flex: 1,
+              height: 45,
+              margin: 5,
               marginLeft: 10,
-              margin: 10,
               paddingLeft: 10,
               borderColor: '#D4F5F5'
             }}>
@@ -183,45 +182,24 @@ class SelectTasks extends Component {
               style={styles.text}
             />
           </Item>
+          <Button rounded style={styles.button} onPress={this.handleAddTask} ><Icon name="add" /></Button>
+          </View>
           <List
             dataSource={this.ds.cloneWithRows(communityTasks)}
             renderRow={comTask => {
               const inactive = !this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
-              const color = inactive ? 'red' : '#747578'
               return (
-                <View style={{backgroundColor: '#8C9A9E'}}>
-              <Card key={comTask.id} style={styles.card}>
-                <CardItem style={styles.header} >
-                  <View style={styles.left}>
-                    <Text style={{color, fontSize: 16, fontWeight: 'bold' }}>{comTask.task.name}</Text>
-                    <Text style={styles.textSlide}>
-                      {
-                        comTask.value === 1
-                          ? `Every day`
-                          : `Every ${comTask.value} days`
-                      }
-                    </Text>
-                  </View>
-                    {
-                      inactive
-                        ? <Button transparent onPress={() => this.activateTask(comTask)} ><Text style={{ marginRight: 15, fontSize: 15, fontWeight: 'bold', color, alignSelf: 'flex-start' }}>
-                            Activate
-                          </Text></Button>
-                        : ''
-                    }
-                </CardItem>
-                <Slider
-                  style={{ marginLeft: 20, marginRight: 20 }}
-                  step={1}
-                  maximumValue={30}
-                  minimumValue={1}
-                  onTouchStart={() => this.setState({ activeTask: comTask })}
-                  onTouchEnd={() => this.setState({ activeTask: {} })}
-                  onValueChange={this.change}
-                  value={comTask.value} />
-              </Card>
-              </View>
-            )}}
+                <View style={{ backgroundColor: '#8C9A9E' }}>
+                  <SelectTaskItem
+                    change={this.change}
+                    activateTask={this.activateTask}
+                    inactive={inactive}
+                    styles={styles}
+                    comTask={comTask}
+                    key={comTask.id} />
+                </View>
+              )
+            }}
             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
               (<Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
                 <Icon active name="trash" />
@@ -230,15 +208,15 @@ class SelectTasks extends Component {
           />
 
         </Content>
-          <Modal
-            isVisible={this.props.isNewUser}
-            animationInTiming={2000}
-            animationOutTiming={2000}
-            backdropTransitionInTiming={2000}
-            backdropTransitionOutTiming={2000}
-          >
-            {this._renderModalContent()}
-          </Modal>
+        <Modal
+          isVisible={this.props.isNewUser}
+          animationInTiming={2000}
+          animationOutTiming={2000}
+          backdropTransitionInTiming={2000}
+          backdropTransitionOutTiming={2000}
+        >
+          {this._renderModalContent()}
+        </Modal>
       </Container>
 
     );

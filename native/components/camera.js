@@ -7,6 +7,8 @@ class CameraComponent extends Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.front,
+    action: null,
+    task: {}
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -22,6 +24,10 @@ class CameraComponent extends Component {
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
+    let direction = this.props.navigation.getParam('direction')
+    let action = this.props.navigation.getParam('action')
+    let task = this.props.navigation.getParam('task')
+    this.setState({type: Camera.Constants.Type[direction], action: action, task: task})
   }
 
   render() {
@@ -67,7 +73,9 @@ class CameraComponent extends Component {
                   if(this.camera){
                     var res = await this.camera.takePictureAsync()
                     this.props.navigation.navigate('ConfirmImage', {
-                      img: res.uri
+                      img: res.uri,
+                      action: this.state.action,
+                      task: this.state.task
                     })
                   }
                 }}>
