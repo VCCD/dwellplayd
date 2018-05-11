@@ -1,20 +1,34 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Card, CardItem } from 'native-base'
-import { connect } from 'react-redux'
+import Image from 'react-native-image-progress';
+import ProgressPie from 'react-native-progress/Pie';
+
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
 
 const TaskCard = (props) => {
   const { taskItem } = props
   const daysAgo = (new Date() - Date.parse(taskItem.completed)) / (1000 * 60 * 60 * 24)
-  console.log(taskItem)
   return (
     <Card>
+      <CardItem><Image
+      source={{uri: taskItem.imgUrl}} style={styles.img}
+      indicator={ProgressPie}
+      indicatorProps={{
+        size: 80,
+        color: '#D4F5F5',
+        unfilledColor: '#747578'
+      }}
+      style={styles.img}
+      /></CardItem>
       <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
         <View style={styles.left}>
           <Text style={styles.text}>{taskItem.task.name}</Text>
-          <Text style={styles.text}>{`${taskItem.completer.firstName} - ${daysAgo} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
+          <Text style={styles.text}>{`${taskItem.completer.firstName} - ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
         </View>
-        <Text style={styles.score} >{taskItem.points}</Text>
+        <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
       </CardItem>
     </Card>
   )
@@ -41,6 +55,11 @@ const styles = StyleSheet.create({
   text: {
     color: '#747578',
     fontSize: 16
+  },
+  img: {
+    aspectRatio: 1,
+    height: 400,
+    flex: 1
   }
 });
 

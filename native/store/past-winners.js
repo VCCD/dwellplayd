@@ -8,10 +8,12 @@ const defaultPastWinners = []
 /*--------actions-------*/
 
 const GET_PAST_WINNERS = 'GET_PAST_WINNERS'
+const CLEAR_PAST_WINNERS = 'CLEAR_PAST_WINNERS'
 
 /*--------action creators-------*/
 
 const getPastWinners = users => ({ type: GET_PAST_WINNERS, users })
+export const clearPastWinners = () => ({ type: CLEAR_PAST_WINNERS })
 
 /*--------thunk creators-------*/
 
@@ -43,6 +45,8 @@ export default function (state = defaultPastWinners, action) {
   switch (action.type) {
     case GET_PAST_WINNERS:
       return action.users;
+    case CLEAR_PAST_WINNERS:
+      return []
     default:
       return state;
   }

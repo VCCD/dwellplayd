@@ -6,10 +6,12 @@ const apiURL = CONFIG.API_URL
 /*--------actions-------*/
 
 const GET_COMMUNITY = 'GET_COMMUNITY'
+const CLEAR_COMMUNITY = 'CLEAR_COMMUNITY'
 
 /*--------action creators-------*/
 
 const getCommunity = community => ({ type: GET_COMMUNITY, community })
+export const clearCommunity = () => ({ type: CLEAR_COMMUNITY })
 
 /*--------thunk creators-------*/
 
@@ -54,6 +56,8 @@ export default function (state = {}, action) {
   switch (action.type) {
     case GET_COMMUNITY:
       return action.community;
+    case CLEAR_COMMUNITY:
+      return {}
     default:
       return state;
   }

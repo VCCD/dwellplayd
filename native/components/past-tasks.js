@@ -28,7 +28,6 @@ class PastTasks extends React.Component {
   }
 
   handleClick = clickedTask => {
-    console.log(clickedTask)
     const { user, community } = this.props
     const { completeTask } = this.props
     ActionSheet.show(

@@ -1,6 +1,13 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
-import { fetchCommunity } from '../store'
+import {
+  fetchCommunity,
+  clearCommunityTasks,
+  clearCommunity,
+  clearPastWinners,
+  clearUserScores,
+  clearCommunityTaskItems,
+} from '../store'
 
 const authURL = CONFIG.AUTH_URL
 const apiURL = CONFIG.API_URL
@@ -31,6 +38,7 @@ export const me = () => dispatch => {
 }
 
 export const updateUser = (userId, form) => dispatch => {
+  console.log('axios getting called')
     axios.
     put(`${apiURL}/users/${userId}`, form)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
@@ -39,6 +47,7 @@ export const updateUser = (userId, form) => dispatch => {
 
 export const addUserToCommunity = (communityId, user) => dispatch => {
     user.communityId = communityId
+    console.log('api put to user to update communityId')
     axios.
     put(`${apiURL}/users/${user.id}`, user)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
@@ -85,8 +94,13 @@ export const signup = (body) => (dispatch) => {
 
 export const logout = () => dispatch =>
   axios
-    .post('/auth/logout' )
+    .post(`${authURL}/logout` )
     .then(_ => {
+      dispatch(clearCommunityTasks())
+      dispatch(clearCommunity())
+      dispatch(clearPastWinners())
+      dispatch(clearUserScores())
+      dispatch(clearCommunityTaskItems())
       dispatch(logoutUser());
 
       //history.push('/login');
