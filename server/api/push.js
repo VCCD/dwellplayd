@@ -1,4 +1,3 @@
-
 const router = require('express').Router()
 const { User, Community, TaskItem, Task } = require('../db/models')
 

@@ -19,7 +19,6 @@ import {
   ConfirmImage,
   Play,
   LoadingScreen,
-  Push
 } from './components'
 import {Icon, Button} from 'native-base'
 
