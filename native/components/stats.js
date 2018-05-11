@@ -33,7 +33,7 @@ class Stats extends React.Component{
       return (  
       <Container style={styles.container}>
       <ScrollView>
-      <View style={{marginTop: 22}}>
+      <View style={{margin: 22}}>
       <Modal
       animationType="slide"
       transparent={false}
@@ -56,9 +56,9 @@ class Stats extends React.Component{
     </Modal>
     <TouchableHighlight
           onPress={() => {
-            this.setModalVisible(true);
+            this.setModalVisible(false);
           }}>
-          <Text>Show Modal</Text>
+          <Text>Hide Modal</Text>
         </TouchableHighlight>
       </View>
 
