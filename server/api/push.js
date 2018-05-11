@@ -1,7 +1,6 @@
 
 const router = require('express').Router()
 const { User, Community, TaskItem, Task } = require('../db/models')
-module.exports = router
 
 const axios = require(`axios`)
 
@@ -23,25 +22,8 @@ const push = async taskItem => {
       body: message
     }
   })
-  // console.log(messages)
   const res = await axios.post(`https://exp.host/--/api/v2/push/send`,
-    [
-      // {
-      //   "to": "ExponentPushToken[rL6zOCOO_WcbhzsDaK2jQA]",
-      //   "sound": "default",
-      //   "body": "test"
-      // },
-      {
-        "to": "ExponentPushToken[K9C1u6HwmglBjUVAhX1kwJ]",
-        "sound": "default",
-        "body": "test"
-      },
-      {
-        "to": "ExponentPushToken[rL6zOCOO_WcbhzsDaK2jQA]",
-        "sound": "default",
-        "body": "test"
-      },
-    ],
+    messages,
     {
       headers: {
         accept: 'application/json',
@@ -53,15 +35,15 @@ const push = async taskItem => {
   console.log(res.data)
 }
 
-// router.post(`/`, async (req, res, next) => {
-//   try {
-//     const notification = await push(req.body)
-//     res.json(notification)
-//   }
-//   catch (err) {
-//     next(err)
-//   }
-// })
+router.post(`/`, async (req, res, next) => {
+  const taskItem = req.body
+  try {
+    const notification = await push(taskItem)
+    res.json(notification)
+  }
+  catch (err) {
+    next(err)
+  }
+})
 
-const test = { id: 24 }
-push(test)
+module.exports = router

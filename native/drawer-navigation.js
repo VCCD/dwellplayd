@@ -19,6 +19,7 @@ import {
   ConfirmImage,
   Play,
   LoadingScreen,
+  Push
 } from './components'
 import {Icon} from 'native-base'
 
@@ -44,6 +45,9 @@ const DrawerStack = DrawerNavigator({
   },
   Stats: {
     screen: Stats
+  },
+  Push: {
+    screen: Push
   },
   Logout: {
     screen: Logout

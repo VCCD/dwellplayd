@@ -36,6 +36,7 @@ export const completeTaskItem = taskItem => {
       })
       const taskItems = await axios.get(`${apiURL}/communities/${taskItem.communityId}/task-items`)
       dispatch(getCommunityTaskItems(taskItems.data))
+      await axios.post(`${apiURL}/push/`, taskItem)
     }
     catch (err) {
       console.log(err)
