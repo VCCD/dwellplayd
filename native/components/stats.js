@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {StyleSheet, View, FlatList, ScrollView, Modal, Text, TouchableHighlight} from 'react-native'
+import {StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight} from 'react-native'
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel } from "victory-native";
-import { Container } from 'native-base';
+import { Container, Text, Button, Header, Title, Subtitle } from 'native-base';
 import { fetchUserScores } from '../store';
 
 const roundToTenths = num => {
@@ -14,7 +14,10 @@ class Stats extends React.Component{
     constructor(){
       super()
       this.state={
-        modalVisible:false
+        modalVisible:false,
+        selectedUser: null,
+        selectedUserName: null,
+        selectedUserPoints: null
       }
     }
 
@@ -41,25 +44,26 @@ class Stats extends React.Component{
       onRequestClose={() => {
         alert('Modal has been closed.');
       }}>
-      <View style={{marginTop: 22}}>
-        <View>
-          <Text>Hello World!</Text>
+      
+        
 
+          <Header style={styles.header}>
+          <Title style={ {color: "white", fontSize: 30} }>{this.state.selectedUserName}</Title>
+          
+          <Subtitle style={ {color: "white", fontSize: 20} }>{this.state.selectedUserPoints}</Subtitle>
+          
           <TouchableHighlight
             onPress={() => {
-              this.setModalVisible(!this.state.modalVisible);
+              this.setState({modalVisible:false});
             }}>
-            <Text>Hide Modal</Text>
+            
+            <Text style={ {color: "white", fontSize: 20} }> X</Text>
           </TouchableHighlight>
-        </View>
-      </View>
+          </Header>
+      
+      
     </Modal>
-    <TouchableHighlight
-          onPress={() => {
-            this.setModalVisible(false);
-          }}>
-          <Text>Hide Modal</Text>
-        </TouchableHighlight>
+    
       </View>
 
 
@@ -94,13 +98,17 @@ class Stats extends React.Component{
         events={[{
           target: "data",
           eventHandlers: {
-            onPress: () => {return [
+            onPress: () => {
+              return [
               {
                 target: "data",
                 mutation: (props) => {
                   const fill = props.style && props.style.fill;
-                  this.setState({modalVisible:true})
+                  this.setState({modalVisible:true, selectedUser:props.datum.userID, selectedUserName:props.datum.x, selectedUserPoints:props.datum.y})
+                  console.log(props, '<<<<<<<<<<<<< props')
+                  console.log(props.datum.x)
                   return fill === "#747578" ? null : { style: { fill: "#747578", width: 35 } };
+                  
                 }
               }
             ]}
@@ -109,13 +117,13 @@ class Stats extends React.Component{
         }]}
        
         data={
-        userScores.map(user => {return { 'x': user.firstName, 'y': roundToTenths(user.score), label: roundToTenths(user.score)}})
+        userScores.map(user => {return { x: user.firstName, y: roundToTenths(user.score), label: roundToTenths(user.score), userID:user.id}})
       }
       animate={{
         onEnter: {
           duration: 1000,
           before: () => ({
-            y: 0,
+            y: 0, 
           })
         },
         onExit: {
@@ -161,6 +169,12 @@ const styles = StyleSheet.create({
     container: {
       flex: 2,
       alignItems: 'center',
+      justifyContent: 'center',
+    },
+    header: {
+      height: 110,
+      backgroundColor: '#000000',
+      justifyContent: 'center',
     }
 })
 
