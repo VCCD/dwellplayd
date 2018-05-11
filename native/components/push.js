@@ -1,93 +1,35 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Button } from 'native-base'
-import { sendPushNotifications } from '../store/push'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
 
 import Expo from 'expo';
 
-const PUSH_ENDPOINT = 'http://172.17.20.52:8080/api';
-
-let token = ''
-async function getToken() {
-  if (!Expo.Constants.isDevice) {
-    return;
-  }
-  let { status } = await Expo.Permissions.askAsync(
-    Expo.Permissions.NOTIFICATIONS,
-  );
-  if (status !== 'granted') {
-    return;
-  }
-  token = await Expo.Notifications.getExpoPushTokenAsync();
-  console.log('Our expo push token', token);
-  /// Send this to a server
-
-  return token
-}
-
 class Push extends Component {
-  constructor() {
-    super()
-    this.state = {}
-    this.pushToken = token
-  }
-  
-  async componentDidMount() {
 
-    await this.setState({ "firstName": this.props.user.firstName, "lastName": this.props.user.lastName, "email": this.props.user.email })
-    if (this.props.user.pushToken === null) {
-      this.state['pushToken'] = await getToken();
+  getToken = async () => {
+    if (!Expo.Constants.isDevice) {
+      return;
     }
-
-    this.listener = await Expo.Notifications.addListener(this.handleNotification);
-  }
-
-  componentWillUnmount() {
-    this.listener && this.listener.remove();
-  }
-
-  handleNotifications = () => {
-    console.log(this.props)
-    var obj = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      pushToken: this.state.pushToken,
-      imgUrl: this.props.user.imgUrl,
-      communityId: this.props.user.communityId
+    let { status } = await Expo.Permissions.askAsync(
+      Expo.Permissions.NOTIFICATIONS,
+    );
+    if (status !== 'granted') {
+      return;
     }
-    this.props.pushTokenToDBS(this.props.user.id, obj)
+    const pushToken = await Expo.Notifications.getExpoPushTokenAsync();
+    const { user, pushTokenToDBS } = this.props
+    user.pushToken = pushToken
+    pushTokenToDBS(user.id, user)
+  }
 
-  };
+  componentDidMount() {
+    this.getToken();
+  }
 
   render() {
-
-    return (
-      <View style={styles.container}>
-        <Button rounded onPress={this.handleNotifications}><Text>Push test</Text></Button>
-        <Button rounded onPress={this.consolelogState}><Text>consolelog state</Text></Button>
-      </View>
-    );
+    return null
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-});
 
 const mapState = ({ user }) => ({ user });
 

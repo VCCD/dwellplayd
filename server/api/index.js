@@ -4,7 +4,6 @@ module.exports = router
 router.use('/users', require('./users'))
 router.use('/communities', require('./communities'))
 router.use('/tasks', require('./tasks'))
-router.use('/community-tasks', require('./community-tasks'))
 router.use('/task-items', require('./task-items'))
 router.use('/cloud', require('./cloud'))
 router.use('/push', require('./push'))
