@@ -21,7 +21,7 @@ import {
   Play,
   LoadingScreen,
 } from './components'
-import {Icon} from 'native-base'
+import {Icon, Button} from 'native-base'
 
 
 const DrawerStack = DrawerNavigator({
@@ -94,8 +94,9 @@ const MainNavigation = StackNavigator({
     headerStyle: {backgroundColor: '#747578'},
     headerTitle: (<Image style={styles.logo} source={require('./public/dwellplayd_logo.png')} />),
     headerTintColor: 'white',
-    headerLeft: <Icon name="menu" style={styles.menu} onPress={() =>
-      navigation.navigate('DrawerToggle')} />,
+    headerLeft: <Button
+      transparent
+      onPress={() => navigation.navigate('DrawerToggle')} ><Icon name="menu" style={styles.menu} /></Button>,
     gesturesEnabled: false
   }),
 })
@@ -103,6 +104,7 @@ const MainNavigation = StackNavigator({
 const styles = StyleSheet.create({
   menu: {
     marginLeft: 10,
+    fontSize: 32,
     color: '#D4F5F5',
   },
   logo: {
