@@ -59,7 +59,7 @@ class TaskList extends React.Component {
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>Oh no! You don't have any tasks to complete</Text>
+      <Text>Oh no! You do not have any tasks to complete</Text>
       {this._renderButton('Add Tasks', () => this.props.navigation.navigate('SelectTasks'))}
     </View>
   )
