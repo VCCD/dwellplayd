@@ -8,6 +8,10 @@ const roundToTenths = num => {
   return Math.round(num * 10) / 10
 }
 
+const roundToTenths = num => {
+  return Math.round(num * 10) / 10
+}
+
 const TaskCard = (props) => {
   const { taskItem } = props
   const daysAgo = (new Date() - Date.parse(taskItem.completed)) / (1000 * 60 * 60 * 24)
