@@ -1,61 +1,89 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View } from 'react-native';
-import { Container, Content, Card, CardItem, Button } from 'native-base'
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { Container, Content, Card, CardItem, Button, ActionSheet } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchCommunity, fetchUserScores } from '../store'
+import { ImagePicker, Permissions } from 'expo'
+
+const BUTTONS = [
+  'Take photo',
+  'Choose from Library',
+  'Cancel'
+]
+
+const CANCEL_INDEX = 2;
 
 class PlayerDetail extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: 'Player Detail',
-      headerRight: (
-        <Button
-          transparent
-          style={{marginRight: 20}}
-          onPress={() => navigation.navigate('PlayerDetailEdit')}>
-          <Text style={styles.edit}>
-            Edit
-          </Text>
-        </Button>
-      ),
     }
   }
 
-  componentDidMount = () => {
-    const { getScores, user } = this.props
-    const month = new Date().getMonth()
-    getScores(user.communityId, month)
+  changePicture = () => {
+    ActionSheet.show({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    }, buttonIndex => {
+      if (buttonIndex === 0) this._takePicture()
+      if (buttonIndex === 1) this._pickImage()
+    })
+  }
+
+  _takePicture = () => {
+    this.props.navigation.navigate('Camera')
+  }
+
+  _pickImage = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    })
+
+    if (!result.cancelled) {
+      this.props.navigation.navigate('PlayerDetailEdit', {
+           img: result.uri
+         })
+    }
   }
 
   render() {
-    const { user, community, userScores } = this.props
-    const userScore = userScores.find(score => score.id === user.id)
+    const { user, navigation } = this.props
     return (
       <Container style={styles.list}>
         <Content>
-        <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
+        <View>
+        <TouchableOpacity onPress={() => this.changePicture()}>
+          <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
+        </TouchableOpacity>
+        </View>
         <View>
           <Card>
+            <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'firstName'})}>
+              <CardItem bordered style={styles.card}>
+                <Text style={styles.descriptor}>First Name</Text>
+                <Text style={styles.text}>
+                  {user.firstName}
+                </Text>
+              </CardItem>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'lastName'})}>
             <CardItem bordered style={styles.card}>
+              <Text style={styles.descriptor}>Last Name</Text>
               <Text style={styles.text}>
-                {`${user.firstName} ${user.lastName}`}
+                {user.lastName}
               </Text>
             </CardItem>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'email'})}>
             <CardItem bordered style={styles.card}>
+              <Text style={styles.descriptor}>Email</Text>
               <Text style={styles.text}>
-                Email: {user.email}
+                {user.email}
               </Text>
             </CardItem>
-            <CardItem bordered style={styles.card}>
-              <Text style={styles.text}>
-                Score: {userScore && userScore.score}
-              </Text>
-            </CardItem>
-            <CardItem bordered style={styles.card}>
-              <Text style={styles.text}>
-                Dwelling: {community.name}
-              </Text>
-            </CardItem>
+            </TouchableOpacity>
           </Card>
         </View>
         </Content>
@@ -66,22 +94,11 @@ class PlayerDetail extends React.Component {
 
 const mapState = state => {
   return {
-    community: state.community,
     user: state.user,
-    userScores: state.userScores,
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-    getCommunity: id => {
-      dispatch(fetchCommunity(id))
-    },
-    getScores: (communityId, month) => {
-      dispatch(fetchUserScores(communityId, month))
-    }
-  }
-}
+const mapDispatch = null
 
 export default connect(mapState, mapDispatch)(PlayerDetail)
 
@@ -125,6 +142,12 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#747578',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     height: 60,
-  }
+  },
+  descriptor: {
+    color: '#D9D9DA',
+    fontSize: 12,
+  },
 });
