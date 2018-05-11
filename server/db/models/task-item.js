@@ -1,13 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const roundToTenths = num => {
-  return Math.round(num * 10) / 10
-}
-
 const calcPoints = (days, value) => {
-  const points = (days / value) * 100
-  return roundToTenths(points)
+  return (days / value) * 100
 }
 
 const TaskItem = db.define('taskItem', {
@@ -23,8 +18,8 @@ const TaskItem = db.define('taskItem', {
       const now = new Date()
       const created = this.getDataValue(`createdAt`)
       const completed = this.getDataValue(`completed`)
-      const days = completed ? (completed - created) / 86400000 : (now - created) / 86400000
-      return roundToTenths(days)
+      if (completed) return (completed - created) / 86400000
+      else return (now - created) / 86400000
     }
   },
   points: {
