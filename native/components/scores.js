@@ -1,12 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchUserScores, fetchPastWinners } from '../store';
 
 class Scores extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      userBeingViewed: 0,
+    }
+  }
   static navigationOptions = {
-    title: 'Scores'
+    title: 'Scores',
   }
 
   componentDidMount = () => {
@@ -14,6 +20,11 @@ class Scores extends React.Component {
     const month = new Date().getMonth()
     getCurrentScores(user.communityId, month)
     getPastWinners(user.communityId)
+  }
+
+  changeUserBeingViewed (userId) {
+    if (userId === this.state.userBeingViewed) this.setState({userBeingViewed: 0})
+    else this.setState({userBeingViewed: userId})
   }
 
   render() {
@@ -27,18 +38,27 @@ class Scores extends React.Component {
             {`${month[date.getMonth()]} scores:`}
           </Text>
           <View>
-            <Card >
+            <Card>
               {sortedScores.map(user => {
-                const { firstName, lastName, score } = user
+                const { id, firstName, lastName, score } = user
                 return (
-                  <CardItem bordered style={styles.cardItem} key={firstName + lastName}>
-                    <Text style={styles.nameText}>
-                      {firstName}
-                    </Text>
-                    <Text style={styles.scoreText}>
-                      {score}
-                    </Text>
-                  </CardItem>
+                  <View key={firstName + lastName + id}>
+                  <TouchableOpacity transparent onPress={() => this.changeUserBeingViewed(id)}>
+                    <CardItem bordered style={styles.cardItem}>
+                      <Text style={styles.nameText}>
+                        {firstName}
+                      </Text>
+                      <Text style={styles.scoreText}>
+                        {score}
+                      </Text>
+                    </CardItem>
+                  </TouchableOpacity>
+                  {
+                    this.state.userBeingViewed === id
+                      ? <Text>I'm Here</Text>
+                      : ''
+                  }
+                  </View>
                 )
               })}
             </Card>
