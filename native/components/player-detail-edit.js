@@ -31,26 +31,34 @@ const UserEdit = t.struct({
 
 const Form = t.form.Form
 
-const options = {
-  stylesheet: customFormStyle,
-  fields: {
-    firstName: {
-      error: 'First name cannot be empty',
-    },
-    lastName: {
-      error: 'Last name cannot be empty'
-    },
-    email: {
-      error: 'Insert a valid email'
-    },
-  }
-}
-
 class PlayerDetailEdit extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      imgUrl: this.props.user.imgUrl
+      imgUrl: this.props.user.imgUrl,
+      firstNameFocus: false,
+      lastNameFocus: false,
+      emailFocus: false,
+    }
+  }
+
+  options = () => {
+    return {
+      stylesheet: customFormStyle,
+      fields: {
+        firstName: {
+          error: 'First name cannot be empty',
+          autoFocus: this.state.firstNameFocus,
+        },
+        lastName: {
+          error: 'Last name cannot be empty',
+          autoFocus: this.state.lastNameFocus,
+        },
+        email: {
+          error: 'Insert a valid email',
+          autoFocus: this.state.emailFocus,
+        },
+      }
     }
   }
 
@@ -79,6 +87,10 @@ class PlayerDetailEdit extends React.Component {
     if (newImg) {
       this.setState({imgUrl: newImg})
     }
+    let focus = this.props.navigation.getParam('focus')
+    if (focus === 'firstName') this.setState({firstNameFocus: true})
+    if (focus === 'lastName') this.setState({lastNameFocus: true})
+    if (focus === 'email') this.setState({emailFocus: true})
   }
 
   handleSubmit = () => {
@@ -150,7 +162,7 @@ class PlayerDetailEdit extends React.Component {
             ref={c => { this._form = c }}
             type={UserEdit}
             value={this.value}
-            options={options}
+            options={this.options}
           />
           <Button rounded style={styles.button} onPress={this.handleSubmit}><Text style={styles.text}>Update</Text></Button>
         </Content>
