@@ -30,12 +30,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalContent: {
-    backgroundColor: '#D4F5F5',
+    backgroundColor: '#fff',
     padding: 22,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    borderColor: '#8C9A9E',
+    borderColor: '#747578',
   },
   button: {
     height: 45,
