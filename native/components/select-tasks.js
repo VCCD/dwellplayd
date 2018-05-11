@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
     borderColor: '#8C9A9E',
   },
   button: {
-    flex: 1,
+    height: 45,
+    alignSelf: 'flex-end',
     backgroundColor: '#93B7BE',
-    padding: 12,
+    padding: 5,
     margin: 5,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#8C9A9E',
@@ -165,7 +167,9 @@ class SelectTasks extends Component {
           <Item
             rounded
             style={{
-              flex: 4,
+              flex: 1,
+              height: 45,
+              margin: 5,
               marginLeft: 10,
               paddingLeft: 10,
               borderColor: '#D4F5F5'
@@ -178,9 +182,7 @@ class SelectTasks extends Component {
               style={styles.text}
             />
           </Item>
-          <Button rounded style={styles.button} onPress={this.handleAddTask} ><Text style={{ fontSize: 15, fontWeight: 'bold', color: '#747578' }}>
-                    Add
-                  </Text></Button>
+          <Button rounded style={styles.button} onPress={this.handleAddTask} ><Icon name="add" /></Button>
           </View>
           <List
             dataSource={this.ds.cloneWithRows(communityTasks)}
