@@ -38,6 +38,7 @@ export const me = () => dispatch => {
 }
 
 export const updateUser = (userId, form) => dispatch => {
+  console.log('axios getting called')
     axios.
     put(`${apiURL}/users/${userId}`, form)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
@@ -46,6 +47,7 @@ export const updateUser = (userId, form) => dispatch => {
 
 export const addUserToCommunity = (communityId, user) => dispatch => {
     user.communityId = communityId
+    console.log('api put to user to update communityId')
     axios.
     put(`${apiURL}/users/${user.id}`, user)
     .then(res => dispatch(loginUser(res.data || defaultUser)))

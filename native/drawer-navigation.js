@@ -17,6 +17,7 @@ import {
   CustomHeader,
   CameraComponent,
   ConfirmImage,
+  Push,
   Play,
   LoadingScreen,
 } from './components'
@@ -44,6 +45,9 @@ const DrawerStack = DrawerNavigator({
   },
   Stats: {
     screen: Stats
+  },
+  Push:{
+    screen:Push
   },
   Logout: {
     screen: Logout

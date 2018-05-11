@@ -1,10 +1,13 @@
 import React from 'react'
 import { StyleSheet } from 'react-native';
+import { Container } from 'native-base';
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems } from '../store'
-import Push from './push'
 
 class Play extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
   componentDidMount = async () => {
     if (this.props.user.communityId) {
@@ -13,13 +16,14 @@ class Play extends React.Component {
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
       if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
       else this.props.navigation.navigate('SelectTasks')
+      
     }
     else {
       this.props.navigation.navigate('NoCommunity')
     }
   }
   render() {
-    return <Push />
+    return <Container style={styles.container} />
   }
 }
 const styles = StyleSheet.create({
