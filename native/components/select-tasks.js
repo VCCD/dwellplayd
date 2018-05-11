@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, ListView, Slider, View } from 'react-native';
-import { FrequencySlider, SelectTaskItem } from '../components'
+import { StyleSheet, Text, ListView, View } from 'react-native';
+import { SelectTaskItem } from '../components'
 import Modal from 'react-native-modal'
 import {
   Container,
   Content,
-  Card,
-  CardItem,
   Icon,
   List,
   Item,
@@ -15,7 +13,6 @@ import {
 } from 'native-base';
 import store, {
   playThunkerator,
-  editCommunityTask,
   submitCommunityTaskFrequenciesThunkerator,
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
@@ -41,9 +38,12 @@ const styles = StyleSheet.create({
     borderColor: '#8C9A9E',
   },
   button: {
+    height: 45,
+    alignSelf: 'flex-end',
     backgroundColor: '#93B7BE',
-    padding: 12,
-    margin: 16,
+    padding: 5,
+    margin: 5,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#8C9A9E',
@@ -150,25 +150,27 @@ class SelectTasks extends Component {
   render() {
     const communityTasks =
       this.props.communityTasks.sort((a, b) => {
-        const aInactive = !this.props.taskItems.some(task => task.taskId === a.task.id && !task.completed)
-        const bInactive = !this.props.taskItems.some(task => task.taskId === b.task.id && !task.completed)
-        var nameA = a.task.name.toUpperCase()
-        var nameB = b.task.name.toUpperCase()
-        if (aInactive && !bInactive) return -1
-        else if (!aInactive && bInactive) return 1
-        else if (nameA < nameB) return -1
-        else if (nameA > nameB) return 1
+        var dateA = a.task.createdAt
+        var dateB = b.task.createdAt
+        if (dateA < dateB) return 1
+        if (dateA > dateB) return -1
         return 0
       })
 
     return (
       <Container style={styles.list}>
         <Content contentContainerStyle={{ backgroundColor: '#8C9A9E' }}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
           <Item
             rounded
             style={{
+              flex: 1,
+              height: 45,
+              margin: 5,
               marginLeft: 10,
-              margin: 10,
               paddingLeft: 10,
               borderColor: '#D4F5F5'
             }}>
@@ -180,17 +182,17 @@ class SelectTasks extends Component {
               style={styles.text}
             />
           </Item>
+          <Button rounded style={styles.button} onPress={this.handleAddTask} ><Icon name="add" /></Button>
+          </View>
           <List
             dataSource={this.ds.cloneWithRows(communityTasks)}
             renderRow={comTask => {
               const inactive = !this.props.taskItems.some(task => task.taskId === comTask.task.id && !task.completed)
-              const color = inactive ? 'red' : '#747578'
               return (
                 <View style={{ backgroundColor: '#8C9A9E' }}>
                   <SelectTaskItem
                     change={this.change}
                     activateTask={this.activateTask}
-                    color={color}
                     inactive={inactive}
                     styles={styles}
                     comTask={comTask}
