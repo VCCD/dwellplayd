@@ -32,7 +32,7 @@ const push = async taskItem => {
       }
     },
   )
-  console.log(res.data)
+  res.json(res.data)
 }
 
 router.post(`/`, async (req, res, next) => {
