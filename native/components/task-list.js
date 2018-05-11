@@ -83,12 +83,12 @@ class TaskList extends React.Component {
           refreshing={this.state.refreshing}
           onRefresh={this.refresh} />}>
           <Content contentContainerStyle={styles.content}>
-            {sortedTaskItems.length ? sortedTaskItems.map(taskItem => {
+            {sortedTaskItems.length && sortedTaskItems.map(taskItem => {
               return (
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
-            })
-            : <Modal
+            })}
+          <Modal
             isVisible={!sortedTaskItems.length}
             animationInTiming={2000}
             animationOutTiming={2000}
@@ -96,7 +96,7 @@ class TaskList extends React.Component {
             backdropTransitionOutTiming={2000}
             >
             {this._renderModalContent()}
-          </Modal>}
+          </Modal>
           </Content>
         </ScrollView>
       </Container>
