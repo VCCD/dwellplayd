@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 import { fetchUserScores, fetchPastWinners } from '../store';
+import { TaskCard } from '../components'
 
 class Scores extends React.Component {
   constructor (props) {
@@ -55,7 +56,16 @@ class Scores extends React.Component {
                   </TouchableOpacity>
                   {
                     this.state.userBeingViewed === id
-                      ? <Text>I'm Here</Text>
+                      ? <View style={{backgroundColor: '#8C9A9E'}}>
+                          {this.props.taskItems
+                            .filter(taskItem => taskItem.completed && taskItem.completed.split(`-`)[1] - 1 === new Date().getMonth())
+                            .filter(taskItem => taskItem.userId === id)
+                            .map(taskItem => {
+                            return (
+                              <TaskCard key={taskItem.id} taskItem={taskItem} handleClick={() => {}} />
+                            )
+                          })}
+                        </View>
                       : ''
                   }
                   </View>
@@ -86,13 +96,7 @@ class Scores extends React.Component {
   }
 }
 
-const mapState = state => {
-  return {
-    user: state.user,
-    userScores: state.userScores,
-    pastWinners: state.pastWinners,
-  }
-}
+const mapState = ({ user, userScores, pastWinners, taskItems }) => ({ user, userScores, pastWinners, taskItems })
 
 const mapDispatch = dispatch => {
   return {
