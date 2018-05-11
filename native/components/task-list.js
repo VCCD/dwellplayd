@@ -6,7 +6,7 @@ import TaskCard from './task-card'
 import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores} from '../store'
 
 const BUTTONS = [
-  'Complete',
+  'Provide the Proof',
   'Cancel'
 ];
 const CANCEL_INDEX = 1;
@@ -31,8 +31,7 @@ class TaskList extends React.Component {
   }
 
   handleClick = clickedTask => {
-    const { user } = this.props
-    const { completeTask } = this.props
+    const { user, completeTask, navigation } = this.props
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -42,8 +41,11 @@ class TaskList extends React.Component {
       buttonIndex => {
         if (buttonIndex === 0) {
           clickedTask.userId = user.id
-          clickedTask.completed = new Date()
-          completeTask(clickedTask)
+          navigation.navigate('Camera', {
+            direction: 'back',
+            action: 'proof',
+            task: clickedTask,
+          })
         }
       }
     )

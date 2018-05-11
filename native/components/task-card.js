@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 
