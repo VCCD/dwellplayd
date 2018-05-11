@@ -20,7 +20,7 @@ class ConfirmImage extends Component{
       type: 'image/jpeg',
       name: `user-${Date.now()}.jpg`
     }
-
+    this.props.navigate
     const imgBody = new FormData()
     imgBody.append('image', image)
     const url = `${apiURL}/cloud/image-upload`
@@ -52,8 +52,8 @@ class ConfirmImage extends Component{
                       this.task.completed = new Date()
                       this.task.imgUrl = res.imgUrl
                       this.props.completeTask(this.task)
-                      this.props.navigation.navigate('Tasks')
                     })
+                    this.props.navigation.navigate('Tasks')
                   }
                   else {
                     this.props.navigation.navigate('PlayerDetailEdit',
