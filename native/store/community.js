@@ -17,15 +17,16 @@ export const clearCommunity = () => ({ type: CLEAR_COMMUNITY })
 
 export const fetchCommunity = id => dispatch => {
   axios.
-  get(`${apiURL}/communities/${id}`)
-  .then(res => {
-      dispatch(getCommunity(res.data))})
+    get(`${apiURL}/communities/${id}`)
+    .then(res => {
+      dispatch(getCommunity(res.data))
+    })
     .catch(err => console.log(err))
 }
 
 export const createCommunityThunkerator = (name, user) => async dispatch => {
   try {
-    const newCommunity = await axios.post(`${apiURL}/communities`, {name})
+    const newCommunity = await axios.post(`${apiURL}/communities`, { name })
     console.log('adding user to community and getting community')
     await dispatch(addUserToCommunity(newCommunity.data.id, user))
     await dispatch(getCommunity(newCommunity.data))
@@ -36,7 +37,7 @@ export const createCommunityThunkerator = (name, user) => async dispatch => {
 }
 
 export const sendInvitations = (emails, user, communityId) => {
-  return async (dispatch) => {
+  return async () => {
     try {
       const payload = {
         user,

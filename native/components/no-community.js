@@ -45,10 +45,10 @@ class NoCommunity extends React.Component {
       <Container style={styles.container}>
         <Content contentContainerStyle={styles.content}>
           <Button rounded onPress={() => this.props.navigation.navigate('CreateCommunity')} style={styles.button}>
-            <Text style={styles.buttonText}>Create Community</Text>
+            <Text style={styles.buttonText}>create dwelling</Text>
           </Button>
           <Button rounded onPress={() => this.props.navigation.navigate('JoinCommunity')} style={styles.button}>
-            <Text style={styles.buttonText}>Join a Community</Text>
+            <Text style={styles.buttonText}>join a dwelling</Text>
           </Button>
         </Content>
       </Container>
