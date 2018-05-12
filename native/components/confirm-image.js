@@ -21,6 +21,10 @@ class ConfirmImage extends Component{
     this.task = this.props.navigation.getParam('task')
   }
 
+  static navigationOptions = {
+      headerLeft: null
+  }
+
   _uploadToCloud = (uri) => {
     const image = {
       uri: uri,
@@ -41,9 +45,10 @@ class ConfirmImage extends Component{
   }
 
   _renderModalContent = () => (
-    <View style={styles.modalContent}>
+    (this.task ? <View style={styles.modalContent}>
       <Text>You completed '{this.task.task.name}'</Text>
-    </View>
+    </View> : '')
+
   );
 
   render(){
