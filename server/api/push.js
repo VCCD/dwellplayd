@@ -41,7 +41,7 @@ router.post(`/`, async (req, res, next) => {
   const taskItem = req.body
   try {
     const notification = await push(taskItem)
-    res.json(notification.data)
+    notification && res.json(notification.data)
   }
   catch (err) {
     next(err)
