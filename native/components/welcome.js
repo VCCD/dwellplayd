@@ -9,10 +9,10 @@ const Welcome = (props) => {
       <Content contentContainerStyle={styles.content}>
         <Image style={styles.logo} source={require('../public/dwellplayd_logo.png')} />
         <Button style={styles.login} rounded onPress={() => props.navigation.navigate('Login')}>
-          <Text style={styles.textLogin}>Log In</Text>
+          <Text style={styles.textLogin}>log in</Text>
         </Button>
         <Button style={styles.signup} rounded onPress={() => props.navigation.navigate('Signup')}>
-          <Text style={styles.textSignup}>Signup</Text>
+          <Text style={styles.textSignup}>sign up</Text>
         </Button>
       </Content>
     </Container>
