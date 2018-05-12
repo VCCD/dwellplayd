@@ -46,7 +46,7 @@ class LoginScreen extends React.Component {
     const { name, loginSubmit } = this.props
     return (
       <View style={styles.container}>
-        <Content contentContainerStyle={styles.form}>
+        <View style={styles.form}>
           <Form
             ref={c => this._form = c}
             type={User}
@@ -62,7 +62,7 @@ class LoginScreen extends React.Component {
           }} style={styles.button}>
             <Text style={styles.text}>Dev Login</Text>
           </Button>
-        </Content>
+        </View>
       </View>
     );
   }

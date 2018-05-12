@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, TextInput } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
+import { Content, Button } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup, addUserToCommunity } from '../store/auth';
+import { addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
 
 
@@ -35,9 +35,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
     backgroundColor: '#8C9A9E',
-    alignItems: 'center',
   },
   button: {
     padding: 10,
@@ -63,7 +61,7 @@ class JoinCommunity extends React.Component {
       communityId: '',
     }
   }
-  
+
   static navigationOptions = {
     headerLeft: null,
   }
@@ -75,8 +73,8 @@ class JoinCommunity extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Content style={styles.form}>
+      <View style={styles.container}>
+        <View style={styles.form}>
           <Text style={styles.title}>Enter your community ID</Text>
           <Form
             ref={c => {this._form = c}}
@@ -86,8 +84,8 @@ class JoinCommunity extends React.Component {
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>Join</Text>
           </Button>
-        </Content>
-      </Container>
+        </View>
+      </View>
     )
   }
 }
