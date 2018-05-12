@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight} from 'react-native'
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis, VictoryLine } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -19,14 +19,10 @@ class Stats extends React.Component{
         selectedUserName: "",
         selectedUserPoints: 0
       }
+      this.userDataForMonth = []
+
     }
 
-    componentDidMount = () => {
-      // const { getCurrentScores, user } = this.props
-      // const month = new Date().getMonth()
-      // this.setState( {tasksScores: getCurrentScores(user.communityId, month)})
-      
-    }
     getUserCurrentMonthItems = (id, month ) => {
      if(month===null || month === undefined) { month = new Date().getMonth()+1}
      
@@ -46,29 +42,25 @@ class Stats extends React.Component{
     render(){
       //const { users, taskItems } = this.props.community
       const { userScores } = this.props
-      this.props.taskItems
-      const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
+      //const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
       const month = new Date().getMonth()+1
       const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
      
       const monthWords = {1:'Jan', 2:'Feb', 3: 'March', 4: 'April', 5: 'May', 6:'June', 7:'July', 8:'Aug', 9:'Sept', 10:'Oct', 11:'Nov', 12:'Dec'}
-     // console.log(this.props.getCurrentScores(this.props.user.communityId, month),'<<<<<<<<<<<<<<<<<<<<<<< propsss')
-      
+      console.log(dataForMonth)
       return (  
       <Container style={styles.container}>
-      <ScrollView>
-      <View style={{margin: 22}}>
+      <ScrollView showsHorizontalScrollIndicator={false}>
+     
       <Modal
       animationType="slide"
       animationInTiming={2000}
-          animationOutTiming={2000}
-          backdropTransitionInTiming={2000}
-          backdropTransitionOutTiming={2000}
       transparent={false}
       visible={this.state.modalVisible}
       onRequestClose={() => {
         alert('Modal has been closed.');
       }}>
+      <ScrollView showsHorizontalScrollIndicator={false}>
       
         
 
@@ -89,11 +81,15 @@ class Stats extends React.Component{
           domainPadding={{ y: 20 }}
         >
           <VictoryBar horizontal
+          
             style={{
-              data: { fill: "#8C9A9E" }
-            }}
+              data: { fill: "#8C9A9E" },
+              labels:{labelPlacement: 'parallel'}
 
-            data={dataForMonth.map(task => {return {x: task.points.toString(), y:task.points, label: task.task.name, labelPlacement:'parallel'}})}
+            }}
+            
+            
+            data={dataForMonth.map(task => {return {x: task.points.toString(), y:task.points, label: task.task.name}})}
             animate={{
               onEnter: {
                 duration: 1000,
@@ -111,24 +107,40 @@ class Stats extends React.Component{
             }}
             />
           <VictoryAxis
-
+          labelPlacement="parallel"
       
       label={`Tasks for ${monthWords[month]}`}
       style={styles.axisLabel}
     />
     <VictoryAxis dependentAxis
     //label="Points"
+    labelPlacement="parallel"
     style={styles.axisLabel}
     
   />
         </VictoryChart>
+<VictoryChart>
+        <VictoryLine
+    style={{
+      data: { stroke: "#c43a31" },
+      parent: { border: "1px solid #ccc"}
+    }}
+    data={[
+      { x: 1, y: 2 },
+      { x: 2, y: 3 },
+      { x: 3, y: 5 },
+      { x: 4, y: 4 },
+      { x: 5, y: 7 }
+    ]}
+  />
+</VictoryChart>
 
           </Body>
       
-      
+    </ScrollView>
     </Modal>
     
-      </View>
+   
 
 
 
@@ -141,6 +153,17 @@ class Stats extends React.Component{
       labelRadius={30}
        style={{ parent: { maxWidth: "95%" } }}
     >
+    <VictoryAxis
+
+      
+    label={`Current Standing for ${monthWords[month]}`}
+    style={styles.axisLabel}
+  />
+  <VictoryAxis dependentAxis
+    label="Points"
+    style={styles.axisLabel}
+    
+  />
      <VictoryBar    
        colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         //padding={60}
@@ -198,17 +221,6 @@ class Stats extends React.Component{
         }
       }}
       />
-      <VictoryAxis
-
-      
-      label={`Current Standing for ${monthWords[month]}`}
-      style={styles.axisLabel}
-    />
-    <VictoryAxis dependentAxis
-      label="Points"
-      style={styles.axisLabel}
-      
-    />
 
       
     </VictoryChart>
@@ -233,11 +245,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     axisLabel: { 
-      flex:2,
-      padding: 20, 
+      flex:5,
+      padding: 50, 
       fontSize: 30,
-      margin:15 
-      }
+      margin:25 
+      },
+    modal:{
+      flexDirection: 'row',
+      height: 100,
+      padding: 20,
+    }
     
 
 })
