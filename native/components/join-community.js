@@ -89,11 +89,11 @@ class JoinCommunity extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.form}>
-          <Text style={styles.title}>Enter your community ID</Text>
-          <Form
+          <Text style={styles.title}>enter your dwelling code</Text>
+          <this.Form
             ref={c => {this._form = c}}
-            type={JoinCommunityForm}
-            options={options}
+            type={this.JoinCommunityForm}
+            options={this.options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>join</Text>
