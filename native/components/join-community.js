@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View } from 'react-native';
-import { Content, Button } from 'native-base';
+import { Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import { addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
@@ -62,8 +62,14 @@ class JoinCommunity extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    headerLeft: null,
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button transparent onPress={() => navigation.goBack()}>
+          <Icon style={{color: '#D4F5F5'}} name="arrow-back" />
+        </Button>
+      )
+    }
   }
 
   handleSubmit = async () => {
