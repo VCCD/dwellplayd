@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import {Icon, Button} from 'native-base'
+import {Icon, Button, Header} from 'native-base'
 import { Camera, Permissions } from 'expo';
 
 class CameraComponent extends Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.front,
+    flash: Camera.Constants.FlashMode.on,
     action: null,
     task: {}
   };
@@ -38,49 +39,43 @@ class CameraComponent extends Component {
       return <Text>No access to camera</Text>;
     } else {
       return (
-        <View style={{ flex: 1 }}>
-          <Camera ref={ref => { this.camera = ref; }} style={{ flex: 1}} type={this.state.type} ratio={'4:3'}>
+        <View style={{ flex: 1}}>
+          <Camera ref={ref => { this.camera = ref; }} style={{ flex: 1}} type={this.state.type} ratio={'16:9'}>
             <View
               style={{
                 flex: 1,
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                paddingHorizontal: 15,
+                marginBottom: 15
               }}>
               <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  margin: 10,
+              onPress={() => {
+                this.setState({
+                  type: this.state.type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back,
+                  })
                 }}
-                onPress={() => {
-                  this.setState({
-                    type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Icon name="sync" active style={{color: 'white', fontSize: 30}} />
+              >
+              <Icon name="reverse-camera" active style={{color: 'white', fontSize: 50}} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  margin: 7,
-                }}
-                onPress={async () => {
-                  if(this.camera){
-                    var res = await this.camera.takePictureAsync()
-                    this.props.navigation.navigate('ConfirmImage', {
-                      img: res.uri,
-                      action: this.state.action,
-                      task: this.state.task
-                    })
-                  }
-                }}>
-                <Icon name="camera" active style={{color: 'white', fontSize: 40}} />
+              onPress={async () => {
+                if (this.camera){
+                  var res = await this.camera.takePictureAsync()
+                  this.props.navigation.navigate('ConfirmImage', {
+                    img: res.uri,
+                    action: this.state.action,
+                    task: this.state.task
+                  })
+                }
+              }}>
+              <Icon name="radio-button-on" active style={{color: 'white', fontSize: 80}} />
               </TouchableOpacity>
+              <Icon name="reverse-camera" active style={{color: 'transparent', fontSize: 40}}/>
             </View>
           </Camera>
         </View>

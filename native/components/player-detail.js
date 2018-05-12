@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
-import { Container, Content, Card, CardItem, Button, ActionSheet } from 'native-base'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Container, Content, Card, CardItem, ActionSheet } from 'native-base'
 import { connect } from 'react-redux'
-import { fetchCommunity, fetchUserScores } from '../store'
 import { ImagePicker, Permissions } from 'expo'
+import Image from 'react-native-image-progress';
+import ProgressPie from 'react-native-progress/Pie';
 
 const BUTTONS = [
   'Take photo',
@@ -55,7 +56,22 @@ class PlayerDetail extends React.Component {
         <Content>
         <View>
         <TouchableOpacity onPress={() => this.changePicture()}>
-          <Image style={styles.profileImg} source={{uri: user.imgUrl}} />
+          <Image
+        source={{uri: user.imgUrl}}
+        indicator={ProgressPie}
+        indicatorProps={{
+          size: 60,
+          color: '#D4F5F5',
+          unfilledColor: '#747578'
+        }}
+        imageStyle={{
+          borderRadius: 70,
+          alignSelf: 'center',
+          borderColor: '#D4F5F5',
+          borderWidth: 1.5
+        }}
+        style={styles.imgContainer}
+        />
         </TouchableOpacity>
         </View>
         <View>
@@ -118,14 +134,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#D4F5F5'
   },
-  profileImg: {
+  imgContainer: {
     height: 140,
     width: 140,
-    borderRadius: 70,
     alignSelf: 'center',
-    margin: 15,
-    borderColor: '#D4F5F5',
-    borderWidth: 1.5
+    margin: 15
   },
   button: {
     padding: 10,
