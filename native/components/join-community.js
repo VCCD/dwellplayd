@@ -5,22 +5,7 @@ import { Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import { addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
-
-
-const JoinCommunityForm = t.struct({
-  communityId: t.String,
-})
-
-const Form = t.form.Form
-
-const options = {
-  stylesheet: customFormStyle,
-  fields: {
-    communityId: {
-      error: 'First name cannot be empty'
-    },
-  }
-}
+import { fetchCommunities } from '../store';
 
 const styles = StyleSheet.create({
   title: {
@@ -55,10 +40,29 @@ const styles = StyleSheet.create({
 
 
 class JoinCommunity extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      communityId: '',
+
+  CommunityCode = t.refinement(t.String, code => {
+    let valid = false;
+    const { communities } = this.props
+    const name = code.split('-')[0]
+    const id = +code.split('-')[1]
+    if (communities.find(community => community.id === id) && communities.find(community => community.id === id).name === name) valid = true
+    return valid;
+  });
+
+  JoinCommunityForm = t.struct({
+    communityId: this.CommunityCode,
+  })
+
+  Form = t.form.Form
+
+  options = {
+    stylesheet: customFormStyle,
+    fields: {
+      communityId: {
+        label: ` `,
+        error: 'not a valid dwelling code'
+      },
     }
   }
 
@@ -72,9 +76,13 @@ class JoinCommunity extends React.Component {
     }
   }
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
     const form = this._form.getValue()
-    if (form) this.props.signupSubmit(form.communityId, this.props.user)
+    if (form) this.props.signupSubmit(form.communityId.split('-')[1], this.props.user)
+  }
+
+  componentDidMount = () => {
+    this.props.getCommunities()
   }
 
   render() {
@@ -88,7 +96,7 @@ class JoinCommunity extends React.Component {
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Join</Text>
+            <Text style={styles.buttonText}>join</Text>
           </Button>
         </View>
       </View>
@@ -96,13 +104,16 @@ class JoinCommunity extends React.Component {
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ user, communities }) => ({ user, communities })
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
     signupSubmit: (communityId, user) => {
       dispatch(addUserToCommunity(+communityId, user))
-      ownProps.navigation.navigate('Tasks')
+      ownProps.navigation.navigate('LoadingScreen')
+    },
+    getCommunities: () => {
+      dispatch(fetchCommunities())
     }
   }
 }

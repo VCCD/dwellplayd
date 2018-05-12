@@ -5,6 +5,11 @@ module.exports = router
 
 //mailer takes --> email, user, community, status
 
+router.get(`/`, async (req, res, next) => {
+  const communities = await Community.findAll()
+  res.send(communities)
+})
+
 router.param('communityId', async (req, res, next, communityId) => {
   try {
     req.community = await Community.findById(communityId, {
