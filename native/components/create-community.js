@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, TextInput } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import { StyleSheet, Text } from 'react-native';
+import { Container, Content, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup } from '../store/auth';
 import customFormStyle from '../customFormStyle'
 import { createCommunityThunkerator, setToNewUser } from '../store'
 
@@ -60,13 +59,18 @@ const styles = StyleSheet.create({
 
 class CreateCommunity extends React.Component {
 
-  static navigationOptions = {
-    headerLeft: null,
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button transparent onPress={() => navigation.goBack()}>
+          <Icon style={{color: '#D4F5F5'}} name="arrow-back" />
+        </Button>
+      )
+    }
   }
-  
+
   handleSubmit = async () => {
     const form = this._form.getValue()
-    
     if (form) this.props.submitCreateCommunity(form.name, this.props.user)
   }
 
