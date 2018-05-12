@@ -18,6 +18,7 @@ const options = {
   stylesheet: customFormStyle,
   fields: {
     name: {
+      label: ` `,
       error: 'First name cannot be empty'
     },
   }
@@ -58,12 +59,6 @@ const styles = StyleSheet.create({
 
 
 class CreateCommunity extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      name: '',
-    }
-  }
 
   static navigationOptions = {
     headerLeft: null,
@@ -79,14 +74,14 @@ class CreateCommunity extends React.Component {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>Create your dwelling</Text>
+          <Text style={styles.title}>name your dwelling</Text>
           <Form
             ref={c => {this._form = c}}
             type={CommunityForm}
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Create</Text>
+            <Text style={styles.buttonText}>create</Text>
           </Button>
         </Content>
       </Container>

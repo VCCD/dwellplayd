@@ -1,26 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, TextInput } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import { StyleSheet, Text } from 'react-native';
+import { Container, Content, Button } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup, addUserToCommunity } from '../store/auth';
+import { addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
-
-
-const JoinCommunityForm = t.struct({
-  communityId: t.String,
-})
-
-const Form = t.form.Form
-
-const options = {
-  stylesheet: customFormStyle,
-  fields: {
-    communityId: {
-      error: 'First name cannot be empty'
-    },
-  }
-}
+import { fetchCommunities } from '../store';
 
 const styles = StyleSheet.create({
   title: {
@@ -57,34 +42,57 @@ const styles = StyleSheet.create({
 
 
 class JoinCommunity extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      communityId: '',
+
+  CommunityCode = t.refinement(t.String, code => {
+    let valid = false;
+    const { communities } = this.props
+    const name = code.split('-')[0]
+    const id = +code.split('-')[1]
+    if (communities.find(community => community.id === id) && communities.find(community => community.id === id).name === name) valid = true
+    return valid;
+  });
+
+  JoinCommunityForm = t.struct({
+    communityId: this.CommunityCode,
+  })
+
+  Form = t.form.Form
+
+  options = {
+    stylesheet: customFormStyle,
+    fields: {
+      communityId: {
+        label: ` `,
+        error: 'not a valid dwelling code'
+      },
     }
   }
-  
+
   static navigationOptions = {
     headerLeft: null,
   }
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
     const form = this._form.getValue()
-    if (form) this.props.signupSubmit(form.communityId, this.props.user)
+    if (form) this.props.signupSubmit(form.communityId.split('-')[1], this.props.user)
+  }
+
+  componentDidMount = () => {
+    this.props.getCommunities()
   }
 
   render() {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>Enter your community ID</Text>
-          <Form
-            ref={c => {this._form = c}}
-            type={JoinCommunityForm}
-            options={options}
-            />
+          <Text style={styles.title}>enter your dwelling code</Text>
+          <this.Form
+            ref={c => { this._form = c }}
+            type={this.JoinCommunityForm}
+            options={this.options}
+          />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Join</Text>
+            <Text style={styles.buttonText}>join</Text>
           </Button>
         </Content>
       </Container>
@@ -92,13 +100,16 @@ class JoinCommunity extends React.Component {
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ user, communities }) => ({ user, communities })
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
     signupSubmit: (communityId, user) => {
       dispatch(addUserToCommunity(+communityId, user))
-      ownProps.navigation.navigate('Tasks')
+      ownProps.navigation.navigate('LoadingScreen')
+    },
+    getCommunities: () => {
+      dispatch(fetchCommunities())
     }
   }
 }
