@@ -102,14 +102,13 @@ class Signup extends React.Component {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>dwellcome home</Text>
           <Form
             ref={c => {this._form = c}}
             type={UserSignup}
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
+            <Text style={styles.buttonText}>sign up</Text>
           </Button>
         </Content>
       </Container>
