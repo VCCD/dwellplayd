@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { Container, Content, ActionSheet, Text, Button } from 'native-base'
 import { TaskCard } from '../components'
-import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores} from '../store'
+import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores, userHasSeenTutorial } from '../store'
 import Modal from 'react-native-modal'
 
 const BUTTONS = [
@@ -57,17 +57,25 @@ class TaskList extends React.Component {
     this.setState({ refreshing: false })
   }
 
-  _renderModalContent = () => (
+  _renderNoTasksModal = () => (
     <View style={styles.modalContent}>
       <Text>Oh no! You do not have any tasks to complete</Text>
       {this._renderButton('Add Tasks', () => this.props.navigation.navigate('SelectTasks'))}
     </View>
   )
 
+  _renderTutorialModal = () => (
+    <View style={styles.modalContent}>
+      <Text>This is the task board.  Each task has a point value that changes over time.  You'll see the most valuable tasks on top.</Text>
+      <Text>Click on a task after you've completed it in order to nab the points!</Text>
+      {this._renderButton('Got it!', () => store.dispatch(userHasSeenTutorial(this.props.user, 'currentTasks')))}
+    </View>
+  )
+
   _renderButton = (text, onPress) => (
     <View>
       <Button rounded onPress={onPress} style={styles.button} >
-        <Text style={{ color: '#D4F5F5' }}>{text}</Text>
+        <Text style={{ paddingLeft: 10, paddingRight: 10, color: '#D4F5F5' }}>{text}</Text>
       </Button>
     </View>
   )
@@ -89,13 +97,22 @@ class TaskList extends React.Component {
               )
             })}
           <Modal
-            isVisible={!sortedTaskItems.length}
+            isVisible={!sortedTaskItems.length && this.props.userHasSeenTutorials.currentTasks}
             animationInTiming={2000}
             animationOutTiming={2000}
             backdropTransitionInTiming={2000}
             backdropTransitionOutTiming={2000}
             >
-            {this._renderModalContent()}
+            {this._renderNoTasksModal()}
+          </Modal>
+          <Modal
+            isVisible={!this.props.userHasSeenTutorials.currentTasks}
+            animationInTiming={2000}
+            animationOutTiming={2000}
+            backdropTransitionInTiming={2000}
+            backdropTransitionOutTiming={2000}
+            >
+            {this._renderTutorialModal()}
           </Modal>
           </Content>
         </ScrollView>
@@ -139,14 +156,9 @@ const styles = StyleSheet.create({
 
 
 //Render task items that are not completed
-const mapState = state => {
-  return {
-    user: state.user,
-    community: state.community,
-    communityTasks: state.communityTasks,
-    taskItems: state.taskItems,
-  }
-}
+const mapState =
+  ({user, community, communityTasks, taskItems, userHasSeenTutorials}) =>
+  ({user, community, communityTasks, taskItems, userHasSeenTutorials})
 
 const mapDispatch = dispatch => {
   return {

@@ -2,6 +2,18 @@ const router = require('express').Router()
 const { User, TaskItem } = require('../db/models')
 module.exports = router
 
+router.param('userId', async (req, res, next, userId) => {
+  try {
+    req.user = await User.findById(userId, {
+      include: [TaskItem]
+    })
+    next()
+  }
+  catch (err) {
+    next(err)
+  }
+})
+
 router.get('/', (req, res, next) => {
   User.findAll({
     // explicitly select only the id and email fields - even though
@@ -15,20 +27,16 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:userId', (req, res, next) => {
-  const { userId } = req.params
-  User.findById(userId, {
-    include: [TaskItem]
-  })
-    .then(user => res.json(user))
-    .catch(next)
+  res.json(req.user)
 })
 
-router.put('/:userId', (req, res, next) => {
-  const { userId } = req.params
-  const { firstName, lastName, email, communityId, imgUrl, pushToken} = req.body
-  User.findById(userId)
-    .then(user => user.update({ firstName, lastName, email, communityId, imgUrl, pushToken}))
-    .then(user => res.json(user))
-    .catch(next)
+router.put('/:userId', async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, communityId, imgUrl, pushToken, hasSeenTutorials} = req.body
+    await req.user.update({ firstName, lastName, email, communityId, imgUrl, pushToken, hasSeenTutorials})
+    res.json(req.user)
+  }
+  catch (err) {
+    next(err)
+  }
 })
-

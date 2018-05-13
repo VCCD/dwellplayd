@@ -17,7 +17,7 @@ import store, {
   getSuggestedTasksFromServerThunkerator,
   addCustomCommunityTaskThunkerator,
   deleteCommunityTaskThunkerator,
-  setToNotNewUser,
+  userHasSeenTutorial,
 } from '../store'
 import { connect } from 'react-redux';
 
@@ -94,19 +94,21 @@ class SelectTasks extends Component {
   _renderButton = (text, onPress) => (
     <View>
       <Button rounded onPress={onPress} style={styles.button} >
-        <Text style={{ color: '#D4F5F5' }}>{text}</Text>
+        <Text style={{ paddingLeft: 10, paddingRight: 10, color: '#D4F5F5' }}>{text}</Text>
       </Button>
     </View>
   );
 
-  _renderModalContent = () => (
+  _renderTutorialModal = (user) => {
+    console.log('user', user)
+    return (
     <View style={styles.modalContent}>
       <Text>Each of these cards is a task.  We've added some popular ones for you.  Feel free to use them or delete by swiping left.</Text>
       <Text>Go ahead and select how often you think each task should be done by using the slider.</Text>
       <Text>When you're ready, activate the task!</Text>
-      {this._renderButton('All Set', () => store.dispatch(setToNotNewUser()))}
+      {this._renderButton('All Set', () => store.dispatch(userHasSeenTutorial(user, 'selectTasks')))}
     </View>
-  );
+  )}
 
   componentDidMount() {
     if (!this.props.communityTasks.length) {
@@ -136,7 +138,6 @@ class SelectTasks extends Component {
   }
 
   activateTask = async (task) => {
-    console.log(task)
     await store.dispatch(submitCommunityTaskFrequenciesThunkerator(this.props.community.id, this.props.communityTasks))
     await store.dispatch(playThunkerator(task))
   }
@@ -157,6 +158,7 @@ class SelectTasks extends Component {
         return 0
       })
 
+      console.log(this.props.user)
     return (
       <Container style={styles.list}>
         <Content contentContainerStyle={{ backgroundColor: '#8C9A9E' }}>
@@ -209,13 +211,13 @@ class SelectTasks extends Component {
 
         </Content>
         <Modal
-          isVisible={this.props.isNewUser}
+          isVisible={!this.props.userHasSeenTutorials.selectTasks}
           animationInTiming={2000}
           animationOutTiming={2000}
           backdropTransitionInTiming={2000}
           backdropTransitionOutTiming={2000}
         >
-          {this._renderModalContent()}
+          {this._renderTutorialModal(this.props.user)}
         </Modal>
       </Container>
 
@@ -224,7 +226,9 @@ class SelectTasks extends Component {
 }
 
 
-const mapState = ({ isNewUser, communityTasks, suggestedTasks, community, taskItems }) => ({ isNewUser, communityTasks, suggestedTasks, community, taskItems })
+const mapState =
+  ({ user, userHasSeenTutorials, communityTasks, suggestedTasks, community, taskItems }) =>
+  ({ user, userHasSeenTutorials, communityTasks, suggestedTasks, community, taskItems })
 
 const mapDispatch = null
 

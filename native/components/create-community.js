@@ -5,7 +5,7 @@ import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'na
 import t from 'tcomb-form-native'
 import { signup } from '../store/auth';
 import customFormStyle from '../customFormStyle'
-import { createCommunityThunkerator, setToNewUser } from '../store'
+import { createCommunityThunkerator } from '../store'
 
 
 const CommunityForm = t.struct({
@@ -100,7 +100,6 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     submitCreateCommunity: async (name, user) => {
       await dispatch(createCommunityThunkerator(name, user))
-      dispatch(setToNewUser())
       ownProps.navigation.navigate('SelectTasks')
     }
   }

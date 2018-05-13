@@ -7,6 +7,7 @@ import {
   clearPastWinners,
   clearUserScores,
   clearCommunityTaskItems,
+  userHasSeenAllTutorials,
 } from '../store'
 
 const authURL = CONFIG.AUTH_URL
@@ -60,6 +61,7 @@ export const auth = (body) => (dispatch) => {
     .then(
         res => {
             dispatch(loginUser(res.data))
+            if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
             console.log('Logging in');
             //history.push('/home');
             console.log(res)
