@@ -33,8 +33,18 @@ class Stats extends React.Component{
       let monthNum = taskItem.completed.split(`-`)[1]
       
       return  Number(monthNum) === month})
-
-      return filteredTaskByID
+      let taskObj = {}
+      filteredTaskByID.forEach( task => {
+        
+        if (!taskObj[task.taskId]) taskObj[task.taskId]= {id: task.taskId, name: task.task.name, points: task.points} 
+        else taskObj[task.taskId].points += task.points
+      })
+      let combinedPointsById = []
+      
+      for(key in taskObj){
+        combinedPointsById.push(taskObj[key]) 
+      }
+      return combinedPointsById
   }
 
     
@@ -45,6 +55,7 @@ class Stats extends React.Component{
       //const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
       const month = new Date().getMonth()+1
       const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
+      
      
       const monthWords = {1:'Jan', 2:'Feb', 3: 'March', 4: 'April', 5: 'May', 6:'June', 7:'July', 8:'Aug', 9:'Sept', 10:'Oct', 11:'Nov', 12:'Dec'}
       console.log(dataForMonth)
@@ -88,8 +99,10 @@ class Stats extends React.Component{
 
             }}
             
+            labels = {(d) => d.y}
+            labelComponent={<VictoryLabel labelPlacement="perpendicular"/>}
             
-            data={dataForMonth.map(task => {return {x: task.points.toString(), y:task.points, label: task.task.name}})}
+            data={dataForMonth.map(task => {return {x: task.name, y:task.points, task: task.name}})}
             animate={{
               onEnter: {
                 duration: 1000,
@@ -107,19 +120,20 @@ class Stats extends React.Component{
             }}
             />
           <VictoryAxis
-          labelPlacement="parallel"
       
       label={`Tasks for ${monthWords[month]}`}
       style={styles.axisLabel}
     />
     <VictoryAxis dependentAxis
-    //label="Points"
-    labelPlacement="parallel"
+
     style={styles.axisLabel}
     
   />
         </VictoryChart>
 <VictoryChart>
+
+
+
         <VictoryLine
     style={{
       data: { stroke: "#c43a31" },
@@ -148,7 +162,7 @@ class Stats extends React.Component{
 
 
       <VictoryChart
-      domainPadding={{ x: 25, y:10 }}
+      domainPadding={{ x: 20, y:20 }}
       //padding={30}
       labelRadius={30}
        style={{ parent: { maxWidth: "95%" } }}
@@ -167,8 +181,10 @@ class Stats extends React.Component{
      <VictoryBar    
        colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         //padding={60}
-        labelRadius={40}
-        domainPadding={{ x: 5 }}
+        labelRadius={30}
+        padding={{left: 10, right: 10}}
+        labelPlacement='parallel'
+        domainPadding={{ x: 10 }}
         
         style={{
           data: {
