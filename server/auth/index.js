@@ -6,7 +6,6 @@ module.exports = router
 router.post('/login', (req, res, next) => {
   User.findOne({where: {email: req.body.email}})
     .then(user => {
-      console.log('this',user)
       if (!user) {
         console.log('No such user found:', req.body.email)
         res.status(401).send('Wrong username and/or password')

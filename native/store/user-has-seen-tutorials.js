@@ -35,6 +35,7 @@ export const userHasSeenTutorial = (user, tutorial) => ({
 
 const userHasSeenAllTutorialsThunkerator = (user) => async dispatch => {
   try {
+    user.hasSeenTutorials = true
     await axios.put(`${apiURL}/users/${user.id}`, user)
     dispatch(userHasSeenAllTutorials())
   }
@@ -47,6 +48,8 @@ const userHasSeenAllTutorialsThunkerator = (user) => async dispatch => {
 export default (prevState = initialState, action) => {
   const checkAllTutorials = () => {
     const updatedState = {...prevState, [action.tutorial]: true}
+    console.log('user up here', action.user)
+    console.log('updated', updatedState)
     const updatedStateValues = Object.values(updatedState)
     console.log('vlaues', updatedStateValues)
     const isTrue = (element) => {
@@ -54,11 +57,8 @@ export default (prevState = initialState, action) => {
     }
     const check = updatedStateValues.every(isTrue)
     console.log('check', action.user)
-    action.user.hasSeenTutorials = true
-    if (check) store.dispatch(userHasSeenAllTutorialsThunkerator(action.user))
+    return check
   }
-
-  if (action.user) checkAllTutorials()
 
   switch (action.type) {
     case USER_HAS_SEEN_ALL_TUTORIALS:
@@ -66,6 +66,10 @@ export default (prevState = initialState, action) => {
     case RESET_USER_HAS_SEEN_TUTORIALS:
       return initialState
     case USER_HAS_SEEN_TUTORIAL:
+      if (checkAllTutorials()) {
+        console.log('am i heere?')
+        store.dispatch(userHasSeenAllTutorialsThunkerator(action.user))
+      }
       return {...prevState, [action.tutorial]: true}
     default: return prevState
   }
