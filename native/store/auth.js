@@ -8,6 +8,7 @@ import {
   clearUserScores,
   clearCommunityTaskItems,
   userHasSeenAllTutorials,
+  resetUserHasSeenTutorials,
 } from '../store'
 
 const authURL = CONFIG.AUTH_URL
@@ -56,11 +57,13 @@ export const addUserToCommunity = (communityId, user) => dispatch => {
 }
 
 export const auth = (body) => (dispatch) => {
+  console.log('body',body)
     return axios
     .post(`${authURL}/login`, body)
     .then(
         res => {
             dispatch(loginUser(res.data))
+            console.log('muthafucka', res.data)
             if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
             console.log('Logging in');
             //history.push('/home');
@@ -103,6 +106,7 @@ export const logout = () => dispatch =>
       dispatch(clearPastWinners())
       dispatch(clearUserScores())
       dispatch(clearCommunityTaskItems())
+      dispatch(resetUserHasSeenTutorials())
       dispatch(logoutUser());
 
       //history.push('/login');
