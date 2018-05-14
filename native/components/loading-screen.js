@@ -9,8 +9,8 @@ import Modal from 'react-native-modal'
 
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
-const modalHeight = deviceHeight - 40
-const modalWidth = deviceWidth - 30
+const modalHeight = .94 * deviceHeight
+const modalWidth = .90 * deviceWidth
 const gifHeight = modalHeight
 const gifWidth = modalWidth
 
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#8C9A9E',
   },
   modalContent: {
-    height: deviceHeight - 40,
-    width: deviceWidth - 30,
+    height: modalHeight,
+    width: modalWidth,
     backgroundColor: '#fff',
     padding: 0,
     justifyContent: 'center',
