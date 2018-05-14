@@ -30,11 +30,15 @@ router.get('/:userId', (req, res, next) => {
   res.json(req.user)
 })
 
-router.put('/:userId', (req, res, next) => {
-  const { userId } = req.params
-  const { firstName, lastName, email, communityId, imgUrl, pushToken} = req.body
-  User.findById(userId)
-    .then(user => user.update({ firstName, lastName, email, communityId, imgUrl, pushToken}))
-    .then(user => res.json(user))
-    .catch(next)
+router.put('/:userId', async (req, res, next) => {
+  try {
+    console.log('req.body',req.body)
+    const { firstName, lastName, email, communityId, imgUrl, pushToken, hasSeenTutorials} = req.body
+    const updatedUser = await req.user.update({ firstName, lastName, email, communityId, imgUrl, pushToken, hasSeenTutorials})
+    console.log('updated user', updatedUser)
+    res.json(updatedUser)
+  }
+  catch (err) {
+    next(err)
+  }
 })

@@ -62,6 +62,7 @@ export const auth = (body) => (dispatch) => {
     .then(
         res => {
             dispatch(loginUser(res.data))
+            console.log('in auth', res.data)
             if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
             console.log('Logging in');
             //history.push('/home');
