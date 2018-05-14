@@ -47,15 +47,15 @@ class SelectTaskItem extends Component {
             <Text style={this.props.styles.textSlide}>
               {
                 this.state.comTask.value === 1
-                  ? `Every day`
-                  : `Every ${this.state.comTask.value} days`
+                  ? `every day`
+                  : `every ${this.state.comTask.value} days`
               }
             </Text>
           </View>
             {
               inactive
                 ? <Button rounded style={styles.button} onPress={() => activateTask(this.state.comTask)} ><Text style={{ fontSize: 15, fontWeight: 'bold', color: '#747578' }}>
-                    Activate
+                    activate
                   </Text></Button>
                 : ''
             }

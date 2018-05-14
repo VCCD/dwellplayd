@@ -18,7 +18,7 @@ const options = {
   fields: {
     name: {
       label: ` `,
-      error: 'First name cannot be empty'
+      error: 'first name cannot be empty'
     },
   }
 }

@@ -80,7 +80,7 @@ class PlayerDetail extends React.Component {
           <Card>
             <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'firstName'})}>
               <CardItem bordered style={styles.card}>
-                <Text style={styles.descriptor}>First Name</Text>
+                <Text style={styles.descriptor}>first name</Text>
                 <Text style={styles.text}>
                   {user.firstName}
                 </Text>
@@ -88,7 +88,7 @@ class PlayerDetail extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'lastName'})}>
             <CardItem bordered style={styles.card}>
-              <Text style={styles.descriptor}>Last Name</Text>
+              <Text style={styles.descriptor}>last name</Text>
               <Text style={styles.text}>
                 {user.lastName}
               </Text>
@@ -96,7 +96,7 @@ class PlayerDetail extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'email'})}>
             <CardItem bordered style={styles.card}>
-              <Text style={styles.descriptor}>Email</Text>
+              <Text style={styles.descriptor}>email</Text>
               <Text style={styles.text}>
                 {user.email}
               </Text>

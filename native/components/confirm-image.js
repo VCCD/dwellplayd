@@ -46,7 +46,7 @@ class ConfirmImage extends Component{
 
   _renderModalContent = () => (
     (this.task ? <View style={styles.modalContent}>
-      <Text>You completed '{this.task.task.name}'</Text>
+      <Text>You completed '{this.task.task.name}' !</Text>
     </View> : '')
 
   );
@@ -80,13 +80,13 @@ class ConfirmImage extends Component{
                   }
                   }}>
                   <Icon active name="thumbs-up" />
-                  <Text>Use picture</Text>
+                  <Text>use picture</Text>
                 </Button>
               </Left>
               <Right>
                 <Button transparent onPress={() => this.props.navigation.goBack()}>
                   <Icon active name="camera" />
-                  <Text>Take another</Text>
+                  <Text>take another</Text>
                 </Button>
               </Right>
             </CardItem>

@@ -11,11 +11,11 @@ const options = {
   stylesheet: customFormStyle,
   fields: {
     email: {
-      error: 'Please enter a valid email',
+      label: `email`,
       autoCapitalize: 'none'
     },
     password: {
-      error: 'Please enter correct password',
+      label: `password`,
       secureTextEntry: true,
       autoCapitalize: 'none',
     }
@@ -29,17 +29,12 @@ const User = t.struct({
 const Form = t.form.Form
 
 class LoginScreen extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email: '',
-      password: '',
-    }
-  }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const form = this._form.getValue()
-    this.props.loginSubmit(form)
+    await this.props.loginSubmit(form)
+    const blankForm = this._form.getValue()
+    if (this.props.error) this.props.loginSubmit(blankForm)
   }
 
   render() {
@@ -98,6 +93,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#747578',
     fontSize: 20,
+    fontWeight: `bold`
   }
 });
 
@@ -106,9 +102,7 @@ const styles = StyleSheet.create({
 
 const mapLogin = (state) => {
   return {
-    name: 'login',
-    displayName: 'Login',
-    //error: state.user.error
+    error: state.user.error
   }
 }
 

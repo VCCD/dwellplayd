@@ -21,7 +21,8 @@ const options = {
   stylesheet: customFormStyle,
   fields: {
     email: {
-      error: 'Insert a valid email'
+      label: `email`,
+      error: 'please enter a valid email'
     },
   }
 }
@@ -102,7 +103,7 @@ class Invite extends React.Component {
     return (
       <Container style={styles.container}>
         <Content contentContainerStyle={styles.form}>
-          <Text style={styles.title}>Invite dwellows!</Text>
+          <Text style={styles.title}>invite dwellows</Text>
           <List
             dataSource={this.ds.cloneWithRows(this.state.emailList)}
             renderRow={data => (
@@ -123,12 +124,12 @@ class Invite extends React.Component {
             options={options}
           />
           <Button rounded onPress={this.addEmail} style={styles.button}>
-            <Text style={styles.titleText}>Add</Text>
+            <Text style={styles.titleText}>add</Text>
           </Button>
           {
             this.state.emailList.length
               ? <Button rounded onPress={this.handleSubmit} style={styles.button}>
-                <Text style={styles.titleText}>Send Invites</Text>
+                <Text style={styles.titleText}>send invites</Text>
               </Button>
               : ''
           }
