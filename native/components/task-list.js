@@ -57,11 +57,13 @@ class TaskList extends React.Component {
     this.setState({ refreshing: false })
   }
 
-  _renderNoTasksModal = () => (
-    <View style={styles.modalContent}>
-      <Text>Oh no! You do not have any tasks to complete</Text>
-      {this._renderButton('Add Tasks', () => this.props.navigation.navigate('SelectTasks'))}
-    </View>
+  _renderNoTasks = () => (
+      <View style={{height: '100%', backgroundColor: '#8C9A9E', justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: '#fff', padding: 20, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Oh no! You do not have any tasks to complete</Text>
+        {this._renderButton('Add Tasks', () => this.props.navigation.navigate('SelectTasks'))}
+        </View>
+      </View>
   )
 
   _renderTutorialModal = () => (
@@ -87,7 +89,10 @@ class TaskList extends React.Component {
 
     return (
       <Container style={styles.list}>
-        <ScrollView refreshControl={<RefreshControl
+      {
+        sortedTaskItems.length
+          ? <View>
+          <ScrollView refreshControl={<RefreshControl
           refreshing={this.state.refreshing}
           onRefresh={this.refresh} />}>
           <Content contentContainerStyle={styles.content}>
@@ -96,15 +101,6 @@ class TaskList extends React.Component {
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
             })}
-          <Modal
-            isVisible={!sortedTaskItems.length}
-            animationInTiming={2000}
-            animationOutTiming={1000}
-            backdropTransitionInTiming={2000}
-            backdropTransitionOutTiming={2000}
-            >
-            {this._renderNoTasksModal()}
-          </Modal>
           <Modal
             isVisible={!this.props.userHasSeenTutorials.currentTasks}
             animationInTiming={2000}
@@ -116,6 +112,9 @@ class TaskList extends React.Component {
           </Modal>
           </Content>
         </ScrollView>
+        </View>
+        : this._renderNoTasks()
+      }
       </Container>
     );
   }

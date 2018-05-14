@@ -13,7 +13,8 @@ class Play extends React.Component {
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
       setTimeout(() => {
-        if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
+        if (!this.props.user.hasSeenTutorials.onboarding) this.props.navigation.navigate('Onboarding')
+        else if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
         else this.props.navigation.navigate('SelectTasks')
       }, 1000)
     }

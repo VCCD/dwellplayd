@@ -19,6 +19,7 @@ import {
   ConfirmImage,
   Play,
   LoadingScreen,
+  Onboarding,
 } from './components'
 import {Icon, Button} from 'native-base'
 
@@ -71,6 +72,9 @@ const MainNavigation = StackNavigator({
   },
   JoinCommunity: {
     screen: JoinCommunity
+  },
+  Onboarding: {
+    screen: Onboarding
   },
   Camera: {
     screen: CameraComponent

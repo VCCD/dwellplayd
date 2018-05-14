@@ -12,11 +12,13 @@ const RESET_USER_HAS_SEEN_TUTORIALS = 'RESET_USER_HAS_SEEN_TUTORIALS'
 const initialState = {
   selectTasks: false,
   currentTasks: false,
+  onboarding: false,
 }
 
 const userSeenAllState = {
   selectTasks: true,
   currentTasks: true,
+  onboarding: true,
 }
 
 export const userHasSeenAllTutorials = () => ({
