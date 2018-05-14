@@ -67,7 +67,7 @@ class Stats extends React.Component {
     const month = new Date().getMonth() + 1
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
-   
+    const  colorScale=["#8FA5A5", "#8C9A9E", "#79C4C4","#353637", "#4482AE", "#9BB3B3"]
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
@@ -161,7 +161,7 @@ class Stats extends React.Component {
               style={{
                 data: {
                   width: 35,
-                  fill: "#93B7BE",
+                  //fill: "#93B7BE",
                 },
                 labels: {
                   fontSize: 15,
@@ -185,7 +185,7 @@ class Stats extends React.Component {
                 }
               }]}
               data={
-                userScores.map(user => { return { x: user.firstName, y: roundToTenths(user.score), label: roundToTenths(user.score), userID: user.id } })
+                userScores.map(user => { return { x: user.firstName, y: roundToTenths(user.score), label: roundToTenths(user.score), userID: user.id, fill: `${colorScale[user.id]}` } })
               }
               animate={{
                 onEnter: {
@@ -223,7 +223,7 @@ class Stats extends React.Component {
             {this.props.communityUsers.map(user => {
               return (<VictoryGroup
                 key={user.id}
-                color="#747578"
+                color={`${colorScale[user.id]}`}
                 
                 labelComponent={
                   <VictoryTooltip
@@ -237,7 +237,12 @@ class Stats extends React.Component {
                 
                   animate={{
                     duration: 2000,
-                    onLoad: { duration: 2000 }
+                    onLoad: { duration: 2000, before: () => ({
+                      y: 0,
+                    }) },
+                    onExit:{ duration: 2000,   after: () => ({
+                      y: 0,
+                    }) }
                   }}
                 />
                 <VictoryScatter
