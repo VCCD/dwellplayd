@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text } from 'react-native';
-import { Container, Content, Button, Icon } from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import customFormStyle from '../customFormStyle'
 import { createCommunityThunkerator } from '../store'
@@ -36,9 +36,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: '#8C9A9E',
-    alignItems: 'center',
   },
   button: {
     padding: 10,
@@ -76,8 +74,8 @@ class CreateCommunity extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Content style={styles.form}>
+      <View style={styles.container}>
+        <View style={styles.form}>
           <Text style={styles.title}>name your dwelling</Text>
           <Form
             ref={c => {this._form = c}}
@@ -87,8 +85,8 @@ class CreateCommunity extends React.Component {
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>create</Text>
           </Button>
-        </Content>
-      </Container>
+        </View>
+      </View>
     )
   }
 }
