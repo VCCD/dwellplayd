@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
-import { Container, Content, ActionSheet } from 'native-base'
+import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
+import { Container, Content, ActionSheet, Text } from 'native-base'
 import TaskCard from './past-task-card'
 import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 
@@ -60,12 +60,12 @@ class PastTasks extends React.Component {
         refreshing={this.state.refreshing}
         onRefresh={this.refresh} />}>
         <Content contentContainerStyle={styles.content}>
-        {sortedTaskItems && sortedTaskItems.map(taskItem => {
+        {sortedTaskItems.length ? sortedTaskItems.map(taskItem => {
           taskItem.completer = community.users.find(user => user.id === taskItem.userId)
               return (
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
-            })}
+            }) : <View style={styles.noTask}><Text style={styles.text}>No tasks have been completed.</Text></View>}
           </Content>
         </ScrollView>
       </Container>
@@ -83,6 +83,14 @@ const styles = StyleSheet.create({
   },
   content: {
     margin: 5,
+  },
+  noTask: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text: {
+    color: '#D4F5F5',
+    fontSize: 24,
   }
 });
 

@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, TextInput } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
+import { StyleSheet, Text } from 'react-native';
+import { Container, Content, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
-import { signup } from '../store/auth';
 import customFormStyle from '../customFormStyle'
-import { createCommunityThunkerator, setToNewUser } from '../store'
+import { createCommunityThunkerator } from '../store'
 
 
 const CommunityForm = t.struct({
@@ -18,7 +17,8 @@ const options = {
   stylesheet: customFormStyle,
   fields: {
     name: {
-      error: 'First name cannot be empty'
+      label: ` `,
+      error: 'first name cannot be empty'
     },
   }
 }
@@ -58,20 +58,19 @@ const styles = StyleSheet.create({
 
 
 class CreateCommunity extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      name: '',
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <Button transparent onPress={() => navigation.goBack()}>
+          <Icon style={{color: '#D4F5F5'}} name="arrow-back" />
+        </Button>
+      )
     }
   }
 
-  static navigationOptions = {
-    headerLeft: null,
-  }
-  
   handleSubmit = async () => {
     const form = this._form.getValue()
-    
     if (form) this.props.submitCreateCommunity(form.name, this.props.user)
   }
 
@@ -79,14 +78,14 @@ class CreateCommunity extends React.Component {
     return (
       <Container style={styles.container}>
         <Content style={styles.form}>
-          <Text style={styles.title}>Create your dwelling</Text>
+          <Text style={styles.title}>name your dwelling</Text>
           <Form
             ref={c => {this._form = c}}
             type={CommunityForm}
             options={options}
             />
           <Button rounded onPress={this.handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Create</Text>
+            <Text style={styles.buttonText}>create</Text>
           </Button>
         </Content>
       </Container>
@@ -100,7 +99,6 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     submitCreateCommunity: async (name, user) => {
       await dispatch(createCommunityThunkerator(name, user))
-      dispatch(setToNewUser())
       ownProps.navigation.navigate('SelectTasks')
     }
   }
