@@ -32,7 +32,9 @@ class PlayerDetail extends React.Component {
   }
 
   _takePicture = () => {
-    this.props.navigation.navigate('Camera')
+    this.props.navigation.navigate('Camera', {
+      direction: 'front',
+    })
   }
 
   _pickImage = async () => {
