@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { Container, Content, ActionSheet, Text, Button } from 'native-base'
 import { TaskCard } from '../components'
-import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores, userHasSeenTutorial } from '../store'
+import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 import Modal from 'react-native-modal'
 
 const BUTTONS = [
@@ -66,14 +66,6 @@ class TaskList extends React.Component {
       </View>
   )
 
-  _renderTutorialModal = () => (
-    <View style={styles.modalContent}>
-      <Text>This is the task board.  Each task has a point value that changes over time.  You'll see the most valuable tasks on top.</Text>
-      <Text>Click on a task after you've completed it in order to nab the points!</Text>
-      {this._renderButton('Got it!', () => store.dispatch(userHasSeenTutorial(this.props.user, 'currentTasks')))}
-    </View>
-  )
-
   _renderButton = (text, onPress) => (
     <View>
       <Button rounded onPress={onPress} style={styles.button} >
@@ -101,15 +93,6 @@ class TaskList extends React.Component {
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
             })}
-          <Modal
-            isVisible={!this.props.userHasSeenTutorials.currentTasks}
-            animationInTiming={2000}
-            animationOutTiming={1000}
-            backdropTransitionInTiming={2000}
-            backdropTransitionOutTiming={2000}
-            >
-            {this._renderTutorialModal()}
-          </Modal>
           </Content>
         </ScrollView>
         </View>
@@ -156,8 +139,8 @@ const styles = StyleSheet.create({
 
 //Render task items that are not completed
 const mapState =
-  ({user, community, communityTasks, taskItems, userHasSeenTutorials}) =>
-  ({user, community, communityTasks, taskItems, userHasSeenTutorials})
+  ({user, community, communityTasks, taskItems}) =>
+  ({user, community, communityTasks, taskItems})
 
 const mapDispatch = dispatch => {
   return {
