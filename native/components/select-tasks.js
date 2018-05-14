@@ -124,6 +124,7 @@ class SelectTasks extends Component {
   }
 
   handleAddTask = () => {
+    if (!this.state.taskInput) return
     const newTask = {
       name: this.state.taskInput,
     }
