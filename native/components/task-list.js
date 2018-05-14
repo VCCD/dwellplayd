@@ -97,9 +97,9 @@ class TaskList extends React.Component {
               )
             })}
           <Modal
-            isVisible={!sortedTaskItems.length && this.props.userHasSeenTutorials.currentTasks}
+            isVisible={!sortedTaskItems.length}
             animationInTiming={2000}
-            animationOutTiming={2000}
+            animationOutTiming={1000}
             backdropTransitionInTiming={2000}
             backdropTransitionOutTiming={2000}
             >
@@ -108,7 +108,7 @@ class TaskList extends React.Component {
           <Modal
             isVisible={!this.props.userHasSeenTutorials.currentTasks}
             animationInTiming={2000}
-            animationOutTiming={2000}
+            animationOutTiming={1000}
             backdropTransitionInTiming={2000}
             backdropTransitionOutTiming={2000}
             >

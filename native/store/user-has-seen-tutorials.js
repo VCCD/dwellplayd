@@ -1,6 +1,6 @@
 import axios from 'axios'
 import CONFIG from '../api-routes'
-import store from '../store'
+import store, { updateUser } from '../store'
 
 const apiURL = CONFIG.apiURL
 
@@ -27,22 +27,16 @@ export const resetUserHasSeenTutorials = () => ({
   type: RESET_USER_HAS_SEEN_TUTORIALS
 })
 
-export const userHasSeenTutorial = (user, tutorial) => {
-  console.log('user in action', user)
-  return {
-    type: USER_HAS_SEEN_TUTORIAL,
-    user,
-    tutorial,
-  }
-}
+export const userHasSeenTutorial = (user, tutorial) => ({
+  type: USER_HAS_SEEN_TUTORIAL,
+  user,
+  tutorial,
+})
 
 export const userHasSeenAllTutorialsThunkerator = (user) => async dispatch => {
   try {
-    console.log('user inside thunkerator', user)
     user.hasSeenTutorials = true
-    console.log('user after hasSeenTutorials inside thunkerator', user)
-    await axios.put(`${apiURL}/users/${user.id}`, user)
-    dispatch(userHasSeenAllTutorials())
+    dispatch(updateUser(user.id, user))
   }
   catch (err) {
     console.log(err)
@@ -53,16 +47,11 @@ export const userHasSeenAllTutorialsThunkerator = (user) => async dispatch => {
 export default (prevState = initialState, action) => {
   const checkAllTutorials = () => {
     const updatedState = {...prevState, [action.tutorial]: true}
-    console.log('user in reducer', action.user)
-    console.log('updated state', updatedState)
     const updatedStateValues = Object.values(updatedState)
-    console.log('vlaues', updatedStateValues)
     const isTrue = (element) => {
       return element
     }
     const check = updatedStateValues.every(isTrue)
-    console.log('user after check', action.user)
-    console.log('check', check)
     return check
   }
 
@@ -73,7 +62,6 @@ export default (prevState = initialState, action) => {
       return initialState
     case USER_HAS_SEEN_TUTORIAL:
       if (checkAllTutorials()) {
-        console.log('am i inside the reducer call?')
         store.dispatch(userHasSeenAllTutorialsThunkerator(action.user))
       }
       return {...prevState, [action.tutorial]: true}

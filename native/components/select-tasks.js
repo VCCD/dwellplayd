@@ -100,7 +100,6 @@ class SelectTasks extends Component {
   );
 
   _renderTutorialModal = (user) => {
-    console.log('user', user)
     return (
     <View style={styles.modalContent}>
       <Text>Each of these cards is a task.  We've added some popular ones for you.  Feel free to use them or delete by swiping left.</Text>
@@ -158,7 +157,6 @@ class SelectTasks extends Component {
         return 0
       })
 
-      console.log(this.props.user)
     return (
       <Container style={styles.list}>
         <Content contentContainerStyle={{ backgroundColor: '#8C9A9E' }}>
@@ -213,7 +211,7 @@ class SelectTasks extends Component {
         <Modal
           isVisible={!this.props.userHasSeenTutorials.selectTasks}
           animationInTiming={2000}
-          animationOutTiming={2000}
+          animationOutTiming={1000}
           backdropTransitionInTiming={2000}
           backdropTransitionOutTiming={2000}
         >

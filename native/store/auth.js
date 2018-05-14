@@ -43,13 +43,15 @@ export const updateUser = (userId, form) => dispatch => {
   console.log('axios getting called')
     axios.
     put(`${apiURL}/users/${userId}`, form)
-    .then(res => dispatch(loginUser(res.data || defaultUser)))
+    .then(res => {
+      if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
+      dispatch(loginUser(res.data || defaultUser))
+    })
     .catch(err => console.log(err))
 }
 
 export const addUserToCommunity = (communityId, user) => dispatch => {
     user.communityId = communityId
-    console.log('api put to user to update communityId')
     axios.
     put(`${apiURL}/users/${user.id}`, user)
     .then(res => dispatch(loginUser(res.data || defaultUser)))
@@ -61,12 +63,10 @@ export const auth = (body) => (dispatch) => {
     .post(`${authURL}/login`, body)
     .then(
         res => {
-            dispatch(loginUser(res.data))
-            console.log('in auth', res.data)
-            if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
-            console.log('Logging in');
-            //history.push('/home');
-            console.log(res)
+          if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
+          dispatch(loginUser(res.data))
+          console.log('Logging in');
+          //history.push('/home');
         },
 
         authError => {

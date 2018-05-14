@@ -18,7 +18,6 @@ class Push extends Component {
     }
     const pushToken = await Expo.Notifications.getExpoPushTokenAsync();
     const { user, pushTokenToDBS } = this.props
-    console.log('inside the push comp', user)
     user.pushToken = pushToken
     pushTokenToDBS(user.id, user)
   }
