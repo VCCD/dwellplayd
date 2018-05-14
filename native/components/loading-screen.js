@@ -1,11 +1,18 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions, ScrollView, Image } from 'react-native';
 import { Container, Text, Content, Button } from 'native-base';
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenTutorial } from '../store'
 import Push from './push'
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal'
+
+const deviceHeight = Dimensions.get('window').height
+const deviceWidth = Dimensions.get('window').width
+const modalHeight = deviceHeight - 40
+const modalWidth = deviceWidth - 30
+const gifHeight = modalHeight - 120
+const gifWidth = modalWidth - 60
 
 class Play extends React.Component {
 
@@ -36,15 +43,25 @@ class Play extends React.Component {
 
   _renderModalOne = () => (
     <View style={styles.modalContent}>
-      <Text>Welcome to dwellplayd!</Text>
-      <Text>We're excited to help you make mundane tasks more fun!</Text>
-      <Text>Come along and we'll explain how this works</Text>
-      {this._renderButton('Hmm... Ok.', () => {
-        this.setState({modal: 0})
-        setTimeout(() => {
-          this.setState({modal: 2})
-        }, 500)
-      })}
+      <ScrollView
+        horizontal={true}
+        pagingEnabled={true}>
+        <View style={styles.page}>
+          <Image style={styles.gif} source={require('../public/selectTasks.gif')} />
+          <Text>dwellcome! first lets pick some task</Text>
+        </View>
+        <View style={styles.page}><Text>Yo</Text></View>
+        <View style={styles.page}>
+          <Text>Yo</Text>
+          {this._renderButton(`Let's get started!`, () => {
+            this.setState({modal: 0})
+            store.dispatch(userHasSeenTutorial(this.props.user, 'onboarding'))
+            setTimeout(() => {
+            this.props.navigation.navigate('SelectTasks')
+            }, 500)
+          })}
+        </View>
+      </ScrollView>
     </View>
   )
 
@@ -158,8 +175,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#D4F5F5',
   },
+  page: {
+    height: modalHeight,
+    width: modalWidth,
+  },
   image: {
     width: 450,
+  },
+  gif: {
+    height: gifHeight,
+    width: gifWidth
   },
   container: {
     flex: 1,
@@ -169,8 +194,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#8C9A9E',
   },
   modalContent: {
+    height: deviceHeight - 40,
+    width: deviceWidth - 30,
     backgroundColor: '#fff',
-    padding: 22,
+    padding: 0,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
