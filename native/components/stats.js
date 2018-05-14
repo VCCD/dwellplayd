@@ -216,9 +216,6 @@ class Stats extends React.Component {
                   after: () => ({
                     y: 0,
                   })
-
-                }
-              }}
             />
           </VictoryChart>
           <VictoryChart
@@ -228,7 +225,7 @@ class Stats extends React.Component {
               return (<VictoryGroup
                 key={user.id}
                 color="#747578"
-                labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]}, label:${d.firstName} `}
+                
                 labelComponent={
                   <VictoryTooltip
                     style={{ fontSize: 10 }}
@@ -237,7 +234,7 @@ class Stats extends React.Component {
                 data={this.getPointsOverPastMonths(user.id)}
               >
                 <VictoryLine
-                  animate={{
+                labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]}, label:${d.firstName} `}                  animate={{
                     duration: 2000,
                     onLoad: { duration: 2000 }
                   }}
