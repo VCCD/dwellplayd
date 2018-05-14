@@ -162,29 +162,29 @@ class Stats extends React.Component{
 
 
       <VictoryChart
-      domainPadding={{ x: 20, y:20 }}
+      domainPadding={{ x: 25 }}
       //padding={30}
       labelRadius={30}
        style={{ parent: { maxWidth: "95%" } }}
     >
-    <VictoryAxis
-
+    
+  <VictoryAxis dependentAxis
+    style={styles.axisLabel}
+    
+  />
+  <VictoryAxis
+  padding={{ top: 20, bottom: 60 }}
       
     label={`Current Standing for ${monthWords[month]}`}
     style={styles.axisLabel}
   />
-  <VictoryAxis dependentAxis
-    label="Points"
-    style={styles.axisLabel}
-    
-  />
      <VictoryBar    
        colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         //padding={60}
-        labelRadius={30}
+        //labelRadius={30}
         padding={{left: 10, right: 10}}
         labelPlacement='parallel'
-        domainPadding={{ x: 10 }}
+        domainPadding={{ x: 5 }}
         
         style={{
           data: {
@@ -262,9 +262,10 @@ const styles = StyleSheet.create({
     },
     axisLabel: { 
       flex:5,
-      padding: 50, 
+      //padding: { top: 30, bottom: 30 }, 
       fontSize: 30,
-      margin:25 
+      margin:30,
+      tickLabels: {fontSize: 15, padding: 5} 
       },
     modal:{
       flexDirection: 'row',
