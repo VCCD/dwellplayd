@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View } from 'react-native';
 import { Container, Content, Button } from 'native-base';
-import Modal from 'react-native-modal'
-import store, { userHasSeenTutorial } from '../store'
 
 const styles = StyleSheet.create({
   container: {
@@ -58,23 +56,6 @@ class NoCommunity extends React.Component {
     }
   }
 
-  _renderButton = (text, onPress) => (
-    <View>
-      <Button rounded onPress={onPress} style={styles.modalButton} >
-        <Text style={{ paddingLeft: 10, paddingRight: 10, color: '#D4F5F5' }}>{text}</Text>
-      </Button>
-    </View>
-  );
-
-  _renderTutorialModal = (user) => {
-    return (
-    <View style={styles.modalContent}>
-      <Text>Thanks for joining!  If you've been invited, please join a dwelling.</Text>
-      <Text>If you're a dwellplayed pioneer, create your own dwelling and get started!</Text>
-      {this._renderButton('All Set', () => store.dispatch(userHasSeenTutorial(user, 'noCommunity')))}
-    </View>
-  )}
-
   static navigationOptions = {
     headerLeft: null,
   }
@@ -90,21 +71,12 @@ class NoCommunity extends React.Component {
             <Text style={styles.buttonText}>join a dwelling</Text>
           </Button>
         </Content>
-        <Modal
-          isVisible={!this.props.userHasSeenTutorials.noCommunity}
-          animationInTiming={2000}
-          animationOutTiming={1000}
-          backdropTransitionInTiming={2000}
-          backdropTransitionOutTiming={2000}
-        >
-          {this._renderTutorialModal(this.props.user)}
-        </Modal>
       </Container>
     )
   }
 }
 
-const mapState = ({ user, userHasSeenTutorials }) => ({ user, userHasSeenTutorials })
+const mapState = ({ user }) => ({ user })
 
 const mapDispatch = null
 

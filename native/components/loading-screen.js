@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Dimensions, ScrollView, Image } from 'react-native';
-import { Container, Text, Content, Button } from 'native-base';
+import { Container, Text, Button } from 'native-base';
 import { connect } from 'react-redux'
-import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenTutorial } from '../store'
+import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenAllTutorialsThunkerator } from '../store'
 import Push from './push'
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal'
@@ -67,7 +67,7 @@ class Play extends React.Component {
           <Text style={styles.text}>Now its time to explore!</Text>
           {this._renderButton(`Let's get started!`, () => {
             this.setState({modal: 0})
-            store.dispatch(userHasSeenTutorial(this.props.user, 'onboarding'))
+            store.dispatch(userHasSeenAllTutorialsThunkerator(this.props.user))
             setTimeout(() => {
             this.props.navigation.navigate('SelectTasks')
             }, 500)
