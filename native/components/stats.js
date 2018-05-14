@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight} from 'react-native'
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis, VictoryLine } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -46,19 +46,47 @@ class Stats extends React.Component{
       }
       return combinedPointsById
   }
+  getPointsOverPastMonths =  (id) => {
+    const { userScores, taskItems } = this.props
+    let userPointsPerMonth = []
+    let monthsArr = taskItems.map(task => {if (task.completed) return Number(task.completed.split('-')[1])})
+    monthsArr = monthsArr.filter( month => month !== undefined)
+    monthsArr = new Set(monthsArr)
+    monthsArr.forEach( month =>  {
+   // console.log(this.getUserCurrentMonthItems(id, month), '<<<<<<<<<<< print user current month items')
+    userPointsPerMonth.push( {x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task)=>{return sum += task.points}, 0) })})
+   // console.log(userPointsPerMonth, '<<<<<<<<<<<<<<')
+    return userPointsPerMonth
+
+
+  }
 
     
 
     render(){
       //const { users, taskItems } = this.props.community
-      const { userScores } = this.props
+      const { userScores, taskItems } = this.props
       //const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
+      let usersInCommunity = taskItems.filter(task => task.userId)
       const month = new Date().getMonth()+1
       const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
-      
+    //  let userPointsPerMonth = []
+    
+   // let monthsArr = taskItems.map(task => {if (task.completed) return Number(task.completed.split('-')[1])})
+   // monthsArr = monthsArr.filter( month => month !== undefined)
+   // monthsArr = new Set(monthsArr)
+
+    
+    //monthsArr.forEach( month =>  userPointsPerMonth.push( {x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task)=>{return sum += task.points}, 0) }))
+
+    //console.log(userPointsPerMonth, '<<<<<<<<<<<<<<')
+    // console.log(userPointsPerMonth, '<<<<<<<<<<<<<')
+    // console.log(this.props.userScores, '<<<<<<<<<<<<<<< userScores')
+     
      
       const monthWords = {1:'Jan', 2:'Feb', 3: 'March', 4: 'April', 5: 'May', 6:'June', 7:'July', 8:'Aug', 9:'Sept', 10:'Oct', 11:'Nov', 12:'Dec'}
-      console.log(dataForMonth)
+      //console.log(dataForMonth)
+      console.log( '<,,,,,,,,communityId and users>>>>>>>', this.props.communityUsers)
       return (  
       <Container style={styles.container}>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -87,49 +115,54 @@ class Stats extends React.Component{
           </TouchableHighlight>
           </Header>
           <Body>
+          <ScrollView showsHorizontalScrollIndicator={true}>
+                  <VictoryChart
+                  domainPadding={{ y: 20 }}
+                >
+                  <VictoryBar horizontal
+                  
+                    style={{
+                      data: { fill: "#8C9A9E" },
+                      labels:{labelPlacement: 'parallel'}
 
-          <VictoryChart
-          domainPadding={{ y: 20 }}
-        >
-          <VictoryBar horizontal
-          
-            style={{
-              data: { fill: "#8C9A9E" },
-              labels:{labelPlacement: 'parallel'}
-
-            }}
-            
-            labels = {(d) => d.y}
-            labelComponent={<VictoryLabel labelPlacement="perpendicular"/>}
-            
-            data={dataForMonth.map(task => {return {x: task.name, y:task.points, task: task.name}})}
-            animate={{
-              onEnter: {
-                duration: 1000,
-                before: () => ({
-                  y: 0, 
-                })
-              },
-              onExit: {
-                duration: 1000,
-                after: () => ({
-              y: 0,
-            })
-      
-              }
-            }}
+                    }}
+                    
+                    
+                    labels = {(d) => d.y}
+                    labelComponent={<VictoryLabel labelPlacement="perpendicular"/>}
+                    
+                    data={dataForMonth.map(task => {return {x: task.name, y:task.points, task: task.name}})}
+                    sortKey="y"
+                    sortOrder="descending"
+                    animate={{
+                      onEnter: {
+                        duration: 1000,
+                        before: () => ({
+                          y: 0, 
+                        })
+                      },
+                      onExit: {
+                        duration: 1000,
+                        after: () => ({
+                      y: 0,
+                    })
+              
+                      }
+                    }}
+                    />
+                  <VictoryAxis
+              
+              label={`Tasks for ${monthWords[month]}`}
+              
+              style={styles.axisLabel}
             />
-          <VictoryAxis
-      
-      label={`Tasks for ${monthWords[month]}`}
-      style={styles.axisLabel}
-    />
-    <VictoryAxis dependentAxis
+            <VictoryAxis dependentAxis
 
-    style={styles.axisLabel}
-    
-  />
-        </VictoryChart>
+            style={styles.axisLabel}
+            
+          />
+                </VictoryChart>
+          </ScrollView>
 <VictoryChart>
 
 
@@ -139,13 +172,8 @@ class Stats extends React.Component{
       data: { stroke: "#c43a31" },
       parent: { border: "1px solid #ccc"}
     }}
-    data={[
-      { x: 1, y: 2 },
-      { x: 2, y: 3 },
-      { x: 3, y: 5 },
-      { x: 4, y: 4 },
-      { x: 5, y: 7 }
-    ]}
+    // x means each month, y is total points
+    data={this.getPointsOverPastMonths(2)}
   />
 </VictoryChart>
 
@@ -162,7 +190,7 @@ class Stats extends React.Component{
 
 
       <VictoryChart
-      domainPadding={{ x: 25 }}
+      domainPadding={{ x: 25, y:15 }}
       //padding={30}
       labelRadius={30}
        style={{ parent: { maxWidth: "95%" } }}
@@ -170,21 +198,27 @@ class Stats extends React.Component{
     
   <VictoryAxis dependentAxis
     style={styles.axisLabel}
+    offsetY={0}
     
   />
-  <VictoryAxis
-  padding={{ top: 20, bottom: 60 }}
-      
+  <VictoryAxis crossAxis
+  //padding={{ top: 20, bottom: 60 }}
+  
+  //offsetY={1}
+  orientation="bottom"
+  offsetY={49}
     label={`Current Standing for ${monthWords[month]}`}
     style={styles.axisLabel}
   />
      <VictoryBar    
+
        colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578" ]}
         //padding={60}
         //labelRadius={30}
         padding={{left: 10, right: 10}}
         labelPlacement='parallel'
         domainPadding={{ x: 5 }}
+
         
         style={{
           data: {
@@ -241,6 +275,44 @@ class Stats extends React.Component{
       
     </VictoryChart>
 
+
+    <VictoryChart 
+       // containerComponent={<VictoryVoronoiContainer/>}
+      >
+      {this.props.communityUsers.map( user => 
+      
+      
+      
+        <VictoryGroup
+            color="#747578"
+            labels={(d) => `y: ${d.y}`}
+            labelComponent={
+              <VictoryTooltip
+                style={{ fontSize: 10 }}
+              />
+            }
+            data={this.getPointsOverPastMonths(user.id)}
+          >
+            <VictoryLine/>
+            <VictoryScatter
+              size={(d, a) => {return a ? 8 : 3;}}
+            />
+        </VictoryGroup>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      )}
+
+      
+         
+    </VictoryChart>
+
    
     </ScrollView>
     </Container>
@@ -283,7 +355,9 @@ const mapState = state => {
   return {
     user: state.user,
     userScores: state.userScores,
-    taskItems: state.taskItems
+    taskItems: state.taskItems,
+    communityUsers: state.community.users,
+    users: state.users
     
   }
 }
@@ -295,7 +369,8 @@ const mapDispatch = dispatch => {
     },
     getPastWinners: communityId => {
       dispatch(fetchPastWinners(communityId))
-    }
+    },
+    
   }
 }
 
