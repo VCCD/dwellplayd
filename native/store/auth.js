@@ -7,8 +7,8 @@ import {
   clearPastWinners,
   clearUserScores,
   clearCommunityTaskItems,
-  userHasSeenAllTutorials,
   resetUserHasSeenTutorials,
+  userHasSeenTutorial,
 } from '../store'
 
 const authURL = CONFIG.AUTH_URL
@@ -44,7 +44,7 @@ export const updateUser = (userId, form) => dispatch => {
     axios.
     put(`${apiURL}/users/${userId}`, form)
     .then(res => {
-      if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
+      if (res.data.hasSeenTutorials) dispatch(userHasSeenTutorial())
       dispatch(loginUser(res.data || defaultUser))
     })
     .catch(err => console.log(err))
@@ -63,7 +63,7 @@ export const auth = (body) => (dispatch) => {
     .post(`${authURL}/login`, body)
     .then(
         res => {
-          if (res.data.hasSeenTutorials) dispatch(userHasSeenAllTutorials())
+          if (res.data.hasSeenTutorials) dispatch(userHasSeenTutorial())
           dispatch(loginUser(res.data))
           console.log('Logging in');
           //history.push('/home');
