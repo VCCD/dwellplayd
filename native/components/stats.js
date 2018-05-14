@@ -53,36 +53,21 @@ class Stats extends React.Component {
     monthsArr = monthsArr.filter(month => month !== undefined)
     monthsArr = new Set(monthsArr)
     monthsArr.forEach(month => {
-      // console.log(this.getUserCurrentMonthItems(id, month), '<<<<<<<<<<< print user current month items')
+     
       userPointsPerMonth.push({ x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task) => { return sum += task.points }, 0), month: monthWords[month] })
     })
-    // console.log(userPointsPerMonth, '<<<<<<<<<<<<<<')
     return userPointsPerMonth
   }
 
   render() {
-    //const { users, taskItems } = this.props.community
+
     const { userScores, taskItems } = this.props
-    //const totalScore = userScores.reduce( (sum, user)=>sum += user.score, 0)
+ 
     let usersInCommunity = taskItems.filter(task => task.userId)
     const month = new Date().getMonth() + 1
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
-    //  let userPointsPerMonth = []
-
-    // let monthsArr = taskItems.map(task => {if (task.completed) return Number(task.completed.split('-')[1])})
-    // monthsArr = monthsArr.filter( month => month !== undefined)
-    // monthsArr = new Set(monthsArr)
-
-
-    //monthsArr.forEach( month =>  userPointsPerMonth.push( {x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task)=>{return sum += task.points}, 0) }))
-
-    //console.log(userPointsPerMonth, '<<<<<<<<<<<<<<')
-    // console.log(userPointsPerMonth, '<<<<<<<<<<<<<')
-    // console.log(this.props.userScores, '<<<<<<<<<<<<<<< userScores')
-
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
-    //console.log(dataForMonth)
-    console.log('<,,,,,,,,communityId and users>>>>>>>', this.props.communityUsers)
+   
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
@@ -106,7 +91,7 @@ class Stats extends React.Component {
                 </TouchableHighlight>
               </Header>
               <Body>
-                <ScrollView showsHorizontalScrollIndicator={true}>
+                <ScrollView >
                   <VictoryChart
                     domainPadding={{ y: 20 }}
                   >
@@ -152,7 +137,7 @@ class Stats extends React.Component {
           </Modal>
           <VictoryChart
             domainPadding={{ x: 25, y: 15 }}
-            //padding={30}
+         
             labelRadius={30}
             style={{ parent: { maxWidth: "95%" } }}
           >
@@ -161,17 +146,15 @@ class Stats extends React.Component {
               offsetY={0}
             />
             <VictoryAxis crossAxis
-              //padding={{ top: 20, bottom: 60 }}
-              //offsetY={1}
+            
               orientation="bottom"
               offsetY={49}
               label={`Current Standing for ${monthWords[month]}`}
-              style={styles.axisLabel}
+              style={{tickLabels: {fontSize: 15, padding: 5}, label:{fontSize: 30, padding: {top: 15}}}}
             />
             <VictoryBar
               colorScale={["#93B7BE", "#8C9A9E", "#79C4C4", "#747578"]}
-              //padding={60}
-              //labelRadius={30}
+           
               padding={{ left: 10, right: 10 }}
               labelPlacement='parallel'
               domainPadding={{ x: 5 }}
@@ -216,11 +199,27 @@ class Stats extends React.Component {
                   after: () => ({
                     y: 0,
                   })
+
+                }
+              }}
             />
           </VictoryChart>
           <VictoryChart
           // containerComponent={<VictoryVoronoiContainer/>}
           >
+          <VictoryAxis dependentAxis
+          style={styles.axisLabel}
+          offsetY={0}
+        />
+          <VictoryAxis crossAxis
+            
+          orientation="bottom"
+          offsetY={50}
+          label={`Points for Each Month`}
+          tickValues ={['Jan', 'Feb', 'March', 'April', 'May']}
+          style={{tickLabels: {fontSize: 15, padding: 5}, label:{fontSize: 30, padding: {top: 15}}}}
+         
+        />
             {this.props.communityUsers.map(user => {
               return (<VictoryGroup
                 key={user.id}
@@ -234,12 +233,15 @@ class Stats extends React.Component {
                 data={this.getPointsOverPastMonths(user.id)}
               >
                 <VictoryLine
-                labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]}, label:${d.firstName} `}                  animate={{
+
+                
+                  animate={{
                     duration: 2000,
                     onLoad: { duration: 2000 }
                   }}
                 />
                 <VictoryScatter
+                labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]} `}
                   size={(d, a) => { return a ? 8 : 3; }}
                 />
               </VictoryGroup>)
