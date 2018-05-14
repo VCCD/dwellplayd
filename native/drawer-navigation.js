@@ -73,9 +73,6 @@ const MainNavigation = StackNavigator({
   JoinCommunity: {
     screen: JoinCommunity
   },
-  Onboarding: {
-    screen: Onboarding
-  },
   Camera: {
     screen: CameraComponent
   },
