@@ -52,12 +52,19 @@ class Play extends React.Component {
           <Text style={styles.text}> Swipe right to learn how to play!</Text>
         </View>
         <View style={styles.page}>
-          <Image resizeMode='contain' style={styles.gif} source={require('../public/selectTasks.gif')} />
           <Text style={styles.text}>Use the sliders to adjust the frequency of a task. Once satisfied, press activate to initiate the task</Text>
+          <Image resizeMode='contain' style={styles.gif} source={require('../public/activate.gif')} />
         </View>
-        <View style={styles.page}><Text>Yo</Text></View>
         <View style={styles.page}>
-          <Text>Yo</Text>
+          <Text style={styles.text}>You can also add a cutsom task and delete any tasks</Text>
+          <Image resizeMode='contain' style={styles.gif} source={require('../public/addDelete.gif')} />
+        </View>
+        <View style={styles.page}>
+          <Text style={styles.text}>On the current task page, tap a task to complete it</Text>
+          <Image resizeMode='contain' style={styles.gif} source={require('../public/completeTask.gif')} />
+        </View>
+        <View style={styles.page}>
+          <Text style={styles.text}>Now its time to explore!</Text>
           {this._renderButton(`Let's get started!`, () => {
             this.setState({modal: 0})
             store.dispatch(userHasSeenTutorial(this.props.user, 'onboarding'))
@@ -67,47 +74,6 @@ class Play extends React.Component {
           })}
         </View>
       </ScrollView>
-    </View>
-  )
-
-  _renderModalTwo = () => (
-    <View style={styles.modalContent}>
-      <Text>dwellplayd is designed to take the decision-making out of communal tasks.</Text>
-      <Text>Instead of trying to decide who does what job, you just tell us what needs to be done and how often you think it should be done, and we'll make list of the most valuable tasks as any given moment.</Text>
-      {this._renderButton(`You have my attention...`, () => {
-        this.setState({modal: 0})
-        setTimeout(() => {
-          this.setState({modal: 3})
-        }, 500)
-      })}
-    </View>
-  )
-
-  _renderModalThree = () => (
-    <View style={styles.modalContent}>
-      <Text>Once you have the list, you can decide what you want to do and when.  If you think the points aren't high enough to clean the bathroom, then just wait.</Text>
-      <Text>Be careful though, your dwellows might nab the task before you do, and you'll lose out.</Text>
-      {this._renderButton(`Ahh, I think I'm starting to get it.`, () => {
-        this.setState({modal: 0})
-        setTimeout(() => {
-          this.setState({modal: 4})
-        }, 500)
-      })}
-    </View>
-  )
-
-  _renderModalFour = () => (
-    <View style={styles.modalContent}>
-    <Text>dwellplayd is a great tool for facilitating friendly competition. We will announce your dwelling's monthly winners through the app.</Text>
-      <Text>At any point you can see who's in the lead by looking at the scores page. We recommend a wager or prize to keep things interesting.</Text>
-      <Text>It's up to you to decide how friendly the wager should be!</Text>
-      {this._renderButton(`Let's get started!`, () => {
-        this.setState({modal: 0})
-        store.dispatch(userHasSeenTutorial(this.props.user, 'onboarding'))
-        setTimeout(() => {
-          this.props.navigation.navigate('SelectTasks')
-        }, 500)
-      })}
     </View>
   )
 
@@ -134,39 +100,6 @@ class Play extends React.Component {
             backdropTransitionOutTiming={400}
             >
             {this._renderModalOne()}
-          </Modal>
-          <Modal
-            animationIn={'slideInRight'}
-            animationOut={'slideOutLeft'}
-            isVisible={this.state.modal === 2}
-            animationInTiming={400}
-            animationOutTiming={400}
-            backdropTransitionInTiming={400}
-            backdropTransitionOutTiming={400}
-            >
-            {this._renderModalTwo()}
-          </Modal>
-          <Modal
-            animationIn={'slideInRight'}
-            animationOut={'slideOutLeft'}
-            isVisible={this.state.modal === 3}
-            animationInTiming={400}
-            animationOutTiming={400}
-            backdropTransitionInTiming={400}
-            backdropTransitionOutTiming={400}
-            >
-            {this._renderModalThree()}
-          </Modal>
-          <Modal
-            animationIn={'slideInRight'}
-            animationOut={'slideOutLeft'}
-            isVisible={this.state.modal === 4}
-            animationInTiming={400}
-            animationOutTiming={400}
-            backdropTransitionInTiming={400}
-            backdropTransitionOutTiming={400}
-            >
-            {this._renderModalFour()}
           </Modal>
       </Container>
     )
@@ -197,8 +130,8 @@ const styles = StyleSheet.create({
     width: 450,
   },
   gif: {
-    height: 300,
-    width: gifWidth,
+    height: 450,
+    width: 300,
   },
   container: {
     flex: 1,
