@@ -7,8 +7,8 @@ import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores, user
 import Modal from 'react-native-modal'
 
 const BUTTONS = [
-  'Provide the Proof',
-  'Cancel'
+  'provide proof',
+  'cancel'
 ];
 const CANCEL_INDEX = 1;
 

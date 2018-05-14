@@ -47,15 +47,18 @@ class PlayerDetailEdit extends React.Component {
       stylesheet: customFormStyle,
       fields: {
         firstName: {
-          error: 'First name cannot be empty',
+          label: `first name`,
+          error: 'first name cannot be empty',
           autoFocus: this.state.firstNameFocus,
         },
         lastName: {
-          error: 'Last name cannot be empty',
+          label: `last name`,
+          error: 'last name cannot be empty',
           autoFocus: this.state.lastNameFocus,
         },
         email: {
-          error: 'Insert a valid email',
+          label: `email`,
+          error: 'please enter a valid email',
           autoFocus: this.state.emailFocus,
         },
       }
@@ -164,7 +167,7 @@ class PlayerDetailEdit extends React.Component {
             value={this.value}
             options={this.options}
           />
-          <Button rounded style={styles.button} onPress={this.handleSubmit}><Text style={styles.text}>Update</Text></Button>
+          <Button rounded style={styles.button} onPress={this.handleSubmit}><Text style={styles.text}>update</Text></Button>
         </Content>
       </Container>
     );
@@ -221,6 +224,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#747578',
     fontSize: 20,
+    fontWeight: `bold`
   },
   edit: {
     fontWeight: 'bold',
