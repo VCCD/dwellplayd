@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { StyleSheet, View } from 'react-native';
 import { Container, Text, Button } from 'native-base'
-import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores, userHasSeenTutorial } from '../store'
+import store, { userHasSeenTutorial } from '../store'
 import Modal from 'react-native-modal'
 import * as Animatable from 'react-native-animatable';
 
@@ -13,12 +13,6 @@ class Onboarding extends React.Component {
     this.state = {
       modal: 1
     }
-  }
-
-  componentDidMount = () => {
-    const { getCurrentScores, user } = this.props
-    const month = new Date().getMonth()
-    getCurrentScores(user.communityId, month)
   }
 
   _renderModalOne = () => (
@@ -183,18 +177,6 @@ const styles = StyleSheet.create({
 //Render task items that are not completed
 const mapState = ({user}) => ({user})
 
-const mapDispatch = dispatch => {
-  return {
-    getTaskItems: communityId => {
-      dispatch(fetchCommunityTaskItems(communityId))
-    },
-    completeTask: taskItem => {
-      dispatch(completeTaskItem(taskItem))
-    },
-    getCurrentScores: (communityId, month) => {
-      dispatch(fetchUserScores(communityId, month))
-    }
-  }
-}
+const mapDispatch = null
 
 export default connect(mapState, mapDispatch)(Onboarding)

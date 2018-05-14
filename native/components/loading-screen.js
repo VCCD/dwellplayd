@@ -14,7 +14,7 @@ class Play extends React.Component {
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
       setTimeout(() => {
-        if (!this.props.user.hasSeenTutorials.onboarding) this.props.navigation.navigate('Onboarding')
+        if (!this.props.userHasSeenTutorials.onboarding) this.props.navigation.navigate('Onboarding')
         else if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
         else this.props.navigation.navigate('SelectTasks')
       }, 2000)
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapState = ({ user, communityTasks, taskItems }) => ({ user, communityTasks, taskItems })
+const mapState = ({ userHasSeenTutorials, user, communityTasks, taskItems }) => ({ userHasSeenTutorials, user, communityTasks, taskItems })
 
 const mapDispatch = null
 
