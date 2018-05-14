@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   login: {
     padding: 10,
     margin: 10,
+    width: 150,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
   signup: {
     padding: 10,
     margin: 10,
+    width: 150,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -52,10 +54,12 @@ const styles = StyleSheet.create({
   textLogin: {
     color: '#747578',
     fontSize: 20,
+    fontWeight: `bold`
   },
   textSignup: {
     color: '#D4F5F5',
     fontSize: 20,
+    fontWeight: `bold`
   }
 });
 
