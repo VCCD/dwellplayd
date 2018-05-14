@@ -9,7 +9,7 @@ import Modal from 'react-native-modal'
 
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
-const modalHeight = .94 * deviceHeight
+const modalHeight = .90 * deviceHeight
 const modalWidth = .90 * deviceWidth
 const gifHeight = modalHeight
 const gifWidth = modalWidth
@@ -29,7 +29,7 @@ class Play extends React.Component {
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
       setTimeout(() => {
-        if (!this.state.modal && !this.props.userHasSeenTutorials.onboarding) this.setState({modal: 1})
+        if (!this.state.modal && !this.props.userHasSeenTutorials) this.setState({modal: 1})
         else if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
         else this.props.navigation.navigate('SelectTasks')
       }, 2000)
@@ -44,6 +44,7 @@ class Play extends React.Component {
   _renderModalOne = () => (
     <View style={styles.modalContent}>
       <ScrollView
+        overScrollMode="never"
         horizontal={true}
         pagingEnabled={true}>
         <View style={styles.page}>
@@ -111,11 +112,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    color: '#D4F5F5',
+    color: '#8C9A9E',
   },
   text: {
+    textAlign: 'center',
     fontSize: 20,
-    color: '#D4F5F5',
+    color: '#8C9A9E',
     marginHorizontal: 10
   },
   page: {
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
     width: modalWidth,
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#8C9A9E',
+    backgroundColor: '#fff',
   },
   image: {
     width: 450,
@@ -141,14 +143,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#8C9A9E',
   },
   modalContent: {
+    display: 'flex',
     height: modalHeight,
     width: modalWidth,
     backgroundColor: '#fff',
     padding: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
-    borderWidth: 1,
+    borderRadius: 8,
     borderColor: '#747578'
   },
   button: {

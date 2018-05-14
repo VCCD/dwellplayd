@@ -19,7 +19,9 @@ export const userHasSeenTutorial = (user, tutorial) => ({
 
 export const userHasSeenAllTutorialsThunkerator = (user) => dispatch => {
   try {
+    console.log('thunk', user)
     user.hasSeenTutorials = true
+    console.log('thunkafter', user)
     dispatch(updateUser(user.id, user))
   }
   catch (err) {
