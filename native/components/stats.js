@@ -283,7 +283,9 @@ class Stats extends React.Component{
             }
             data={this.getPointsOverPastMonths(user.id)}
           >
-            <VictoryLine/>
+            <VictoryLine
+              
+            />
             <VictoryScatter
               size={(d, a) => {return a ? 8 : 3;}}
             />
