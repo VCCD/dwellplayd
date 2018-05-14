@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight} from 'react-native'
+import {StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions} from 'react-native'
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
@@ -47,6 +47,7 @@ class Stats extends React.Component{
       return combinedPointsById
   }
   getPointsOverPastMonths =  (id) => {
+    const monthWords = {1:'Jan', 2:'Feb', 3: 'March', 4: 'April', 5: 'May', 6:'June', 7:'July', 8:'Aug', 9:'Sept', 10:'Oct', 11:'Nov', 12:'Dec'}
     const { userScores, taskItems } = this.props
     let userPointsPerMonth = []
     let monthsArr = taskItems.map(task => {if (task.completed) return Number(task.completed.split('-')[1])})
@@ -54,7 +55,7 @@ class Stats extends React.Component{
     monthsArr = new Set(monthsArr)
     monthsArr.forEach( month =>  {
    // console.log(this.getUserCurrentMonthItems(id, month), '<<<<<<<<<<< print user current month items')
-    userPointsPerMonth.push( {x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task)=>{return sum += task.points}, 0) })})
+    userPointsPerMonth.push( {x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task)=>{return sum += task.points}, 0), month: monthWords[month] })})
    // console.log(userPointsPerMonth, '<<<<<<<<<<<<<<')
     return userPointsPerMonth
 
@@ -163,19 +164,7 @@ class Stats extends React.Component{
           />
                 </VictoryChart>
           </ScrollView>
-<VictoryChart>
 
-
-
-        <VictoryLine
-    style={{
-      data: { stroke: "#c43a31" },
-      parent: { border: "1px solid #ccc"}
-    }}
-    // x means each month, y is total points
-    data={this.getPointsOverPastMonths(2)}
-  />
-</VictoryChart>
 
           </Body>
       
@@ -279,13 +268,14 @@ class Stats extends React.Component{
     <VictoryChart 
        // containerComponent={<VictoryVoronoiContainer/>}
       >
+      
       {this.props.communityUsers.map( user => 
       
       
       
         <VictoryGroup
             color="#747578"
-            labels={(d) => `y: ${d.y}`}
+            labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]}, label:${d.firstName} `}
             labelComponent={
               <VictoryTooltip
                 style={{ fontSize: 10 }}
@@ -297,6 +287,7 @@ class Stats extends React.Component{
             <VictoryScatter
               size={(d, a) => {return a ? 8 : 3;}}
             />
+            
         </VictoryGroup>
       
       
