@@ -147,7 +147,7 @@ async function seed() {
         createdAt: new Date() - 3600000 * 24 * 1.53,
         completed: null,
         userId: null,
-        value: 6,
+        value: 5,
         communityId: 1,
         taskId: 1,
       })
@@ -155,7 +155,7 @@ async function seed() {
         createdAt: new Date() - 3600000 * 24 * 2.66,
         completed: null,
         userId: null,
-        value: 7,
+        value: 8,
         communityId: 1,
         taskId: 2,
       })
@@ -163,7 +163,7 @@ async function seed() {
         createdAt: new Date() - 3600000 * 24 * 3.87,
         completed: null,
         userId: null,
-        value: 8,
+        value: 2,
         communityId: 1,
         taskId: 3,
       })
@@ -171,7 +171,7 @@ async function seed() {
         createdAt: new Date() - 3600000 * 24 * 4.21,
         completed: null,
         userId: null,
-        value: 9,
+        value: 21,
         communityId: 1,
         taskId: 4,
       })

@@ -19,7 +19,7 @@ const CustomHeader = (props) => (
       </TouchableOpacity>
       <Body style={styles.body}>
           <Text style={styles.textName}>{props.user.firstName} {props.user.lastName}</Text>
-          <Text style={styles.text}>Current score: {getUserScore(props.user.id, props)}</Text>
+          <Text style={styles.text}>current score: {getUserScore(props.user.id, props)}</Text>
       </Body>
     </Header>
     <Content>
