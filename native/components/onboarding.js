@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
-import { Container, Content, ActionSheet, Text, Button } from 'native-base'
-import { TaskCard } from '../components'
+import { StyleSheet, View } from 'react-native';
+import { Container, Text, Button } from 'native-base'
 import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores, userHasSeenTutorial } from '../store'
 import Modal from 'react-native-modal'
+import * as Animatable from 'react-native-animatable';
 
 class Onboarding extends React.Component {
 
@@ -87,7 +87,10 @@ class Onboarding extends React.Component {
   render() {
 
     return (
-      <Container style={styles.list}>
+      <Container style={styles.container}>
+        <View style={styles.container}>
+        <Animatable.Image style={styles.image} animation="pulse" easing="ease-out" iterationCount="infinite" source={require('../public/dwellplayd_logo.png')} />
+        </View>
           <Modal
             animationOut={'slideOutLeft'}
             isVisible={this.state.modal === 1}
@@ -137,15 +140,22 @@ class Onboarding extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  list: {
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#D4F5F5',
+  },
+  image: {
+    width: 450,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#8C9A9E',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  content: {
-    margin: 5,
   },
   modalContent: {
     backgroundColor: '#fff',
