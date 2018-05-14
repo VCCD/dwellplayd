@@ -65,7 +65,7 @@ class PastTasks extends React.Component {
               return (
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
               )
-            }) : <View style={styles.noTask}><Text style={styles.text}>No tasks have been completed</Text></View>}
+            }) : <View style={styles.noTask}><Text style={styles.text}>No tasks have been completed.</Text></View>}
           </Content>
         </ScrollView>
       </Container>

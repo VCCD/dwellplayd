@@ -178,7 +178,7 @@ class SelectTasks extends Component {
             <Input
               onChangeText={this.handleChangeTask}
               onSubmitEditing={this.handleAddTask}
-              placeholder="Enter a custom task"
+              placeholder="enter a custom task"
               value={this.state.taskInput}
               style={styles.text}
             />
