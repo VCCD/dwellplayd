@@ -11,8 +11,8 @@ const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
 const modalHeight = deviceHeight - 40
 const modalWidth = deviceWidth - 30
-const gifHeight = modalHeight - 120
-const gifWidth = modalWidth - 60
+const gifHeight = modalHeight
+const gifWidth = modalWidth
 
 class Play extends React.Component {
 
@@ -47,8 +47,13 @@ class Play extends React.Component {
         horizontal={true}
         pagingEnabled={true}>
         <View style={styles.page}>
-          <Image style={styles.gif} source={require('../public/selectTasks.gif')} />
-          <Text>dwellcome! first lets pick some task</Text>
+          <Text style={styles.title}>welcome to dwellplayd</Text>
+          <Text style={styles.text}> The exciting app that transforms mundane communal tasks into an interactive competition</Text>
+          <Text style={styles.text}> Swipe right to learn how to play!</Text>
+        </View>
+        <View style={styles.page}>
+          <Image resizeMode='contain' style={styles.gif} source={require('../public/selectTasks.gif')} />
+          <Text style={styles.text}>Use the sliders to adjust the frequency of a task. Once satisfied, press activate to initiate the task</Text>
         </View>
         <View style={styles.page}><Text>Yo</Text></View>
         <View style={styles.page}>
@@ -175,16 +180,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#D4F5F5',
   },
+  text: {
+    fontSize: 20,
+    color: '#D4F5F5',
+    marginHorizontal: 10
+  },
   page: {
+    flex: 1,
     height: modalHeight,
     width: modalWidth,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#8C9A9E',
   },
   image: {
     width: 450,
   },
   gif: {
-    height: gifHeight,
-    width: gifWidth
+    height: 300,
+    width: gifWidth,
   },
   container: {
     flex: 1,
