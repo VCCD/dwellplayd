@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { Container, Content, Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import customFormStyle from '../customFormStyle'
-import { createCommunityThunkerator, setToNewUser } from '../store'
+import { createCommunityThunkerator } from '../store'
 
 
 const CommunityForm = t.struct({
@@ -99,7 +99,6 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     submitCreateCommunity: async (name, user) => {
       await dispatch(createCommunityThunkerator(name, user))
-      dispatch(setToNewUser())
       ownProps.navigation.navigate('SelectTasks')
     }
   }

@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Container, Text, Content } from 'native-base';
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems } from '../store'
 import Push from './push'
+import * as Animatable from 'react-native-animatable';
 
 class Play extends React.Component {
 
@@ -13,9 +14,10 @@ class Play extends React.Component {
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
       setTimeout(() => {
-        if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
+        if (!this.props.user.hasSeenTutorials.onboarding) this.props.navigation.navigate('Onboarding')
+        else if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
         else this.props.navigation.navigate('SelectTasks')
-      }, 1000)
+      }, 2000)
     }
     else setTimeout(() => {
       this.props.navigation.navigate('NoCommunity')
@@ -26,9 +28,9 @@ class Play extends React.Component {
     return (
       <Container style={styles.container}>
         <Push />
-        <Content style={styles.form}>
-          <Text style={styles.title}>dwellcome home</Text>
-        </Content>
+        <View style={styles.container}>
+        <Animatable.Image style={styles.image} animation="pulse" easing="ease-out" iterationCount="infinite" source={require('../public/dwellplayd_logo.png')} />
+        </View>
       </Container>
     )
   }
@@ -41,11 +43,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#D4F5F5',
   },
+  image: {
+    width: 450,
+  },
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#8C9A9E',
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#8C9A9E',
   },
 });
 
