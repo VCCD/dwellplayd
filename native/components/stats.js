@@ -275,7 +275,7 @@ class Stats extends React.Component{
       
         <VictoryGroup
             color="#747578"
-            labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]}, label:${d.firstName} `}
+            labels={(d) => `x: ${monthWords[d.x]}, label:${d.firstName} `}
             labelComponent={
               <VictoryTooltip
                 style={{ fontSize: 10 }}
