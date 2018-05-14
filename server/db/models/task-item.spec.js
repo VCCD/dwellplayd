@@ -9,17 +9,24 @@ describe(`TaskItem model`, () => {
     return db.sync({ force: true })
   })
 
-  describe(`taskItem instance`, async () => {
-    const task = await TaskItem.create({
-      value: 10,
-      // communityId: 1,
-      // taskId: 3,
-      // userId: 1,
-      compeleted: new Date() + 1000 * 60 * 60 * 24 * 3.25
+  describe(`taskItem instance`, () => {
+    let testTaskItem;
+    beforeEach(() => {
+      return TaskItem.create({
+        value: 10,
+      })
+        .then(taskItem => {
+          testTaskItem = taskItem
+          testTaskItem.update({
+            completed: new Date() + 1000 * 60 * 60 * 24 * 3.25
+          })
+        })
+    })
+    
+    it(`tests something`, () => {
+      console.log(testTaskItem)
+      expect(testTaskItem.value).to.be.equal(10)
     })
 
-    it(`has value 10`, () => {
-      expect(task.value.to.be.equal(10))
-    })
   }) // end describe('taskItem instance')
 }) // end describe('Task model')
