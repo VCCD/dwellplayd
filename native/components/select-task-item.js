@@ -7,6 +7,8 @@ import {
   Button,
 } from 'native-base';
 import store, { editCommunityTask } from '../store'
+import * as Animatable from 'react-native-animatable';
+const AnimatedCard = Animatable.createAnimatableComponent(Card);
 
 
 const styles = StyleSheet.create({
@@ -38,7 +40,7 @@ class SelectTaskItem extends Component {
   render() {
     const { inactive, activateTask } = this.props
     return (
-      <Card key={this.state.comTask.id} style={this.props.styles.card}>
+      <AnimatedCard  animation="bounceInUp" duration={1500} key={this.state.comTask.id} style={this.props.styles.card}>
         <CardItem style={this.props.styles.header} >
           <View style={this.props.styles.left}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#747578' }}>{this.state.comTask.task.name}</Text>
@@ -62,7 +64,7 @@ class SelectTaskItem extends Component {
           change={this.change}
           value={this.state.comTask.value}
           submitSlide={this.submitSlide} />
-      </Card>
+      </AnimatedCard>
         )
   }
 }
