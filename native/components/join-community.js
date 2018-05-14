@@ -5,7 +5,7 @@ import { Button, Icon } from 'native-base';
 import t from 'tcomb-form-native'
 import { addUserToCommunity } from '../store/auth';
 import customFormStyle from '../customFormStyle'
-import { fetchCommunities } from '../store';
+import { fetchCommunities, clearCommunities } from '../store';
 
 const styles = StyleSheet.create({
   title: {
@@ -110,6 +110,7 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     signupSubmit: (communityId, user) => {
       dispatch(addUserToCommunity(+communityId, user))
+      dispatch(clearCommunities())
       ownProps.navigation.navigate('LoadingScreen')
     },
     getCommunities: () => {
