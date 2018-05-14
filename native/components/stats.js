@@ -59,6 +59,14 @@ class Stats extends React.Component {
     return userPointsPerMonth
   }
 
+  getAvgPointsPerTask = (taskId) =>{
+    const { taskItems } = this.props
+    let filteredTasks = taskItems.filter(task => task.id === taskId)
+
+    console.log(filteredTasks)
+    return filteredTasks.reduce((sum, task) => {return sum += task.points}, 0)}
+  
+
   render() {
 
     const { userScores, taskItems } = this.props
@@ -68,6 +76,7 @@ class Stats extends React.Component {
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const  colorScale=["#8FA5A5", "#8C9A9E", "#79C4C4","#353637", "#4482AE", "#9BB3B3"]
+    console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
@@ -238,12 +247,14 @@ class Stats extends React.Component {
                   animate={{
                     duration: 2000,
                     onLoad: { duration: 2000, before: () => ({
-                      y: 0,
-                    }) },
+                              y: 0,
+                              }) 
+                            },
                     onExit:{ duration: 2000,   after: () => ({
-                      y: 0,
-                    }) }
-                  }}
+                              y: 0,
+                              }) 
+                            }
+                           }}
                 />
                 <VictoryScatter
                 labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]} `}
