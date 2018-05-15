@@ -12,29 +12,54 @@ const options = {
   fields: {
     email: {
       label: `email`,
-      autoCapitalize: 'none'
+      autoCapitalize: 'none',
+      error: 'Please enter a valid email'
     },
     password: {
       label: `password`,
       secureTextEntry: true,
+      error: 'Please enter the correct password',
       autoCapitalize: 'none',
     }
   }
 }
 
+const emailVal = t.refinement(t.String, email => {
+    const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    return reg.test(email)
+  })
+
+  const passwordVal = t.refinement(t.String, password => {
+    return !(password.length < 3)
+  })
+
 const User = t.struct({
-  email: t.String,
-  password: t.String,
-})
+    email: emailVal,
+    password: passwordVal,
+  })
 const Form = t.form.Form
 
 class LoginScreen extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      incorrect: false,
+    }
+  }
 
   handleSubmit = async () => {
     const form = this._form.getValue()
-    await this.props.loginSubmit(form)
-    const blankForm = this._form.getValue()
-    if (this.props.error) this.props.loginSubmit(blankForm)
+    if (form){
+      this.props.error = null
+      let login = await this.props.loginSubmit(form)
+      if (!login) {
+        console.log('in here')
+        this.setState({incorrect: true})
+      }
+    }
+    else {
+      this.setState({incorrect: false})
+    }
   }
 
   render() {
@@ -47,6 +72,7 @@ class LoginScreen extends React.Component {
             type={User}
             options= {options}
             />
+            {this.state.incorrect ? <Text style={styles.error}>Invalid Login credentials</Text> : ''}
           <Button
             rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.text}>log in</Text>
@@ -94,6 +120,10 @@ const styles = StyleSheet.create({
     color: '#747578',
     fontSize: 20,
     fontWeight: `bold`
+  },
+  error: {
+    color: '#a94442',
+    fontSize: 20,
   }
 });
 
@@ -109,7 +139,8 @@ const mapLogin = (state) => {
 const mapDispatch = (dispatch, ownProps) => {
   return {
     loginSubmit: async (form) => {
-      await dispatch(auth(form))
+      let result = await dispatch(auth(form))
+      return result
     },
   }
 }

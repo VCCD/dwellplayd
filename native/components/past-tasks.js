@@ -49,25 +49,35 @@ class PastTasks extends React.Component {
     getTaskItems(user.communityId)
     this.setState({ refreshing: false })
   }
-
+  _renderNoTasks = () => {
+    return (
+    <View style={{height: '100%', backgroundColor: '#8C9A9E', justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: '#8C9A9E', padding: 20, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{color: '#D4F5F5', fontWeight: 'bold'}}>No one has completed any tasks this month!</Text>
+      </View>
+    </View>
+    )
+  }
   render() {
     const { taskItems, community } = this.props
     const filteredTaskItems = taskItems && taskItems.filter(taskItem => taskItem.completed && taskItem.completed.split(`-`)[1] - 1 === new Date().getMonth())
     const sortedTaskItems = filteredTaskItems && filteredTaskItems.sort((a, b) => Date.parse(b.completed) - Date.parse(a.completed))
     return (
       <Container style={styles.list}>
-      <ScrollView refreshControl={<RefreshControl
-        refreshing={this.state.refreshing}
-        onRefresh={this.refresh} />}>
-        <Content contentContainerStyle={styles.content}>
-        {sortedTaskItems.length ? sortedTaskItems.map(taskItem => {
-          taskItem.completer = community.users.find(user => user.id === taskItem.userId)
-              return (
+        {sortedTaskItems.length ?
+          <ScrollView refreshControl={<RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.refresh} />}>
+            <Content contentContainerStyle={styles.content}>
+              {sortedTaskItems.map(taskItem => {
+                taskItem.completer = community.users.find(user => user.id === taskItem.userId)
+                return (
                 <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
-              )
-            }) : <View style={styles.noTask}><Text style={styles.text}>No tasks have been completed.</Text></View>}
-          </Content>
+                )
+              })}
+            </Content>
         </ScrollView>
+        : this._renderNoTasks()}
       </Container>
     );
   }
