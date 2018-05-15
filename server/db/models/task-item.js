@@ -29,7 +29,7 @@ const TaskItem = db.define('taskItem', {
     get: function () {
       const created = this.getDataValue(`createdAt`)
       const completed = this.getDataValue(`completed`)
-      const days = completed ? calcDays(completed, created) : calcDays(now - created)
+      const days = completed ? calcDays(completed, created) : calcDays(now, created)
       return days
     }
   },
@@ -39,7 +39,7 @@ const TaskItem = db.define('taskItem', {
       const created = this.getDataValue(`createdAt`)
       const completed = this.getDataValue(`completed`)
       const value = this.getDataValue(`value`)
-      const days = completed ? calcDays(completed, created) : calcDays(now - created)
+      const days = completed ? calcDays(completed, created) : calcDays(now, created)
       return calcPoints(days, value)
     }
   },
