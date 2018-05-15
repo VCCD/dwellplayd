@@ -30,7 +30,6 @@ describe('User routes', () => {
         .get('/api/users')
         .expect(200)
         .then(res => {
-          console.log(res.body)
           expect(res.body).to.be.an('array')
           expect(res.body[0].email).to.be.equal(codysEmail)
           expect(res.body[0].firstName).to.be.equal(codysFirstName)

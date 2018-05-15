@@ -39,7 +39,7 @@ router.post('/', async (req, res, next) => {
     }
     // else increment the count of the one you found and send it
     else {
-      createdTask[0].increment('count')
+      await createdTask[0].increment('count')
       res.json(createdTask[0])
     }
   }
