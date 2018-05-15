@@ -308,12 +308,12 @@ class Stats extends React.Component {
           
             
           
-            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={250}>
+            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={270}>
             <VictoryBar 
             //offsetY={200}
             standalone={true}
             
-              style={{ data: { width: 35, fillOpacity:0.6, color:'grey' } }}
+              style={{ data: { width: 35, fillOpacity:0.7, fill:"#4482AE" } }}
               data={taskItemsArr}
               cornerRadius={8}
               
@@ -323,6 +323,7 @@ class Stats extends React.Component {
             />
             
             <VictoryAxis dependentAxis 
+            
             style={{
               axis: { stroke: "transparent" },
               ticks: { stroke: "transparent", padding:0 },
@@ -352,9 +353,13 @@ class Stats extends React.Component {
             your tick labels in the center of the chart. The correct
             y values are still provided by VictoryAxis for each tick
           */
-          tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={250}/>}
+          tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={270}/>}
           tickValues={taskItemsArr.map((point) => point.x)}
         />
+        <VictoryLegend x={125} y={50}
+    title="Avg Points Per Task"
+    centerTitle
+    data={[]}/>
         </VictoryChart>
         
           
