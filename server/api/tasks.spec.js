@@ -41,7 +41,7 @@ describe('Task routes', () => {
           expect(res.body.count).to.be.equal(2)
         })
     })
-  }) // end describe('/api/users')
+  })
 
   describe('/api/tasks/, query', () => {
     const taskName = 'sweep the floors'
@@ -69,4 +69,4 @@ describe('Task routes', () => {
         })
     })
   })
-}) // end describe('User routes')
+})

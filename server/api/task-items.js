@@ -15,17 +15,17 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const { communityId, taskId } = req.body
-    const value = await CommunityTask.findOne({
+    const existingCommTask = await CommunityTask.findOne({
       where: { taskId, communityId }
     })
-    if (value) {
+    if (existingCommTask) {
       const taskItem = req.body
-      taskItem.value = value.value
+      taskItem.value = existingCommTask.value
       await TaskItem.create(taskItem)
-      res.send(`Created new taskItem`)
+      res.status(201).send(`TaskItem created`)
     }
     else {
-      res.send(`No task`)
+      res.status(200).send(`No existing community task`)
     }
   }
   catch (err) {
@@ -49,10 +49,12 @@ router.put('/:taskItemId', async (req, res, next) => {
     const { taskItemId } = req.params
     const taskItem = req.body
     taskItem.completed = new Date()
-    await TaskItem.update(taskItem, {
-      where: { id: taskItemId }
+    const updatedTaskItem = await TaskItem.update(taskItem, {
+      where: { id: taskItemId },
+      returning: true,
     })
-    res.send(`${taskItem.id} updated`)
+    console.log(updatedTaskItem)
+    res.json(updatedTaskItem[1])
   }
   catch (err) {
     console.log(err)
