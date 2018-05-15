@@ -123,7 +123,7 @@ class SelectTasks extends Component {
     await store.dispatch(playThunkerator(task))
   }
 
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     return {
       title: 'Add / Edit Tasks',
       headerRight: (
