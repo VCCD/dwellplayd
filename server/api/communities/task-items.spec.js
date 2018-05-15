@@ -4,7 +4,7 @@ const {expect} = require('chai')
 const request = require('supertest')
 const db = require('../../db')
 const app = require('../../index')
-const { Task, TaskItem } = require('../../db/models')
+const { Task, TaskItem, Community, CommunityTask } = require('../../db/models')
 
 describe('Communities/task-items routes', () => {
   beforeEach(() => {
@@ -18,12 +18,6 @@ describe('Communities/task-items routes', () => {
       })
       const taskTwo = await Task.create({
         name: 'Clean the bathroom'
-      })
-      const user = await User.create({
-        firstName: 'test',
-        lastName: 'user',
-        email: 'test@test.com',
-        password: '123',
       })
       const community = await Community.create({
           name: 'Community 1'
@@ -61,14 +55,20 @@ describe('Communities/task-items routes', () => {
         })
     })
 
-    // it('GET /api/communities/:communityId/users should return an empty array and 200', () => {
-    //   return request(app)
-    //     .get('/api/communities/2/users')
-    //     .expect(200)
-    //     .then(res => {
-    //       expect(res.body).to.be.an('array')
-    //       expect(res.body.length).to.be.equal(0)
-    //     })
-    // })
+    it('POST /api/communities/:communityId/users should create a new taskItem and send it back', () => {
+      return request(app)
+        .post('/api/communities/1/task-items')
+        .send({
+          taskId: 1,
+          communityId: 1,
+          value: 5,
+        })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('object')
+          expect(res.body.taskId).to.be.equal(1)
+          expect(res.body.value).to.be.equal(5)
+        })
+    })
   })
 })
