@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions } from 'react-native'
-import { VictoryBar, VictoryZoomContainer, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack  } from "victory-native";
+import { VictoryBar, VictoryZoomContainer, VictoryVoronoiContainer, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack, svg  } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -76,10 +76,12 @@ class Stats extends React.Component {
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const  colorScale=["#8FA5A5", "#8C9A9E", "#79C4C4","#353637", "#4482AE", "#9BB3B3"]
-    console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
+    //console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
     let legendArr = []
     communityUsers.forEach(user =>{legendArr.push({name: user.firstName, symbol:{fill:colorScale[user.id]}})})
     let taskLegend = []
+    //userScores.sort(function(a-b){return b-a})
+    userScores.sort(function(a,b){return b.score-a.score})
     
     tasksPoints = {}
     taskItems.forEach(task => tasksPoints[task.task.id] = {name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
@@ -90,8 +92,8 @@ class Stats extends React.Component {
      for(key in tasksPoints){
        taskLegend.push({name: tasksPoints[key].name, symbol:{fill:colorScale[key]}})
      }
-
-    console.log(tasksPoints, taskItemsArr, taskLegend,'<<<<<<<< pointsObj')
+     
+    //console.log(tasksPoints, taskItemsArr, taskLegend,'<<<<<<<< pointsObj')
     
 
     return (
@@ -116,20 +118,25 @@ class Stats extends React.Component {
                   <Text style={{ color: "white", fontSize: 20 }}> X</Text>
                 </TouchableHighlight>
               </Header>
+
               <Body>
                 <ScrollView >
+          
+
+
                   <VictoryChart
                     domainPadding={{ y: 20 }}
+                    
                   >
                     <VictoryBar
-                      horizontal
+                      
                       style={{
                         data: { fill: "#8C9A9E" },
                         labels: { labelPlacement: 'parallel' }
                       }}
                       labels={(d) => d.y}
                       labelComponent={<VictoryLabel labelPlacement="perpendicular" />}
-                      data={dataForMonth.map(task => { return { x: task.name, y: task.points, task: task.name } })}
+                      data={dataForMonth.map(task => { return { x: task.id, y: task.points, task: task.name } })}
                       sortKey="y"
                       sortOrder="descending"
                       animate={{
@@ -151,9 +158,11 @@ class Stats extends React.Component {
                     <VictoryAxis
                       label={`Tasks for ${monthWords[month]}`}
                       style={styles.axisLabel}
+                      
                     />
                     <VictoryAxis
                       dependentAxis
+                      
                       
                       style={styles.axisLabel}
                     />
@@ -296,72 +305,65 @@ class Stats extends React.Component {
             })}
           </VictoryChart>
           
-
-
           
-          <VictoryStack vertical
-            //standalone={false}
-            /* setting a symmetric domain makes it much easier to center the axis  */
-            //domain={{ y: [-60] }}
-            // padding={padding}
-            // height={height}
-            // width={width}
             
-            style={{ data: { width: 20 }, labels: { fontSize: 11 } }}
-          >
-         
+          
+            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={250}>
             <VictoryBar 
+            //offsetY={200}
+            standalone={true}
             
               style={{ data: { width: 35, fillOpacity:0.6, color:'grey' } }}
-              data={taskItemsArr }
+              data={taskItemsArr}
               cornerRadius={8}
               
-              
               y={data => roundToTenths(data.y)}
-             labels={(data) => (`${roundToTenths(data.y)} pts`)}
+           labels={(data) => (`${roundToTenths(data.y)} pts`)}
              
             />
-          
-          </VictoryStack>
-  
-          <VictoryAxis crossAxis
-            // height={height}
-            // width={width}
             
-            
-
-             padding={5}
+            <VictoryAxis dependentAxis 
             style={{
               axis: { stroke: "transparent" },
-              ticks: { stroke: "transparent" },
-              tickLabels: { fontSize: 12, fill: "transparent" }
-            }}
-            /*
-              Use a custom tickLabelComponent with
-              an absolutely positioned x value to position
-              your tick labels in the center of the chart. The correct
-              y values are still provided by VictoryAxis for each tick
-            */
-            tickLabelComponent={<VictoryLabel  labelPlacement="vertical" y={0}/>}
-            tickValues={taskItemsArr.map((point) => point.x)}
-          />
-          <VictoryLegend 
-    
-          centerTitle
-          orientation="vertical"
+              ticks: { stroke: "transparent", padding:0 },
+              tickLabels: { fontSize: 12, fill: "transparent", angle:45, orientation: 'right', verticalAnchor:'start' }
+            }}/>
+            <VictoryAxis crossAxis 
+          // height={height}
+          // width={width}
           
-          gutter={20}
-          style={{data: {fontSize: 10 } }}
-          data={taskLegend}
+          
+          orientation="bottom"
+          
+          // offsetX={25}
+           //offsetY={0}
+          
+          
+
+           //padding={5}
+          style={{
+            axis: { stroke: "black" },
+            ticks: { stroke: "black", padding:0 },
+            tickLabels: { fontSize: 12, fill: "black", angle:90, orientation: 'left', verticalAnchor:'start'}
+          }}
+          /*
+            Use a custom tickLabelComponent with
+            an absolutely positioned x value to position
+            your tick labels in the center of the chart. The correct
+            y values are still provided by VictoryAxis for each tick
+          */
+          tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={250}/>}
+          tickValues={taskItemsArr.map((point) => point.x)}
         />
-       
-
-
-
-
-
-
-
+        </VictoryChart>
+        
+          
+            
+        
+          
+  
+        
+    
 
 
 
