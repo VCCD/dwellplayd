@@ -1,27 +1,13 @@
-/**
- * Welcome to the seed file! This seed file uses a newer language feature called...
- *
- *                  -=-= ASYNC...AWAIT -=-=
- *
- * Async-await is a joy to use! Read more about it in the MDN docs:
- *
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
- *
- * Now that you've got the main idea, check it out in practice below!
- */
 const db = require('../server/db')
 const { User, Community, Task, CommunityTask, TaskItem } = require('../server/db/models')
 
 async function seed() {
   await db.sync({ force: true })
   console.log('db synced!')
-  // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
-  // executed until that promise resolves!
 
   await Community.create({
-    name: 'Community',
+    name: 'dwellbeings',
   })
-
 
   const createUsers = async () => {
     const users = [
@@ -64,53 +50,57 @@ async function seed() {
     catch (err) {
       console.log(err)
     }
-
   }
   await createUsers()
-  
+
   const createTasks = async () => {
     const tasks = [
-      { name: 'clean the dishes' },
-      { name: 'wipe the counters' },
-      { name: 'sweep the floors' },
-      { name: 'vacuum the carpet' },
-      { name: 'feed the dog' }
+      { name: 'walk the dog' },
+      { name: 'water the plants' },
+      { name: 'takeout the trash' },
+      { name: 'clean the bathroom' },
+      { name: 'purge the fridge' },
     ]
     try {
-      const taskPromises = tasks.map(task => {
-        return Task.create(task)
-      })
-      await Promise.all(taskPromises)
+      await Task.create(tasks[0])
+      await Task.create(tasks[1])
+      await Task.create(tasks[2])
+      await Task.create(tasks[3])
+      await Task.create(tasks[4])
       console.log('seeded the tasks')
     }
     catch (err) {
       console.log(err)
     }
-
   }
   await createTasks()
 
   const createCommunityTasks = async () => {
     const communityTasks = [
       {
-        value: 2,
+        taskId: 1,
+        value: 1,
         communityId: 1,
-        taskId: 3
       },
       {
-        value: 5,
+        taskId: 2,
+        value: 3,
         communityId: 1,
-        taskId: 1
       },
       {
-        value: 8,
+        taskId: 3,
+        value: 7,
         communityId: 1,
-        taskId: 2
       },
       {
-        value: 21,
+        taskId: 4,
+        value: 14,
         communityId: 1,
-        taskId: 4
+      },
+      {
+        taskId: 5,
+        value: 30,
+        communityId: 1,
       },
     ]
     try {
@@ -123,60 +113,80 @@ async function seed() {
     catch (err) {
       console.log(err)
     }
-
   }
   await createCommunityTasks()
 
   const createTaskItems = async () => {
-    let taskItems = []
-    for (let i = 0; i < 50; i++) {
-      const randomDays = Math.random() * 120
-      taskItems.push(
-        {
-          createdAt: new Date() - 3600000 * 24 * randomDays,
-          completed: new Date() - 3600000 * 24 * (randomDays - Math.random() * randomDays % 30),
-          userId: Math.floor(Math.random() * 4) + 1,
-          value: Math.floor(Math.random() * 30) + 1,
-          communityId: 1,
-          taskId: Math.floor(Math.random() * 5) + 1,
-        },
-      )
+    const dayMs = 86400000;
+    const start = new Date() - dayMs * 120
+    const rando = (taskItem, today) => {
+      let completed = false
+      const duration = (today - taskItem.createdAt) / dayMs
+      const likelihood = duration / taskItem.value
+      const random = Math.random() * 2
+      if (random < likelihood) completed = true
+      // console.log(`value`, taskItem.value, `likelihood`, likelihood, `random`, random, `completed`, completed)
+      return completed
     }
-    taskItems.push(
+    const completedTaskItems = []
+    let liveTaskItems = [
       {
-        createdAt: new Date() - 3600000 * 24 * 1.53,
+        createdAt: start,
         completed: null,
         userId: null,
-        value: 5,
-        communityId: 1,
+        value: 1,
         taskId: 1,
-      })
-      taskItems.push({
-        createdAt: new Date() - 3600000 * 24 * 2.66,
+        communityId: 1,
+      },
+      {
+        createdAt: start,
         completed: null,
         userId: null,
-        value: 8,
-        communityId: 1,
+        value: 3,
         taskId: 2,
-      })
-      taskItems.push({
-        createdAt: new Date() - 3600000 * 24 * 3.87,
+        communityId: 1,
+      },
+      {
+        createdAt: start,
         completed: null,
         userId: null,
-        value: 2,
-        communityId: 1,
+        value: 7,
         taskId: 3,
-      })
-      taskItems.push({
-        createdAt: new Date() - 3600000 * 24 * 4.21,
+        communityId: 1,
+      },
+      {
+        createdAt: start,
         completed: null,
         userId: null,
-        value: 21,
-        communityId: 1,
+        value: 14,
         taskId: 4,
+        communityId: 1,
+      },
+      {
+        createdAt: start,
+        completed: null,
+        userId: null,
+        value: 30,
+        taskId: 5,
+        communityId: 1,
+      },
+    ]
+    for (let i = 1; i < 120; i++) {
+      const today = new Date() - dayMs * (120 - i)
+      liveTaskItems.forEach(liveTaskItem => {
+        console.log(today)
+        if (i === 119) { completedTaskItems.push(liveTaskItem) }
+        if (rando(liveTaskItem, today)) {
+          const completedTaskItem = {...liveTaskItem}
+          completedTaskItem.userId = Math.floor(Math.random() * 4) + 1
+          completedTaskItem.completed = today - Math.random() * dayMs
+          completedTaskItems.push(completedTaskItem)
+          liveTaskItem.createdAt = today
+        }
       })
+    }
     try {
-      const TaskItemPromises = taskItems.map(taskItem => {
+      const TaskItemPromises = completedTaskItems.map(taskItem => {
         return TaskItem.create(taskItem)
       })
       await Promise.all(TaskItemPromises)

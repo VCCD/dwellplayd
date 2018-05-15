@@ -6,7 +6,7 @@ const roundToTenths = num => {
 }
 
 const calcPoints = (days, value) => {
-  const points = (days / value) * 100
+  const points = (value / 10) * (Math.sinh((3 * days) / value))
   return roundToTenths(points)
 }
 
