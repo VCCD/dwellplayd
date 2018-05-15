@@ -135,7 +135,7 @@ class Stats extends React.Component {
                         labels: { labelPlacement: 'parallel' }
                       }}
                       standalone={true}
-                      labels={(d) => d.y}
+                      //labels={(d) => d.y}
                       labelComponent={<VictoryLabel />}
                       data={dataForMonth.map(task => { return { x: task.name, y: task.points, task: task.name } })}
                       
@@ -246,11 +246,11 @@ class Stats extends React.Component {
           //containerComponent={<VictoryZoomContainer zoomDomain={{x: [5, 35], y: [0, 100]}}/>}
           // containerComponent={<VictoryVoronoiContainer/>}
           >
-          <VictoryLegend x={50} y={45}
+          <VictoryLegend x={30} y={15}
     
     centerTitle
-    orientation="vertical"
-    itemsPerRow={2}
+    orientation="horizontal"
+    //itemsPerRow={2}
     gutter={20}
     style={{data: {fontSize: 10 } }}
     data={legendArr}
@@ -304,14 +304,26 @@ class Stats extends React.Component {
                 
               </VictoryGroup>)
             })}
-          </VictoryChart>
-          
-          
+
             
+          </VictoryChart > 
+         
           
-            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={270}
-            animate={{duration: 2000}}
-            >
+            <VictoryChart  containerComponent={<VictoryVoronoiContainer height={400}/>}  height={250}
+            animate={{duration: 2000}}>
+            <VictoryLegend x={25} y={50}
+  title="Avg Points Per Task"
+  centerTitle
+  orientation="horizontal"
+  gutter={20}
+  style={{
+    data: { fill: "transparent", stroke: "transparent", strokeWidth: 2 },
+    labels: { fill: "transparent" },
+    border: { stroke: "transparent" },
+    title: {fontSize: 15 }
+  }}
+/>
+
             <VictoryBar 
             //offsetY={200}
             standalone={true}
@@ -327,10 +339,13 @@ class Stats extends React.Component {
             
             <VictoryAxis dependentAxis 
             
+            labelComponent={<VictoryLabel  verticalAnchor='start' angle={90}/>}
+            
             style={{
               axis: { stroke: "transparent" },
               ticks: { stroke: "transparent", padding:0 },
-              tickLabels: { fontSize: 12, fill: "transparent", angle:45, orientation: 'right', verticalAnchor:'start' }
+              tickLabels: { fontSize: 12, fill: "transparent" },
+              
             }}/>
             <VictoryAxis crossAxis 
           // height={height}
@@ -356,14 +371,14 @@ class Stats extends React.Component {
             your tick labels in the center of the chart. The correct
             y values are still provided by VictoryAxis for each tick
           */
-          tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={270}/>}
+          tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={250}/>}
           tickValues={taskItemsArr.map((point) => point.x)}
         />
-        <VictoryLegend x={125} y={50}
-    title="Avg Points Per Task"
-    centerTitle
-    data={[]}/>
+       
+        
+        
         </VictoryChart>
+        
         
           
             
