@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Container, Content, Card, CardItem, ActionSheet } from 'native-base'
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { Container, Content, Card, CardItem, ActionSheet, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { ImagePicker, Permissions } from 'expo'
 import Image from 'react-native-image-progress';
 import ProgressPie from 'react-native-progress/Pie';
+import { updateUser } from '../store'
 
 const BUTTONS = [
   'Take photo',
@@ -51,6 +52,18 @@ class PlayerDetail extends React.Component {
     }
   }
 
+  _leaveCommunity = () => {
+    const {user, updateUserInfo} = this.props
+    var obj = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      communityId: null,
+      imgUrl: user.imgUrl
+    }
+    updateUserInfo(user.id, obj)
+  }
+
   render() {
     const { user, navigation } = this.props
     return (
@@ -76,7 +89,7 @@ class PlayerDetail extends React.Component {
         />
         </TouchableOpacity>
         </View>
-        <View>
+        <View style={{justifyContent: 'space-between'}}>
           <Card>
             <TouchableOpacity onPress={() => navigation.navigate('PlayerDetailEdit', {focus: 'firstName'})}>
               <CardItem bordered style={styles.card}>
@@ -104,6 +117,20 @@ class PlayerDetail extends React.Component {
             </TouchableOpacity>
           </Card>
         </View>
+            <Button rounded style={styles.button}
+              onPress={()=> {
+                Alert.alert(
+                  'Are you sure?',
+                  'We hate to see you go!',
+                  [
+                    {text: 'Cancel', onPress: () => ('Cancel'), style: 'cancel'},
+                    {text: 'OK', onPress: () => this._leaveCommunity()}
+                  ],
+                  {cancelable: false}
+                )
+              }}>
+              <Text style={styles.buttonTxt}>Leave Community</Text>
+            </Button>
         </Content>
       </Container>
     );
@@ -116,7 +143,14 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = null
+const mapDispatch = (dispatch, ownProps) => {
+  return {
+    updateUserInfo: async (userId, form) => {
+      await dispatch(updateUser(userId, form))
+      ownProps.navigation.navigate('NoCommunity')
+    }
+  }
+}
 
 export default connect(mapState, mapDispatch)(PlayerDetail)
 
@@ -145,11 +179,16 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     margin: 10,
-    width: 150,
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#D4F5F5',
+  },
+  buttonTxt: {
+    color: '#747578',
+    fontSize: 20,
+    fontWeight: `bold`
   },
   text: {
     color: '#D4F5F5',
