@@ -11,7 +11,7 @@ describe('Communities routes', () => {
     return db.sync({force: true})
   })
 
-  describe('/api/users/', () => {
+  describe('/api/communities/', () => {
     const communityName = 'Dwell'
 
 
@@ -21,13 +21,23 @@ describe('Communities routes', () => {
       })
     })
 
-    it('GET /api/users', () => {
+    it('GET /api/communities', () => {
       return request(app)
         .get('/api/communities/1')
         .expect(200)
         .then(res => {
           expect(res.body).to.be.an('object')
           expect(res.body.name).to.be.equal(communityName)
+        })
+    })
+
+    it('Post /api/communities', () => {
+      return request(app)
+        .post('/api/communities')
+        .send({name: 'new community'})
+        .then(res => {
+          expect(res.body).to.be.an('object')
+          expect(res.body.name).to.be.equal('new community')
         })
     })
   })
