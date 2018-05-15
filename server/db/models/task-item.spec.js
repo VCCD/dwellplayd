@@ -11,38 +11,40 @@ describe(`TaskItem model`, () => {
     return db.sync({ force: true })
   })
 
-  describe(`incomplete taskItem`, () => {
-    beforeEach(() => {
-      return TaskItem.create({
-        value: 10,
-        createdAt
-      })
-        .then(item => {
-          taskItem = item
+  describe(`virtual attributes (days/points)`, () => {
+
+    describe(`incomplete taskItem`, () => {
+      beforeEach(() => {
+        return TaskItem.create({
+          value: 10,
+          createdAt
         })
+          .then(item => {
+            taskItem = item
+          })
+      })
+
+      it(`calculates days since last completed`, () => {
+        expect(taskItem.days).to.be.equal(3)
+      })
+      it(`calculates current points`, () => {
+        expect(taskItem.points).to.be.equal(30)
+      })
     })
 
-    it(`calculates days since last completed correctly`, () => {
-      expect(taskItem.days).to.be.equal(3)
-    })
-    it(`current points are calculated correctly`, () => {
-      expect(taskItem.points).to.be.equal(30)
-    })
+    describe(`completed taskItem`, () => {
+      beforeEach(() => {
+        const completed = createdAt + 1000 * 60 * 60 * 24 * 5
+        taskItem.update({ completed })
+      })
 
+      it(`calculates days from created to completed`, () => {
+        expect(taskItem.days).to.be.equal(5)
+      })
+      it(`calculates total points`, () => {
+        expect(taskItem.points).to.be.equal(50)
+      })
+
+    }) // end describe('taskItem instance')
   })
-  describe(`completed taskItem`, () => {
-    beforeEach(() => {
-      const completed = createdAt + 1000 * 60 * 60 * 24 * 5
-      taskItem.update({ completed })
-    })
-
-    it(`calculates days from created to completed correctly`, () => {
-      expect(taskItem.days).to.be.equal(5)
-    })
-    it(`total points are calculated correctly`, () => {
-      expect(taskItem.points).to.be.equal(50)
-    })
-
-
-  }) // end describe('taskItem instance')
 }) // end describe('Task model')
