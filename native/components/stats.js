@@ -319,13 +319,14 @@ class Stats extends React.Component {
           <VictoryAxis crossAxis
             // height={height}
             // width={width}
-            offsetY={150}
+            
+            
 
              padding={5}
             style={{
-              axis: { stroke: "black" },
-              ticks: { stroke: "black" },
-              tickLabels: { fontSize: 10, fill: "black" }
+              axis: { stroke: "transparent" },
+              ticks: { stroke: "transparent" },
+              tickLabels: { fontSize: 12, fill: "transparent" }
             }}
             /*
               Use a custom tickLabelComponent with
@@ -333,7 +334,7 @@ class Stats extends React.Component {
               your tick labels in the center of the chart. The correct
               y values are still provided by VictoryAxis for each tick
             */
-            tickLabelComponent={<VictoryLabel  />}
+            tickLabelComponent={<VictoryLabel  labelPlacement="vertical" y={0}/>}
             tickValues={taskItemsArr.map((point) => point.x)}
           />
        
