@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Dimensions, ScrollView, Image } from 'react-native';
-import { Container, Text, Button } from 'native-base';
+import { Container, Text, Button, Icon, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenAllTutorialsThunkerator } from '../store'
 import Push from './push'
@@ -44,35 +44,47 @@ class Play extends React.Component {
   _renderModalOne = () => (
     <View style={styles.modalContent}>
       <ScrollView
-        overScrollMode="never"
         horizontal={true}
+        overScrollMode="never"
         pagingEnabled={true}>
         <View style={styles.page}>
-          <Text style={styles.title}>welcome to dwellplayd</Text>
-          <Text style={styles.text}> The exciting app that transforms mundane communal tasks into an interactive competition</Text>
-          <Text style={styles.text}> Swipe right to learn how to play!</Text>
+          <View style={styles.innerPage}>
+            <Icon active style={{color: '#D4F5F5', fontSize: 100}} name="home" />
+            <Text style={styles.title}>welcome to dwellplayd</Text>
+            <Text style={styles.text}>The exciting app that transforms mundane communal tasks into an interactive competition</Text>
+            <Text style={styles.text}>Swipe left to learn how to play!</Text>
+          </View>
         </View>
         <View style={styles.page}>
-          <Text style={styles.text}>Use the sliders to adjust the frequency of a task. Once satisfied, press activate to initiate the task</Text>
-          <Image resizeMode='contain' style={styles.gif} source={require('../public/activate.gif')} />
+          <View style={styles.innerPage}>
+            <Text style={styles.text}>Use the sliders to adjust the frequency of a task. Once satisfied, press activate to initiate the task</Text>
+            <Image resizeMode='contain' style={styles.gif} source={require('../public/activate.gif')} />
+          </View>
         </View>
         <View style={styles.page}>
-          <Text style={styles.text}>You can also add a cutsom task and delete any tasks</Text>
-          <Image resizeMode='contain' style={styles.gif} source={require('../public/addDelete.gif')} />
+          <View style={styles.innerPage}>
+            <Text style={styles.text}>You can also add a cutsom task and delete any tasks</Text>
+            <Image resizeMode='contain' style={styles.gif} source={require('../public/addDelete.gif')} />
+          </View>
         </View>
         <View style={styles.page}>
-          <Text style={styles.text}>On the current task page, tap a task to complete it</Text>
-          <Image resizeMode='contain' style={styles.gif} source={require('../public/completeTask.gif')} />
+          <View style={styles.innerPage}>
+            <Text style={styles.text}>On the current task page, tap a task to complete it</Text>
+            <Image resizeMode='contain' style={styles.gif} source={require('../public/completeTask.gif')} />
+          </View>
         </View>
         <View style={styles.page}>
-          <Text style={styles.text}>Now its time to explore!</Text>
-          {this._renderButton(`Let's get started!`, () => {
-            this.setState({modal: 0})
-            store.dispatch(userHasSeenAllTutorialsThunkerator(this.props.user))
-            setTimeout(() => {
-            this.props.navigation.navigate('SelectTasks')
-            }, 500)
-          })}
+          <View style={styles.innerPage}>
+            <Icon active style={{color: '#D4F5F5', fontSize: 100}} name="home" />
+            <Text style={styles.text}>Now its time to explore!</Text>
+            {this._renderButton(`Let's get started!`, () => {
+              this.setState({modal: 0})
+              store.dispatch(userHasSeenAllTutorialsThunkerator(this.props.user))
+              setTimeout(() => {
+              this.props.navigation.navigate('SelectTasks')
+              }, 500)
+            })}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -112,21 +124,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    color: '#8C9A9E',
+    color: '#D4F5F5',
   },
   text: {
-    textAlign: 'center',
     fontSize: 20,
-    color: '#8C9A9E',
+    color: '#D4F5F5',
     marginHorizontal: 10
+  },
+  innerPage: {
+    flex: 1,
+    height: modalHeight - 1000,
+    width: modalWidth - 20,
+    borderTopWidth: 10,
+    borderBottomWidth: 10,
+    borderColor: '#D4F5F5',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#8C9A9E',
   },
   page: {
     flex: 1,
     height: modalHeight,
     width: modalWidth,
     alignItems: 'center',
-    justifyContent: 'space-around',
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    backgroundColor: '#D4F5F5',
   },
   image: {
     width: 450,
@@ -146,7 +168,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: modalHeight,
     width: modalWidth,
-    backgroundColor: '#fff',
+    backgroundColor: '#D4F5F5',
     padding: 0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -163,6 +185,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#8C9A9E',
+  },
+  card: {
+    backgroundColor: '#8C9A9E',
+    borderWidth: 0,
+    height: 100,
+  },
+  cardItem: {
+    backgroundColor: '#8C9A9E'
   }
 });
 
