@@ -84,7 +84,7 @@ class Stats extends React.Component {
       
      )
      let taskItemsArr = Object.entries(tasksPoints).map(arr => {return {x: arr[1].name, y: arr[1].points}})
-     taskItemsArr = taskItemsArr.sort(function(a, b){return b.y - a.y})
+     taskItemsArr = taskItemsArr.sort(function(a, b){return a.y - b.y})
 
 
     console.log(legendArr, '<<<<<<<< pointsObj')
@@ -150,6 +150,7 @@ class Stats extends React.Component {
                     />
                     <VictoryAxis
                       dependentAxis
+                      
                       style={styles.axisLabel}
                     />
                   </VictoryChart>
@@ -226,9 +227,20 @@ class Stats extends React.Component {
               }}
             />
           </VictoryChart>
+      
           <VictoryChart
           // containerComponent={<VictoryVoronoiContainer/>}
           >
+          <VictoryLegend x={50} y={45}
+    
+    centerTitle
+    orientation="vertical"
+    itemsPerRow={2}
+    gutter={20}
+    style={{data: {fontSize: 10 } }}
+    data={legendArr}
+  />
+
           <VictoryAxis dependentAxis
           style={styles.axisLabel}
           offsetY={0}
@@ -242,6 +254,7 @@ class Stats extends React.Component {
           style={{tickLabels: {fontSize: 15, padding: 5}, label:{fontSize: 30, padding: {top: 15}}}}
          
         />
+        
             {this.props.communityUsers.map(user => {
               return (<VictoryGroup
                 key={user.id}
@@ -273,17 +286,11 @@ class Stats extends React.Component {
                 labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]} `}
                   size={(d, a) => { return a ? 8 : 3; }}
                 />
-                <VictoryLegend 
-  	title="Legend"
-    centerTitle
-    orientation="horizontal"
-    gutter={20}
-    style={{ border: { stroke: "black" }, title: {fontSize: 15 } }}
-    data={legendArr}
-  />
+                
               </VictoryGroup>)
             })}
           </VictoryChart>
+          
 
 
           
@@ -297,10 +304,14 @@ class Stats extends React.Component {
             style={{ data: { width: 20 }, labels: { fontSize: 11 } }}
           >
             <VictoryBar 
-              style={{ data: { fill: "orange", width: 35 } }}
+              style={{ data: { fill: "orange", width: 35, fillOpacity:0.6 } }}
               data={taskItemsArr }
-              y={data => data.y}
-             labels={(data) => (`${Math.abs(data.y)} pts`)}
+              cornerRadius={8}
+              
+              
+              y={data => roundToTenths(data.y)}
+             labels={(data) => (`${roundToTenths(data.y)} pts`)}
+             
             />
           
           </VictoryStack>
@@ -308,11 +319,13 @@ class Stats extends React.Component {
           <VictoryAxis crossAxis
             // height={height}
             // width={width}
-            // padding={padding}
+            offsetY={150}
+
+             padding={5}
             style={{
               axis: { stroke: "black" },
               ticks: { stroke: "black" },
-              tickLabels: { fontSize: 11, fill: "black" }
+              tickLabels: { fontSize: 10, fill: "black" }
             }}
             /*
               Use a custom tickLabelComponent with
@@ -320,7 +333,7 @@ class Stats extends React.Component {
               your tick labels in the center of the chart. The correct
               y values are still provided by VictoryAxis for each tick
             */
-            tickLabelComponent={<VictoryLabel x={50}  labelPlacement="vertical"/>}
+            tickLabelComponent={<VictoryLabel  />}
             tickValues={taskItemsArr.map((point) => point.x)}
           />
        
