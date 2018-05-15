@@ -62,7 +62,7 @@ class Scores extends React.Component {
                             .filter(taskItem => taskItem.userId === id)
                             .map(taskItem => {
                             return (
-                              <TaskCard key={taskItem.id} taskItem={taskItem} handleClick={() => {}} />
+                              <TaskCard fromScores={true} key={taskItem.id} taskItem={taskItem} handleClick={() => {}} />
                             )
                           })}
                         </View>

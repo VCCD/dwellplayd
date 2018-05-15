@@ -15,16 +15,16 @@ const TaskCard = (props) => {
   return (
     <Card>
       <CardItem><Image
-      source={{uri: taskItem.imgUrl}} style={styles.img}
+      source={{uri: taskItem.imgUrl}} 
+      style={styles.img}
       indicator={ProgressPie}
       indicatorProps={{
         size: 80,
         color: '#D4F5F5',
         unfilledColor: '#747578'
       }}
-      style={styles.img}
       /></CardItem>
-      <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
+      <CardItem style={styles.header}>
         <View style={styles.left}>
           <Text style={styles.text}>{taskItem.task.name}</Text>
           <Text style={styles.text}>{`${completer} - ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
