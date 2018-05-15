@@ -10,22 +10,22 @@ describe(`TaskItem model`, () => {
   })
 
   describe(`taskItem instance`, () => {
-    let testTaskItem;
+    let taskItem;
+    const completed = (new Date() + 1000 * 60 * 60 * 24 * 4.25)
+    console.log(`completed >>>>`, completed)
     beforeEach(() => {
       return TaskItem.create({
         value: 10,
+        completed
       })
-        .then(taskItem => {
-          testTaskItem = taskItem
-          testTaskItem.update({
-            completed: new Date() + 1000 * 60 * 60 * 24 * 3.25
-          })
+        .then(item => {
+          console.log(item.dataValues)
+          taskItem = item
         })
     })
-    
+
     it(`tests something`, () => {
-      console.log(testTaskItem)
-      expect(testTaskItem.value).to.be.equal(10)
+      expect(taskItem.value).to.be.equal(10)
     })
 
   }) // end describe('taskItem instance')
