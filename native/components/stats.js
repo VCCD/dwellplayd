@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions } from 'react-native'
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack  } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -69,7 +69,7 @@ class Stats extends React.Component {
 
   render() {
 
-    const { userScores, taskItems } = this.props
+    const { userScores, taskItems, communityUsers } = this.props
  
     let usersInCommunity = taskItems.filter(task => task.userId)
     const month = new Date().getMonth() + 1
@@ -77,6 +77,19 @@ class Stats extends React.Component {
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const  colorScale=["#8FA5A5", "#8C9A9E", "#79C4C4","#353637", "#4482AE", "#9BB3B3"]
     console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
+    let legendArr = []
+    communityUsers.forEach(user =>{legendArr.push({name: user.firstName, symbol:{fill:colorScale[user.id]}})})
+    tasksPoints = {}
+    taskItems.forEach(task => tasksPoints[task.task.id] = {name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
+      
+     )
+     let taskItemsArr = Object.entries(tasksPoints).map(arr => {return {x: arr[1].name, y: arr[1].points}})
+     taskItemsArr = taskItemsArr.sort(function(a, b){return b.y - a.y})
+
+
+    console.log(legendArr, '<<<<<<<< pointsObj')
+    
+
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
@@ -260,9 +273,67 @@ class Stats extends React.Component {
                 labels={(d) => `y: ${d.y}, x: ${monthWords[d.x]} `}
                   size={(d, a) => { return a ? 8 : 3; }}
                 />
+                <VictoryLegend 
+  	title="Legend"
+    centerTitle
+    orientation="horizontal"
+    gutter={20}
+    style={{ border: { stroke: "black" }, title: {fontSize: 15 } }}
+    data={legendArr}
+  />
               </VictoryGroup>)
             })}
           </VictoryChart>
+
+
+          
+          <VictoryStack vertical
+            //standalone={false}
+            /* setting a symmetric domain makes it much easier to center the axis  */
+            //domain={{ y: [-60] }}
+            // padding={padding}
+            // height={height}
+            // width={width}
+            style={{ data: { width: 20 }, labels: { fontSize: 11 } }}
+          >
+            <VictoryBar 
+              style={{ data: { fill: "orange", width: 35 } }}
+              data={taskItemsArr }
+              y={data => data.y}
+             labels={(data) => (`${Math.abs(data.y)} pts`)}
+            />
+          
+          </VictoryStack>
+  
+          <VictoryAxis crossAxis
+            // height={height}
+            // width={width}
+            // padding={padding}
+            style={{
+              axis: { stroke: "black" },
+              ticks: { stroke: "black" },
+              tickLabels: { fontSize: 11, fill: "black" }
+            }}
+            /*
+              Use a custom tickLabelComponent with
+              an absolutely positioned x value to position
+              your tick labels in the center of the chart. The correct
+              y values are still provided by VictoryAxis for each tick
+            */
+            tickLabelComponent={<VictoryLabel x={50}  labelPlacement="vertical"/>}
+            tickValues={taskItemsArr.map((point) => point.x)}
+          />
+       
+
+
+
+
+
+
+
+
+
+
         </ScrollView>
       </Container>
     )
