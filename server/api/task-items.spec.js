@@ -41,7 +41,7 @@ describe('TaskItem routes', () => {
       })
     })
 
-    it('GET /api/tasks, should return the taskItem created', () => {
+    it('GET /api/task-items, should return the taskItem created', () => {
       return request(app)
         .get('/api/task-items')
         .expect(200)
@@ -51,7 +51,7 @@ describe('TaskItem routes', () => {
           expect(res.body[0].value).to.be.equal(5)
         })
     })
-    it('POST /api/tasks, should get back 200 and no existing community task message if communityTask does not exist', () => {
+    it('POST /api/task-items, should get back 200 and no existing community task message if communityTask does not exist', () => {
       return request(app)
         .post('/api/task-items')
         .send({
@@ -64,7 +64,7 @@ describe('TaskItem routes', () => {
           expect(res.text).to.be.equal('No existing community task')
         })
     })
-    it('POST /api/tasks, should get back a task created message if created', () => {
+    it('POST /api/task-items, should get back a task created message if created', () => {
       return request(app)
         .post('/api/task-items')
         .send({
@@ -77,7 +77,7 @@ describe('TaskItem routes', () => {
           expect(res.text).to.be.equal('TaskItem created')
         })
     })
-    it('GET /api/tasks/:taskItemId, should get back a task by id', () => {
+    it('GET /api/task-items/:taskItemId, should get back a task by id', () => {
       return request(app)
         .get('/api/task-items/1')
         .expect(200)
@@ -87,7 +87,7 @@ describe('TaskItem routes', () => {
           expect(res.body.id).to.be.equal(1)
         })
     })
-    it('PUT /api/tasks/:taskItemId, should update the task and send back with not null userId and completed fields', () => {
+    it('PUT /api/task-items/:taskItemId, should update the task and send back with not null userId and completed fields', () => {
       return request(app)
         .put('/api/task-items/1')
         .send({
