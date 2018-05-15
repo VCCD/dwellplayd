@@ -16,15 +16,9 @@ describe('TaskItem routes', () => {
   })
 
   describe('/api/task-items/', () => {
-    const taskArray = ['clean the dishes', 'sweep the floors', 'vacuum', 'clean bathroom', 'clean kitchen']
-
     beforeEach(async () => {
-      const taskPromises = taskArray.map(name => Task.create({name}))
-      await Promise.all(taskPromises)
-      const task = await Task.findOne({
-        where: {
-          name: 'clean the dishes'
-        }
+      const task = await Task.create({
+        name: 'Clean the dishes'
       })
       const user = await User.create({
         firstName: 'test',

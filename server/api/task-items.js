@@ -53,7 +53,6 @@ router.put('/:taskItemId', async (req, res, next) => {
       where: { id: taskItemId },
       returning: true,
     })
-    console.log(updatedTaskItem)
     res.json(updatedTaskItem[1])
   }
   catch (err) {
