@@ -36,7 +36,7 @@ class Scores extends React.Component {
       <Container style={styles.list}>
         <Content>
           <Text style={styles.month}>
-            {`${month[date.getMonth()]} - current scores:`}
+            {`Current scores - ${month[date.getMonth()]}:`}
           </Text>
           <View>
             <Card>
@@ -74,12 +74,12 @@ class Scores extends React.Component {
             </Card>
           </View>
           <Text style={styles.month}>
-            {`previous winners:`}
+            {`Previous winners:`}
           </Text>
+          <Card>
           {pastWinners.map(winner => {
             return (
-              <Card key={winner.month}>
-                <CardItem style={styles.cardItem}>
+                <CardItem bordered key={winner.firstName + winner.month} style={styles.cardItem}>
                   <Text style={styles.nameText}>
                     {month[winner.month]} - {winner.firstName}
                   </Text>
@@ -87,9 +87,9 @@ class Scores extends React.Component {
                     {winner.score}
                   </Text>
                 </CardItem>
-              </Card>
             )
           })}
+          </Card>
         </Content>
       </Container>
     );

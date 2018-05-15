@@ -10,6 +10,13 @@ const calcPoints = (days, value) => {
   return roundToTenths(points)
 }
 
+const calcDays = (endDate, startDate) => {
+  const days = (endDate - startDate) / 86400000
+  return roundToTenths(days)
+}
+
+const now = new Date()
+
 const TaskItem = db.define('taskItem', {
   completed: {
     type: Sequelize.DATE,
@@ -20,21 +27,19 @@ const TaskItem = db.define('taskItem', {
   days: {
     type: Sequelize.VIRTUAL,
     get: function () {
-      const now = new Date()
       const created = this.getDataValue(`createdAt`)
       const completed = this.getDataValue(`completed`)
-      const days = completed ? (completed - created) / 86400000 : (now - created) / 86400000
-      return roundToTenths(days)
+      const days = completed ? calcDays(completed, created) : calcDays(now, created)
+      return days
     }
   },
   points: {
     type: Sequelize.VIRTUAL,
     get: function () {
-      const now = new Date()
       const created = this.getDataValue(`createdAt`)
       const completed = this.getDataValue(`completed`)
       const value = this.getDataValue(`value`)
-      const days = completed ? (completed - created) / 86400000 : (now - created) / 86400000
+      const days = completed ? calcDays(completed, created) : calcDays(now, created)
       return calcPoints(days, value)
     }
   },
