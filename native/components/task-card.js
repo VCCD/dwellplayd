@@ -11,21 +11,6 @@ const roundToTenths = num => {
   return Math.round(num * 10) / 10
 }
 
-<<<<<<< HEAD
-const TaskCard = (props) => {
-  const { taskItem } = props
-  return (
-    <AnimatedCard animation="bounceInUp" duration={1500}>
-      <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
-        <View style={styles.left}>
-          <Text style={styles.text}>{taskItem.task.name}</Text>
-          <Text style={styles.text}>completed {`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago</Text>
-        </View>
-        <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
-      </CardItem>
-    </AnimatedCard>
-  )
-=======
 class TaskCard extends React.Component {
   constructor (props) {
     super(props)
@@ -72,7 +57,6 @@ class TaskCard extends React.Component {
       </AnimatedCard>
     )
   }
->>>>>>> master
 }
 
 const styles = StyleSheet.create({
