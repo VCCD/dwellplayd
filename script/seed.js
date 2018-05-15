@@ -199,15 +199,9 @@ async function seed() {
   }
   await createTaskItems()
 
-
-  // Wowzers! We can even `await` on the right-hand side of the assignment operator
-  // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded successfully`)
 }
 
-// Execute the `seed` function
-// `Async` functions always return a promise, so we can use `catch` to handle any errors
-// that might occur inside of `seed`
 seed()
   .catch(err => {
     console.error(err.message)
@@ -220,9 +214,4 @@ seed()
     console.log('db connection closed')
   })
 
-/*
- * note: everything outside of the async function is totally synchronous
- * The console.log below will occur before any of the logs that occur inside
- * of the async function
- */
 console.log('seeding...')
