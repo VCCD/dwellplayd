@@ -53,7 +53,6 @@ class LoginScreen extends React.Component {
       this.props.error = null
       let login = await this.props.loginSubmit(form)
       if (!login) {
-        console.log('in here')
         this.setState({incorrect: true})
       }
     }
