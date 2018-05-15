@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions } from 'react-native'
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack  } from "victory-native";
+import { VictoryBar, VictoryZoomContainer, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack  } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -79,15 +79,19 @@ class Stats extends React.Component {
     console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
     let legendArr = []
     communityUsers.forEach(user =>{legendArr.push({name: user.firstName, symbol:{fill:colorScale[user.id]}})})
+    let taskLegend = []
+    
     tasksPoints = {}
     taskItems.forEach(task => tasksPoints[task.task.id] = {name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
       
      )
      let taskItemsArr = Object.entries(tasksPoints).map(arr => {return {x: arr[1].name, y: arr[1].points}})
      taskItemsArr = taskItemsArr.sort(function(a, b){return a.y - b.y})
+     for(key in tasksPoints){
+       taskLegend.push({name: tasksPoints[key].name, symbol:{fill:colorScale[key]}})
+     }
 
-
-    console.log(legendArr, '<<<<<<<< pointsObj')
+    console.log(tasksPoints, taskItemsArr, taskLegend,'<<<<<<<< pointsObj')
     
 
     return (
@@ -229,6 +233,7 @@ class Stats extends React.Component {
           </VictoryChart>
       
           <VictoryChart
+          //containerComponent={<VictoryZoomContainer zoomDomain={{x: [5, 35], y: [0, 100]}}/>}
           // containerComponent={<VictoryVoronoiContainer/>}
           >
           <VictoryLegend x={50} y={45}
@@ -301,10 +306,13 @@ class Stats extends React.Component {
             // padding={padding}
             // height={height}
             // width={width}
+            
             style={{ data: { width: 20 }, labels: { fontSize: 11 } }}
           >
+         
             <VictoryBar 
-              style={{ data: { fill: "orange", width: 35, fillOpacity:0.6 } }}
+            
+              style={{ data: { width: 35, fillOpacity:0.6, color:'grey' } }}
               data={taskItemsArr }
               cornerRadius={8}
               
@@ -337,6 +345,15 @@ class Stats extends React.Component {
             tickLabelComponent={<VictoryLabel  labelPlacement="vertical" y={0}/>}
             tickValues={taskItemsArr.map((point) => point.x)}
           />
+          <VictoryLegend 
+    
+          centerTitle
+          orientation="vertical"
+          
+          gutter={20}
+          style={{data: {fontSize: 10 } }}
+          data={taskLegend}
+        />
        
 
 
