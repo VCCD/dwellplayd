@@ -264,9 +264,10 @@ class Stats extends React.Component {
             
           orientation="bottom"
           offsetY={50}
+          style={{tickLabels: {fontSize: 15, padding: 5}, label:{fontSize: 15, padding: {top: 15}}}}
           label={`Points for Each Month`}
           tickValues ={['Jan', 'Feb', 'March', 'April', 'May']}
-          style={{tickLabels: {fontSize: 15, padding: 5}, label:{fontSize: 30, padding: {top: 15}}}}
+         
          
         />
         
