@@ -124,21 +124,21 @@ class Stats extends React.Component {
           
 
 
-                  <VictoryChart
-                    domainPadding={{ y: 20 }}
+                  <VictoryChart 
+                    domainPadding={{x:25, y:25 }}
                     
                   >
-                    <VictoryBar
+                    <VictoryBar 
                       
                       style={{
                         data: { fill: "#8C9A9E" },
                         labels: { labelPlacement: 'parallel' }
                       }}
+                      standalone={true}
                       labels={(d) => d.y}
-                      labelComponent={<VictoryLabel labelPlacement="perpendicular" />}
-                      data={dataForMonth.map(task => { return { x: task.id, y: task.points, task: task.name } })}
-                      sortKey="y"
-                      sortOrder="descending"
+                      labelComponent={<VictoryLabel />}
+                      data={dataForMonth.map(task => { return { x: task.name, y: task.points, task: task.name } })}
+                      
                       animate={{
                         onEnter: {
                           duration: 1000,
@@ -160,12 +160,13 @@ class Stats extends React.Component {
                       style={styles.axisLabel}
                       
                     />
-                    <VictoryAxis
-                      dependentAxis
-                      
-                      
-                      style={styles.axisLabel}
-                    />
+                    <VictoryAxis dependentAxis 
+            
+                    style={{
+                      axis: { stroke: "transparent" },
+                      ticks: { stroke: "transparent", padding:0 },
+                      tickLabels: { fontSize: 12, fill: "transparent", angle:45, orientation: 'right', verticalAnchor:'start' }
+                    }}/>
                   </VictoryChart>
                 </ScrollView>
               </Body>
@@ -308,7 +309,9 @@ class Stats extends React.Component {
           
             
           
-            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={270}>
+            <VictoryChart containerComponent={<VictoryVoronoiContainer height={600}/>}  height={270}
+            animate={{duration: 2000}}
+            >
             <VictoryBar 
             //offsetY={200}
             standalone={true}
