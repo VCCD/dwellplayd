@@ -59,8 +59,8 @@ class TaskList extends React.Component {
 
   _renderNoTasks = () => (
       <View style={{height: '100%', backgroundColor: '#8C9A9E', justifyContent: 'center', alignItems: 'center'}}>
-      <View style={{backgroundColor: '#fff', padding: 20, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Oh no! You do not have any tasks to complete</Text>
+      <View style={{backgroundColor: '#8C9A9E', padding: 20, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{color: '#D4F5F5', fontWeight: 'bold'}}>Oh no! You do not have any tasks to complete</Text>
         {this._renderButton('Add Tasks', () => this.props.navigation.navigate('SelectTasks'))}
         </View>
       </View>

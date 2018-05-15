@@ -54,19 +54,24 @@ describe('Task routes', () => {
     })
 
     it('Get /api/tasks, only returns query amount', async () => {
-      const taskArray = ['clean the dishes', 'sweep the floors', 'vacuum', 'clean bathroom', 'clean kitchen']
-      const taskPromises = taskArray.map((task) => {
-        Task.create({name: task})
-      })
-      await Promise.all(taskPromises)
-      return request(app)
-        .get('/api/tasks/?popular=5')
-        .expect(200)
-        .then(res => {
-          expect(res.body).to.be.an('array')
-          expect(res.body.length).to.be.equal(5)
-          expect(res.body[0].name).to.be.equal('Sweep the floors')
+      try {
+        const taskArray = ['clean the dishes', 'sweep the floors', 'vacuum', 'clean bathroom', 'clean kitchen']
+        const taskPromises = taskArray.map((task) => {
+          Task.create({name: task})
         })
+        await Promise.all(taskPromises)
+        return request(app)
+          .get('/api/tasks/?popular=5')
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('array')
+            expect(res.body.length).to.be.equal(5)
+            expect(res.body[0].name).to.be.equal('Sweep the floors')
+          })
+      }
+      catch (err) {
+        console.log(err)
+      }
     })
   })
 })

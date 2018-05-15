@@ -11,22 +11,23 @@ const roundToTenths = num => {
 const TaskCard = (props) => {
   const { taskItem } = props
   const daysAgo = (new Date() - Date.parse(taskItem.completed)) / (1000 * 60 * 60 * 24)
+  const completer = taskItem.completer ? taskItem.completer.firstName : 'an old dweller'
   return (
     <Card>
       <CardItem><Image
-      source={{uri: taskItem.imgUrl}} style={styles.img}
+      source={{uri: taskItem.imgUrl}} 
+      style={styles.img}
       indicator={ProgressPie}
       indicatorProps={{
         size: 80,
         color: '#D4F5F5',
         unfilledColor: '#747578'
       }}
-      style={styles.img}
       /></CardItem>
-      <CardItem style={styles.header} button onPress={() => props.handleClick(taskItem)}>
+      <CardItem style={styles.header}>
         <View style={styles.left}>
           <Text style={styles.text}>{taskItem.task.name}</Text>
-          <Text style={styles.text}>{`completed ${taskItem.completer.firstName} - ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
+          <Text style={styles.text}>{`${completer} - ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`} ago</Text>
         </View>
         <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
       </CardItem>

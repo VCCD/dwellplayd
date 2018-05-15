@@ -65,13 +65,15 @@ export const auth = (body) => (dispatch) => {
         res => {
           if (res.data.hasSeenTutorials) dispatch(userHasSeenTutorial())
           dispatch(loginUser(res.data))
-          console.log('Logging in');
+          console.log('Logging in')
+          return true
           //history.push('/home');
         },
 
         authError => {
         // rare example: a good use case for parallel (non-catch) error handler
         dispatch(loginUser({ error: authError }));
+        return false
       }
     )
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
