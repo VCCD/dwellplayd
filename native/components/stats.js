@@ -20,6 +20,8 @@ class Stats extends React.Component {
       selectedUserPoints: 0
     }
     this.userDataForMonth = []
+    this.monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
+
   }
 
   getUserCurrentMonthItems = (id, month) => {
@@ -35,8 +37,8 @@ class Stats extends React.Component {
     let taskObj = {}
     filteredTaskByID.forEach(task => {
 
-      if (!taskObj[task.taskId]) taskObj[task.taskId] = { id: task.taskId, name: task.task.name, points: task.points }
-      else taskObj[task.taskId].points += task.points
+      if (!taskObj[task.taskId]) taskObj[task.taskId] = { id: task.taskId, name: task.task.name, points: roundToTenths(task.points) }
+      else (taskObj[task.taskId].points) += roundToTenths(task.points)
     })
     let combinedPointsById = []
 
@@ -65,6 +67,17 @@ class Stats extends React.Component {
     console.log(taskItems)
     return filteredTasks.reduce((sum, task) => { return sum += task.points }, 0)
   }
+  getTicksValues=() =>{
+    dateArr = new Set()
+    this.props.taskItems.forEach(task => {if (task.completed) return dateArr.add(Number(task.completed.split('-')[1]))})
+    dateArr = Array.from(dateArr)
+   // dateArr = dateArr.map(date => Number(date)+1)
+    var dates = []
+    dateArr.map(date => dates.push(this.monthWords[date]))
+    dates.splice(dates.length-1, 1)
+    
+    return dates
+  }
 
 
   render() {
@@ -74,6 +87,7 @@ class Stats extends React.Component {
     let usersInCommunity = taskItems.filter(task => task.userId)
     const month = new Date().getMonth() + 1
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
+   
     dataForMonth.sort(function (a, b) { return a.points - b.points })
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
@@ -148,7 +162,7 @@ class Stats extends React.Component {
 
                       labels={(d) => `${d.y} pts`}
                       labelComponent={<VictoryLabel />}
-                      data={dataForMonth.map(task => { return { x: task.name, y: task.points, task: task.name } })}
+                      data={dataForMonth.map(task => { return { x: task.name, y: roundToTenths(task.points), task: task.name } })}
 
                       animate={{
                         onEnter: {
@@ -281,7 +295,7 @@ class Stats extends React.Component {
           //containerComponent={<VictoryZoomContainer zoomDomain={{x: [5, 35], y: [0, 100]}}/>}
           // containerComponent={<VictoryVoronoiContainer/>}
           >
-            <VictoryLegend x={30} y={15}
+            <VictoryLegend x={15} y={15}
 
               centerTitle
               orientation="horizontal"
@@ -301,7 +315,7 @@ class Stats extends React.Component {
               offsetY={50}
               style={{ tickLabels: { fontSize: 15, padding: 5 }, label: { fontSize: 15, padding: { top: 15 } } }}
               label={`Points for Each Month`}
-              tickValues={['Jan', 'Feb', 'March', 'April', 'May']}
+              tickValues={this.getTicksValues()}
 
 
             />
@@ -349,7 +363,7 @@ class Stats extends React.Component {
 
           <VictoryChart containerComponent={<VictoryVoronoiContainer height={400} width={350} />} height={250}
             animate={{ duration: 2000 }}>
-            <VictoryLegend x={25} y={50}
+            <VictoryLegend x={15} y={15}
               title="Avg Points Per Task"
               centerTitle
               orientation="horizontal"
