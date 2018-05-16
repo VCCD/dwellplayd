@@ -1,7 +1,7 @@
 {
-  "name": "gameOfHomes",
+  "name": "dwellplayd",
   "version": "1.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "A react-native app that turns performing communal tasks in a shared living space into a fun and interactive competition.",
   "engines": {
     "node": ">= 7.0.0"
   },
@@ -16,7 +16,7 @@
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client --ignore native",
     "test": "NODE_ENV='test' mocha ./server/**/*.spec.js ./server/**/**/*.spec.js --require @babel/polyfill --require @babel/register"
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Cody Fayolle, Chris Miller, David Fudacz, and Vi Tran",
   "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^1.6.0",
