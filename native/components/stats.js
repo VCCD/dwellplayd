@@ -354,10 +354,7 @@ class Stats extends React.Component {
               labels={(data) => (`${roundToTenths(data.y)} pts`)}
             />
 
-            <VictoryAxis dependentAxis
-
-              labelComponent={<VictoryLabel verticalAnchor='end' angle={90} />}
-
+            <VictoryAxis dependentAxis labelComponent={<VictoryLabel verticalAnchor='end' angle={90} />}
               style={{
                 axis: { stroke: "transparent" },
                 ticks: { stroke: "transparent", padding: 0 },
@@ -373,7 +370,6 @@ class Stats extends React.Component {
                 ticks: { stroke: "black", padding: 25 },
                 tickLabels: { fontSize: 12, fill: "black", angle: 90, orientation: 'left', verticalAnchor: 'start' }
               }}
-  
               tickLabelComponent={<VictoryLabel verticalAnchor='start' y={250} />}
               tickValues={taskItemsArr.map((point) => point.x)}
             />
