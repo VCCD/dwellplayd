@@ -266,7 +266,6 @@ class Stats extends React.Component {
                   after: () => ({
                     y: 0,
                   })
-
                 }
               }}
             />
