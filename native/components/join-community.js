@@ -61,7 +61,8 @@ class JoinCommunity extends React.Component {
     fields: {
       communityId: {
         label: ` `,
-        error: 'not a valid dwelling code'
+        error: 'not a valid dwelling code',
+        autoCapitalize: 'none'
       },
     }
   }
