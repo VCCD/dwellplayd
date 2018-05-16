@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Header, Content, Body, Text } from 'native-base'
+import { Container, Header, Content, Body, Text, View } from 'native-base'
 import { StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux'
@@ -13,15 +13,15 @@ const getUserScore = (id, props) => {
 
 const CustomHeader = (props) => (
   <Container>
-    <Header style={styles.drawerHead}>
+    <View style={styles.drawerHead}>
       <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
         <Image style={styles.profileImg} source={{uri: props.user.imgUrl}} />
       </TouchableOpacity>
-      <Body style={styles.body}>
+      <View style={styles.body}>
           <Text style={styles.textName}>{props.user.firstName} {props.user.lastName}</Text>
           <Text style={styles.text}>current score: {getUserScore(props.user.id, props)}</Text>
-      </Body>
-    </Header>
+      </View>
+    </View>
     <Content>
       <DrawerItems {...props} />
     </Content>
@@ -31,8 +31,10 @@ const CustomHeader = (props) => (
 const styles = StyleSheet.create({
   drawerHead: {
     height: 110,
+    flexDirection: 'row',
     backgroundColor: '#000000',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   profileImg: {
     height: 80,
