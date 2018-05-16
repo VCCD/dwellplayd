@@ -50,9 +50,9 @@ class TaskCard extends React.Component {
         <CardItem button onPress={() => this.handleClick(taskItem)} style={styles.header}>
           <View style={styles.left}>
             <Text style={styles.text}>{taskItem.task.name}</Text>
-            <Text style={styles.text}>last completed {`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago</Text>
+            <Text style={styles.text}>completed {`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago</Text>
           </View>
-          <Text style={styles.score} >{roundToTenths(taskItem.points)}</Text>
+          <Text style={styles.score} >{taskItem.points}</Text>
         </CardItem>
       </AnimatedCard>
     )
@@ -94,9 +94,4 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-  }
-}
-
-export default connect(mapState, mapDispatch)(TaskCard)
+export default connect(mapState)(TaskCard)

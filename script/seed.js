@@ -119,15 +119,14 @@ async function seed() {
 
   const createTaskItems = async () => {
     const dayMs = 86400000
-    const start = new Date() - dayMs * 120
+    const start = new Date() - dayMs * 135
     const taskToday = (taskItem, today) => {
       let completed = false
       const x = (today - taskItem.createdAt) / dayMs
       const z = taskItem.value
       const e = Math.E
-      const points = (4 * z ** 0.8) / (1 + e ** (4 * (1 - x / z))) - (4 * z ** 0.8) / (1 + e ** 4)
-      console.log(points, taskItem.value)
-      const threshold = Math.random() * taskItem.value * 10
+      const points = (8 * z ** 0.6) / (1 + e ** (3 * (1 - x / z))) - (8 * z ** 0.6) / (1 + e ** 3)
+      const threshold = Math.random() * taskItem.value * 5
       if (points > threshold) completed = true
       return completed
     }
@@ -174,12 +173,11 @@ async function seed() {
         communityId: 1,
       },
     ]
-    for (let i = 0; i < 120; i++) {
-      const today = new Date() - dayMs * (120 - i)
+    for (let i = 0; i < 135; i++) {
+      const today = new Date() - dayMs * (135 - i)
       liveTaskItems.forEach(liveTaskItem => {
         if (i === 119) { completedTaskItems.push(liveTaskItem) }
         if (taskToday(liveTaskItem, today)) {
-          console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>> did it`)
           const completedTaskItem = { ...liveTaskItem }
           completedTaskItem.userId = Math.floor(Math.random() * 4) + 1
           const newToday = today - Math.random() * dayMs * 0.25
