@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Dimensions, ScrollView, Image } from 'react-native';
 import { Container, Text, Button, Icon, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux'
-import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenAllTutorialsThunkerator } from '../store'
+import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenAllTutorialsThunkerator, fetchUserScores } from '../store'
 import Push from './push'
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal'
@@ -28,8 +28,9 @@ class Play extends React.Component {
       await store.dispatch(fetchCommunity(this.props.user.communityId))
       await store.dispatch(getAllCommunityTasksFromServerThunkerator(this.props.user.communityId))
       await store.dispatch(fetchCommunityTaskItems(this.props.user.communityId))
+      await store.dispatch(fetchUserScores)
       setTimeout(() => {
-        if (!this.state.modal && !this.props.userHasSeenTutorials) this.setState({modal: 1})
+        if (!this.state.modal && !this.props.userHasSeenTutorials) this.setState({ modal: 1 })
         else if (this.props.taskItems.length) this.props.navigation.navigate('Tasks')
         else this.props.navigation.navigate('SelectTasks')
       }, 2000)
@@ -49,39 +50,50 @@ class Play extends React.Component {
         pagingEnabled={true}>
         <View style={styles.page}>
           <View style={styles.innerPage}>
-            <Icon active style={{color: '#D4F5F5', fontSize: 100}} name="home" />
+            <Icon active style={{ color: '#D4F5F5', fontSize: 100 }} name="home" />
             <Text style={styles.title}>welcome to dwellplayd</Text>
-            <Text style={styles.text}>The exciting app that transforms mundane communal tasks into an interactive competition</Text>
-            <Text style={styles.text}>Swipe left to learn how to play!</Text>
+            <Text style={styles.text}>an interactive competition of communal tasks in a shared space</Text>
+            <Icon active style={{ color: '#D4F5F5', fontSize: 80 }} name="arrow-round-forward" />
           </View>
         </View>
         <View style={styles.page}>
           <View style={styles.innerPage}>
-            <Text style={styles.text}>Use the sliders to adjust the frequency of a task. Once satisfied, press activate to initiate the task</Text>
-            <Image resizeMode='contain' style={styles.gif} source={require('../public/activate.gif')} />
+            <Text style={styles.text}>dwellplayd is designed to incentivize completing communal tasks in a shared living space.</Text>
+            <Text style={styles.text}>Tasks are not assigned to a specific dweller. Rather, tasks have a designated frequency, indicating how often they should be completed.</Text>
+            <Text style={styles.text}>Tasks accumulate in point value the longer they go undone. When a task is completed, those points are added to that dweller's score.</Text>
+            <Text style={styles.text}>The dweller with the most points at the end of the month wins!</Text>
+            <Text style={styles.text}>Let's take a look around...</Text>
           </View>
         </View>
         <View style={styles.page}>
           <View style={styles.innerPage}>
-            <Text style={styles.text}>You can also add a cutsom task and delete any tasks</Text>
+            <Text style={styles.text}>This is the 'Add / Edit Tasks' page where a few sample tasks are pre-loaded. Feel free to add your own custom tasks and delete any you don't want.</Text>
             <Image resizeMode='contain' style={styles.gif} source={require('../public/addDelete.gif')} />
           </View>
         </View>
         <View style={styles.page}>
           <View style={styles.innerPage}>
-            <Text style={styles.text}>On the current task page, tap a task to complete it</Text>
+            <Text style={styles.text}>Use the sliders to set the desired frequency of each task. When you're ready, press activate to initiate it.</Text>
+            <Image resizeMode='contain' style={styles.gif} source={require('../public/activate.gif')} />
+          </View>
+        </View>
+        <View style={styles.page}>
+          <View style={styles.innerPage}>
+            <Text style={styles.text}>This is the 'Current Tasks' page, where current point values for each task are shown. Tap a task to complete it.</Text>
             <Image resizeMode='contain' style={styles.gif} source={require('../public/completeTask.gif')} />
           </View>
         </View>
         <View style={styles.page}>
           <View style={styles.innerPage}>
-            <Icon active style={{color: '#D4F5F5', fontSize: 100}} name="home" />
-            <Text style={styles.text}>Now its time to explore!</Text>
-            {this._renderButton(`Let's get started!`, () => {
-              this.setState({modal: 0})
+            <Icon active style={{ color: '#D4F5F5', fontSize: 100 }} name="home" />
+            <Text style={styles.text}>Invite your fellow dwellers on the 'Invite' page.</Text>
+            <Text style={styles.text}>We recommend establishing a prize for the winner to help drive competition.</Text>
+            <Text style={styles.text}>Let the games begin!</Text>
+            {this._renderButton(`go`, () => {
+              this.setState({ modal: 0 })
               store.dispatch(userHasSeenAllTutorialsThunkerator(this.props.user))
               setTimeout(() => {
-              this.props.navigation.navigate('SelectTasks')
+                this.props.navigation.navigate('SelectTasks')
               }, 500)
             })}
           </View>
@@ -93,7 +105,7 @@ class Play extends React.Component {
   _renderButton = (text, onPress) => (
     <View>
       <Button rounded onPress={onPress} style={styles.button} >
-        <Text style={{ paddingLeft: 10, paddingRight: 10, color: '#D4F5F5' }}>{text}</Text>
+        <Text style={{ paddingLeft: 10, paddingRight: 10, color: '#D4F5F5', fontWeight: `bold` }}>{text}</Text>
       </Button>
     </View>
   )
@@ -103,17 +115,17 @@ class Play extends React.Component {
       <Container style={styles.container}>
         <Push />
         <View style={styles.container}>
-        <Animatable.Image style={styles.image} animation="pulse" easing="ease-out" iterationCount="infinite" source={require('../public/dwellplayd_logo.png')} />
+          <Animatable.Image style={styles.image} animation="pulse" easing="ease-out" iterationCount="infinite" source={require('../public/dwellplayd_logo.png')} />
         </View><Modal
-            animationOut={'slideOutLeft'}
-            isVisible={this.state.modal === 1}
-            animationInTiming={1500}
-            animationOutTiming={400}
-            backdropTransitionInTiming={1500}
-            backdropTransitionOutTiming={400}
-            >
-            {this._renderModalOne()}
-          </Modal>
+          animationOut={'slideOutLeft'}
+          isVisible={this.state.modal === 1}
+          animationInTiming={1500}
+          animationOutTiming={400}
+          backdropTransitionInTiming={1500}
+          backdropTransitionOutTiming={400}
+        >
+          {this._renderModalOne()}
+        </Modal>
       </Container>
     )
   }
@@ -129,7 +141,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: '#D4F5F5',
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    textAlign: `center`
   },
   innerPage: {
     flex: 1,
@@ -177,6 +190,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 45,
+    width: 150,
     alignSelf: 'flex-end',
     backgroundColor: '#93B7BE',
     padding: 5,
