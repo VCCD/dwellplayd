@@ -4,7 +4,6 @@ import {
   LoginScreen,
   Signup,
   Welcome,
-  NoCommunity,
 } from './components'
 
 const RootStack = StackNavigator ({
