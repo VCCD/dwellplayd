@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions } from 'react-native'
-import { VictoryBar, VictoryZoomContainer, VictoryVoronoiContainer, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack, svg  } from "victory-native";
+import { VictoryBar, VictoryZoomContainer, VictoryVoronoiContainer, VictoryArea, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack, svg  } from "victory-native";
 import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
 import { fetchUserScores, getPastWinners } from '../store';
 
@@ -74,6 +74,7 @@ class Stats extends React.Component {
     let usersInCommunity = taskItems.filter(task => task.userId)
     const month = new Date().getMonth() + 1
     const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
+    dataForMonth.sort(function(a, b){return a.points-b.points})
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const  colorScale=["#8FA5A5", "#8C9A9E", "#79C4C4","#353637", "#4482AE", "#9BB3B3"]
     //console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
@@ -81,7 +82,7 @@ class Stats extends React.Component {
     communityUsers.forEach(user =>{legendArr.push({name: user.firstName, symbol:{fill:colorScale[user.id]}})})
     let taskLegend = []
     //userScores.sort(function(a-b){return b-a})
-    userScores.sort(function(a,b){return b.score-a.score})
+    userScores.sort(function(a,b){return a.score-b.score})
     
     tasksPoints = {}
     taskItems.forEach(task => tasksPoints[task.task.id] = {name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
@@ -122,20 +123,30 @@ class Stats extends React.Component {
               <Body>
                 <ScrollView >
           
+                <VictoryLegend x={25} y={25} height={50}
+                title="Current Tasks and Points This Month"
+                centerTitle
+                orientation="horizontal"
+                gutter={20}
+                style={{
+                  data: { fill: "transparent", stroke: "transparent", strokeWidth: 2 },
+                  labels: { fill: "transparent" },
+                  border: { stroke: "transparent" },
+                  title: {fontSize: 15 }
+                }}
+              />
 
-
-                  <VictoryChart 
+                  <VictoryChart containerComponent={<VictoryVoronoiContainer height={400} width={350} />}  height={250}
                     domainPadding={{x:25, y:25 }}
                     
                   >
+                 
                     <VictoryBar 
-                      
-                      style={{
-                        data: { fill: "#8C9A9E" },
-                        labels: { labelPlacement: 'parallel' }
-                      }}
+                    style={{ data: { width: 35, fillOpacity:0.7, fill:colorScale[this.state.selectedUser] } }}
+                    cornerRadius={5}
                       standalone={true}
-                      //labels={(d) => d.y}
+
+                      labels={(d) => `${d.y} pts`}
                       labelComponent={<VictoryLabel />}
                       data={dataForMonth.map(task => { return { x: task.name, y: task.points, task: task.name } })}
                       
@@ -156,8 +167,30 @@ class Stats extends React.Component {
                       }}
                     />
                     <VictoryAxis
-                      label={`Tasks for ${monthWords[month]}`}
-                      style={styles.axisLabel}
+                      
+                    width={95}
+          
+          
+                    orientation="bottom"
+                    
+                    // offsetX={25}
+                     //offsetY={0}
+                    
+                    
+          
+                     padding={5}
+                    style={{
+                      axis: { stroke: "black" },
+                      ticks: { stroke: "black" },
+                      tickLabels: { fontSize: 12, fill: "black", angle:90, orientation: 'left', verticalAnchor:'start'}
+                    }}
+                    /*
+                      Use a custom tickLabelComponent with
+                      an absolutely positioned x value to position
+                      your tick labels in the center of the chart. The correct
+                      y values are still provided by VictoryAxis for each tick
+                    */
+                    tickLabelComponent={<VictoryLabel  verticalAnchor='start' y={250}/>}
                       
                     />
                     <VictoryAxis dependentAxis 
@@ -167,7 +200,9 @@ class Stats extends React.Component {
                       ticks: { stroke: "transparent", padding:0 },
                       tickLabels: { fontSize: 12, fill: "transparent", angle:45, orientation: 'right', verticalAnchor:'start' }
                     }}/>
+                    
                   </VictoryChart>
+                
                 </ScrollView>
               </Body>
             </ScrollView>
@@ -310,7 +345,7 @@ class Stats extends React.Component {
           </VictoryChart > 
          
           
-            <VictoryChart  containerComponent={<VictoryVoronoiContainer height={400}/>}  height={250}
+            <VictoryChart  containerComponent={<VictoryVoronoiContainer height={400} width={350} />}  height={250}
             animate={{duration: 2000}}>
             <VictoryLegend x={25} y={50}
   title="Avg Points Per Task"
@@ -329,18 +364,19 @@ class Stats extends React.Component {
             //offsetY={200}
             standalone={true}
             
-              style={{ data: { width: 35, fillOpacity:0.7, fill:"#4482AE" } }}
+              style={{ data: { width: 35, fillOpacity:0.7, fill:"#4482AE" }, label:{padding:25} }}
               data={taskItemsArr}
               cornerRadius={8}
               
               y={data => roundToTenths(data.y)}
            labels={(data) => (`${roundToTenths(data.y)} pts`)}
+           
              
             />
             
             <VictoryAxis dependentAxis 
             
-            labelComponent={<VictoryLabel  verticalAnchor='start' angle={90}/>}
+            labelComponent={<VictoryLabel  verticalAnchor='end' angle={90}/>}
             
             style={{
               axis: { stroke: "transparent" },
@@ -350,7 +386,7 @@ class Stats extends React.Component {
             }}/>
             <VictoryAxis crossAxis 
           // height={height}
-          // width={width}
+         width={95}
           
           
           orientation="bottom"
@@ -360,10 +396,10 @@ class Stats extends React.Component {
           
           
 
-           //padding={5}
+           padding={5}
           style={{
             axis: { stroke: "black" },
-            ticks: { stroke: "black", padding:0 },
+            ticks: { stroke: "black", padding:25 },
             tickLabels: { fontSize: 12, fill: "black", angle:90, orientation: 'left', verticalAnchor:'start'}
           }}
           /*
