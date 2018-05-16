@@ -90,14 +90,18 @@ class Stats extends React.Component {
     taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) })
     return this.taskPoints
   }
+  legendArr = ()=>{
+    let legend = []
+    this.props.communityUsers.forEach(user => { legend.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
+    return legend
+  }
 
 
   render() {
 
     const { userScores, taskItems, communityUsers } = this.props
 
-    let legendArr = []
-    communityUsers.forEach(user => { legendArr.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
+    
     let taskLegend = []
    
     tasksPoints = {}
@@ -282,7 +286,7 @@ class Stats extends React.Component {
               orientation="horizontal"
               gutter={20}
               style={{ data: { fontSize: 10 } }}
-              data={legendArr}
+              data={this.legendArr()}
             />
 
             <VictoryAxis dependentAxis
