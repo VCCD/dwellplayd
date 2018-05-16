@@ -91,9 +91,7 @@ class Stats extends React.Component {
 
     let usersInCommunity = taskItems.filter(task => task.userId)
    
-    // const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
    
-    // dataForMonth.sort(function (a, b) { return a.points - b.points })
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
    
