@@ -8,6 +8,7 @@ import { fetchUserScores, getPastWinners } from '../store';
 const roundToTenths = num => {
   return Math.round(num * 10) / 10
 }
+const month = new Date().getMonth() + 1
 
 class Stats extends React.Component {
 
@@ -70,12 +71,17 @@ class Stats extends React.Component {
     dateArr = new Set()
     this.props.taskItems.forEach(task => {if (task.completed) return dateArr.add(Number(task.completed.split('-')[1]))})
     dateArr = Array.from(dateArr)
-   // dateArr = dateArr.map(date => Number(date)+1)
     var dates = []
     dateArr.map(date => dates.push(this.monthWords[date]))
     dates.splice(dates.length-1, 1)
     
     return dates
+  }
+  dataForMonth =() =>{
+    const month = new Date().getMonth() + 1
+    const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
+   return dataForMonth.sort(function (a, b) { return a.points - b.points })
+
   }
 
 
@@ -84,17 +90,16 @@ class Stats extends React.Component {
     const { userScores, taskItems, communityUsers } = this.props
 
     let usersInCommunity = taskItems.filter(task => task.userId)
-    const month = new Date().getMonth() + 1
-    const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
    
-    dataForMonth.sort(function (a, b) { return a.points - b.points })
+    // const dataForMonth = this.getUserCurrentMonthItems(this.state.selectedUser, month)
+   
+    // dataForMonth.sort(function (a, b) { return a.points - b.points })
     const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
     const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
-    //console.log(this.getAvgPointsPerTask(1), '<<<<<<task avg points')
+   
     let legendArr = []
     communityUsers.forEach(user => { legendArr.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
     let taskLegend = []
-    //userScores.sort(function(a-b){return b-a})
     userScores.sort(function (a, b) { return a.score - b.score })
 
     tasksPoints = {}
@@ -106,8 +111,6 @@ class Stats extends React.Component {
     for (key in tasksPoints) {
       taskLegend.push({ name: tasksPoints[key].name, symbol: { fill: colorScale[key] } })
     }
-
-    //console.log(tasksPoints, taskItemsArr, taskLegend,'<<<<<<<< pointsObj')
 
 
     return (
@@ -161,7 +164,7 @@ class Stats extends React.Component {
 
                       labels={(d) => `${d.y} pts`}
                       labelComponent={<VictoryLabel />}
-                      data={dataForMonth.map(task => { return { x: task.name, y: roundToTenths(task.points), task: task.name } })}
+                      data={this.dataForMonth().map(task => { return { x: task.name, y: roundToTenths(task.points), task: task.name } })}
 
                       animate={{
                         onEnter: {
@@ -189,12 +192,6 @@ class Stats extends React.Component {
                         ticks: { stroke: "black" },
                         tickLabels: { fontSize: 12, fill: "black", angle: 90, orientation: 'left', verticalAnchor: 'start' }
                       }}
-                      /*
-                        Use a custom tickLabelComponent with
-                        an absolutely positioned x value to position
-                        your tick labels in the center of the chart. The correct
-                        y values are still provided by VictoryAxis for each tick
-                      */
                       tickLabelComponent={<VictoryLabel verticalAnchor='start' y={250} />}
 
                     />
