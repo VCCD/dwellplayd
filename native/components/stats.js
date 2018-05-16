@@ -448,10 +448,10 @@ const styles = StyleSheet.create({
   },
   // axisLabel: {
   //   flex: 5,
-  //   //padding: { top: 30, bottom: 30 }, 
+  //   //padding: { top: 30, bottom: 30 },
   //   fontSize: 30,
   //   margin: 30,
-  //   // tickLabels: {fontSize: 15, padding: 5} 
+  //   // tickLabels: {fontSize: 15, padding: 5}
   // },
   modal: {
     flexDirection: 'row',
