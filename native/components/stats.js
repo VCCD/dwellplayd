@@ -69,9 +69,12 @@ class Stats extends React.Component {
   }
   getTicksValues=() =>{
     dateArr = []
-    taskItems.forEach(task => dateArr(Number(task.completed.split('-'))+1))
+    this.props.taskItems.forEach(task => dateArr.push(Number(task.completed.split('-')[1])+1))
     dateArr = new Set(dateArr)
-    dateArr = dateArr.map(date => this.monthWords[date] )
+    dateArr = dateArr.entries()
+    console.log(dateArr)
+    dateArr = dateArr.map(date => this.monthWords[date])
+  
     return dateArr
   }
 
