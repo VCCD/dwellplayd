@@ -85,20 +85,21 @@ class Stats extends React.Component {
    return dataForMonth.sort(function (a, b) { return a.points - b.points })
 
   }
+  taskPoints = () =>{
+    tasksPoints = {}
+    taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) })
+    return this.taskPoints
+  }
 
 
   render() {
 
     const { userScores, taskItems, communityUsers } = this.props
 
-    let usersInCommunity = taskItems.filter(task => task.userId)
-   
-   
     let legendArr = []
     communityUsers.forEach(user => { legendArr.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
     let taskLegend = []
    
-
     tasksPoints = {}
     taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
 
