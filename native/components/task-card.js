@@ -30,7 +30,6 @@ class TaskCard extends React.Component {
 
   render () {
     const { taskItem, fromPast, fromScores } = this.props
-    const daysAgo = (new Date() - Date.parse(taskItem.completed)) / (1000 * 60 * 60 * 24)
     const completer = taskItem.completer ? taskItem.completer.firstName : 'an old dweller'
     return (
       <AnimatedCard animation="bounceInUp" duration={1500}>
@@ -53,7 +52,7 @@ class TaskCard extends React.Component {
           <View style={styles.left}>
             <Text style={styles.text}>{taskItem.task.name}</Text>
             <Text style={styles.text}>{fromPast || fromScores
-              ? `${completer} - completed after ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`
+              ? `${completer} - completed after ${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`
               : `completed ${`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago`}
               </Text>
           </View>
