@@ -20,7 +20,7 @@ class TaskCard extends React.Component {
   }
 
   handleClick = (taskItem) => {
-    if (this.props.fromScores) {
+    if (this.props.fromScores || this.props.fromPast) {
       this.setState({imageViewable: !this.state.imageViewable})
     }
     else {
@@ -29,7 +29,9 @@ class TaskCard extends React.Component {
   }
 
   render () {
-    const { taskItem } = this.props
+    const { taskItem, fromPast, fromScores } = this.props
+    const daysAgo = (new Date() - Date.parse(taskItem.completed)) / (1000 * 60 * 60 * 24)
+    const completer = taskItem.completer ? taskItem.completer.firstName : 'an old dweller'
     return (
       <AnimatedCard animation="bounceInUp" duration={1500}>
         {
@@ -50,7 +52,10 @@ class TaskCard extends React.Component {
         <CardItem button onPress={() => this.handleClick(taskItem)} style={styles.header}>
           <View style={styles.left}>
             <Text style={styles.text}>{taskItem.task.name}</Text>
-            <Text style={styles.text}>completed {`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago</Text>
+            <Text style={styles.text}>{fromPast || fromScores
+              ? `${completer} - completed after ${roundToTenths(daysAgo)} ${daysAgo === 1 ? `day` : `days`}`
+              : `completed ${`${roundToTenths(taskItem.days)} ${taskItem.days === 1 ? `day` : `days`}`} ago`}
+              </Text>
           </View>
           <Text style={styles.score} >{taskItem.points}</Text>
         </CardItem>

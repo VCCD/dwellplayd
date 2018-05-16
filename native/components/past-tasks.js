@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { Container, Content, ActionSheet, Text } from 'native-base'
-import TaskCard from './past-task-card'
+import TaskCard from './task-card'
 import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 
 const BUTTONS = [
@@ -72,7 +72,7 @@ class PastTasks extends React.Component {
               {sortedTaskItems.map(taskItem => {
                 taskItem.completer = community.users.find(user => user.id === taskItem.userId)
                 return (
-                <TaskCard style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
+                <TaskCard fromPast={true} style={styles.card} key={taskItem.id} taskItem={taskItem} handleClick={this.handleClick} />
                 )
               })}
             </Content>
