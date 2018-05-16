@@ -11,6 +11,8 @@ const roundToTenths = num => {
 const month = new Date().getMonth() + 1
 const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
 const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
+let taskLegend = []
+let taskItemsArr = []
 
 class Stats extends React.Component {
 
@@ -23,8 +25,7 @@ class Stats extends React.Component {
       selectedUserPoints: 0
     }
     this.userDataForMonth = []
-   
-
+    
   }
 
   getUserCurrentMonthItems = (id, month) => {
@@ -87,7 +88,7 @@ class Stats extends React.Component {
   }
   taskPoints = () =>{
     tasksPoints = {}
-    taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) })
+    this.props.taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) })
     return this.taskPoints
   }
   legendArr = ()=>{
@@ -95,30 +96,26 @@ class Stats extends React.Component {
     this.props.communityUsers.forEach(user => { legend.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
     return legend
   }
+  taskItemsArrFunc =() => {
 
-
-  render() {
-
-    const { userScores, taskItems, communityUsers } = this.props
-
-    
-    let taskLegend = []
-   
     tasksPoints = {}
-    taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
-
-    )
-    let taskItemsArr = Object.entries(tasksPoints).map(arr => { return { x: arr[1].name, y: arr[1].points } })
-    taskItemsArr = taskItemsArr.sort(function (a, b) { return a.y - b.y })
+    this.props.taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) })
+     taskItemsArr = Object.entries(tasksPoints).map(arr => { return { x: arr[1].name, y: arr[1].points } })
     for (key in tasksPoints) {
       taskLegend.push({ name: tasksPoints[key].name, symbol: { fill: colorScale[key] } })
     }
+    taskItemsArr = taskItemsArr.sort(function (a, b) { return a.y - b.y })
+    return taskItemsArr
+  }
+  
+  render() {
 
-
+    const { userScores, taskItems, communityUsers } = this.props
+    this.taskItemsArrFunc()
+    
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
-
           <Modal
             animationType="slide"
             animationInTiming={2000}
@@ -128,6 +125,7 @@ class Stats extends React.Component {
               alert('Modal has been closed.');
             }}>
             <ScrollView showsHorizontalScrollIndicator={false}>
+
               <Header style={styles.header}>
                 <Title style={{ color: "white", fontSize: 30 }}>{this.state.selectedUserName}</Title>
                 <TouchableHighlight
@@ -156,7 +154,6 @@ class Stats extends React.Component {
 
                   <VictoryChart containerComponent={<VictoryVoronoiContainer height={400} width={350} />} height={250}
                     domainPadding={{ x: 25, y: 25 }}
-
                   >
 
                     <VictoryBar
@@ -185,7 +182,6 @@ class Stats extends React.Component {
                       }}
                     />
                     <VictoryAxis
-
                       width={95}
                       orientation="bottom"
                       padding={5}
@@ -195,16 +191,13 @@ class Stats extends React.Component {
                         tickLabels: { fontSize: 12, fill: "black", angle: 90, orientation: 'left', verticalAnchor: 'start' }
                       }}
                       tickLabelComponent={<VictoryLabel verticalAnchor='start' y={250} />}
-
                     />
                     <VictoryAxis dependentAxis
-
                       style={{
                         axis: { stroke: "transparent" },
                         ticks: { stroke: "transparent", padding: 0 },
                         tickLabels: { fontSize: 12, fill: "transparent", angle: 45, orientation: 'right', verticalAnchor: 'start' }
                       }} />
-
                   </VictoryChart>
 
                 </ScrollView>
@@ -294,14 +287,11 @@ class Stats extends React.Component {
               offsetY={0}
             />
             <VictoryAxis crossAxis
-
               orientation="bottom"
               offsetY={50}
               style={{ tickLabels: { fontSize: 15, padding: 5 }, label: { fontSize: 15, padding: { top: 15 } } }}
               label={`Points for Each Month`}
               tickValues={this.getTicksValues()}
-
-
             />
 
             {this.props.communityUsers.map(user => {
@@ -338,7 +328,6 @@ class Stats extends React.Component {
               </VictoryGroup>)
             })}
 
-
           </VictoryChart >
           <VictoryChart containerComponent={<VictoryVoronoiContainer height={400} width={350} />} height={250}
             animate={{ duration: 2000 }}>
@@ -364,7 +353,6 @@ class Stats extends React.Component {
 
               y={data => roundToTenths(data.y)}
               labels={(data) => (`${roundToTenths(data.y)} pts`)}
-
             />
 
             <VictoryAxis dependentAxis
