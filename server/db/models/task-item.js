@@ -8,7 +8,7 @@ const calcPoints = (days, value) => {
   const x = days
   const z = value
   const e = Math.E
-  const points = (8 * z ** 0.6) / (1 + e ** (3 * (1 - x / z))) - (8 * z ** 0.6) / (1 + e ** 3)
+  const points = (16 * z ** 0.6) / (1 + e ** (3 * (1 - x / z))) - (16 * z ** 0.6) / (1 + e ** 3)
   return roundToTenths(points)
 }
 
