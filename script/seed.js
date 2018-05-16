@@ -139,6 +139,7 @@ async function seed() {
         value: 1,
         taskId: 1,
         communityId: 1,
+        imgUrl: `https://storage.googleapis.com/dwellplayd/user-1526484728047.jpg`
       },
       {
         createdAt: start,
@@ -147,6 +148,7 @@ async function seed() {
         value: 3,
         taskId: 2,
         communityId: 1,
+        imgUrl: `https://storage.googleapis.com/dwellplayd/user-1526484879930.jpg`
       },
       {
         createdAt: start,
@@ -155,6 +157,7 @@ async function seed() {
         value: 7,
         taskId: 3,
         communityId: 1,
+        imgUrl: `https://storage.googleapis.com/dwellplayd/user-1526484266342.jpg`
       },
       {
         createdAt: start,
@@ -163,6 +166,7 @@ async function seed() {
         value: 14,
         taskId: 4,
         communityId: 1,
+        imgUrl: `https://storage.googleapis.com/dwellplayd/user-1526484195059.jpg`
       },
       {
         createdAt: start,
@@ -171,6 +175,7 @@ async function seed() {
         value: 30,
         taskId: 5,
         communityId: 1,
+        imgUrl: `https://storage.googleapis.com/dwellplayd/user-1526484246825.jpg`
       },
     ]
     for (let i = 0; i < 135; i++) {
