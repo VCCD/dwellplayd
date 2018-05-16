@@ -31,6 +31,7 @@ async function seed() {
         email: 'c@chris.com',
         password: '123',
         communityId: 1,
+        hasSeenTutorials: true,
       },
       {
         firstName: 'Vi',
@@ -55,7 +56,7 @@ async function seed() {
 
   const createTasks = async () => {
     const tasks = [
-      { name: 'walk the dog' },
+      { name: 'get the mail' },
       { name: 'water the plants' },
       { name: 'takeout the trash' },
       { name: 'clean the bathroom' },
@@ -117,15 +118,17 @@ async function seed() {
   await createCommunityTasks()
 
   const createTaskItems = async () => {
-    const dayMs = 86400000;
+    const dayMs = 86400000
     const start = new Date() - dayMs * 120
-    const rando = (taskItem, today) => {
+    const taskToday = (taskItem, today) => {
       let completed = false
-      const duration = (today - taskItem.createdAt) / dayMs
-      const likelihood = duration / taskItem.value
-      const random = Math.random() * 2
-      if (random < likelihood) completed = true
-      // console.log(`value`, taskItem.value, `likelihood`, likelihood, `random`, random, `completed`, completed)
+      const x = (today - taskItem.createdAt) / dayMs
+      const z = taskItem.value
+      const e = Math.E
+      const points = (4 * z ** 0.8) / (1 + e ** (4 * (1 - x / z))) - (4 * z ** 0.8) / (1 + e ** 4)
+      console.log(points, taskItem.value)
+      const threshold = Math.random() * taskItem.value * 10
+      if (points > threshold) completed = true
       return completed
     }
     const completedTaskItems = []
@@ -171,17 +174,18 @@ async function seed() {
         communityId: 1,
       },
     ]
-    for (let i = 1; i < 120; i++) {
+    for (let i = 0; i < 120; i++) {
       const today = new Date() - dayMs * (120 - i)
       liveTaskItems.forEach(liveTaskItem => {
-        console.log(today)
         if (i === 119) { completedTaskItems.push(liveTaskItem) }
-        if (rando(liveTaskItem, today)) {
-          const completedTaskItem = {...liveTaskItem}
+        if (taskToday(liveTaskItem, today)) {
+          console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>> did it`)
+          const completedTaskItem = { ...liveTaskItem }
           completedTaskItem.userId = Math.floor(Math.random() * 4) + 1
-          completedTaskItem.completed = today - Math.random() * dayMs
+          const newToday = today - Math.random() * dayMs * 0.25
+          completedTaskItem.completed = newToday
           completedTaskItems.push(completedTaskItem)
-          liveTaskItem.createdAt = today
+          liveTaskItem.createdAt = newToday
         }
       })
     }
