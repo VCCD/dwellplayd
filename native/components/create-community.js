@@ -97,7 +97,7 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     submitCreateCommunity: async (name, user) => {
       await dispatch(createCommunityThunkerator(name, user))
-      ownProps.navigation.navigate('SelectTasks')
+      ownProps.navigation.navigate('LoadingScreen')
     }
   }
 }
