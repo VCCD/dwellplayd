@@ -20,6 +20,8 @@ class Stats extends React.Component {
       selectedUserPoints: 0
     }
     this.userDataForMonth = []
+    this.monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
+
   }
 
   getUserCurrentMonthItems = (id, month) => {
@@ -64,6 +66,13 @@ class Stats extends React.Component {
     let filteredTasks = taskItems.filter(task => task.id === taskId)
     console.log(taskItems)
     return filteredTasks.reduce((sum, task) => { return sum += task.points }, 0)
+  }
+  getTicksValues=() =>{
+    dateArr = []
+    taskItems.forEach(task => dateArr(Number(task.completed.split('-'))+1))
+    dateArr = new Set(dateArr)
+    dateArr = dateArr.map(date => this.monthWords[date] )
+    return dateArr
   }
 
 
@@ -301,7 +310,7 @@ class Stats extends React.Component {
               offsetY={50}
               style={{ tickLabels: { fontSize: 15, padding: 5 }, label: { fontSize: 15, padding: { top: 15 } } }}
               label={`Points for Each Month`}
-              tickValues={['Jan', 'Feb', 'March', 'April', 'May']}
+              tickValues={this.getTicksValues()}
 
 
             />
