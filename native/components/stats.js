@@ -9,6 +9,8 @@ const roundToTenths = num => {
   return Math.round(num * 10) / 10
 }
 const month = new Date().getMonth() + 1
+const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
+const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
 
 class Stats extends React.Component {
 
@@ -21,7 +23,7 @@ class Stats extends React.Component {
       selectedUserPoints: 0
     }
     this.userDataForMonth = []
-    this.monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
+   
 
   }
 
@@ -57,7 +59,7 @@ class Stats extends React.Component {
     monthsArr = new Set(monthsArr)
     monthsArr.forEach(month => {
 
-      userPointsPerMonth.push({ x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task) => { return sum += task.points }, 0), month: this.monthWords[month] })
+      userPointsPerMonth.push({ x: month, y: this.getUserCurrentMonthItems(id, month).reduce((sum, task) => { return sum += task.points }, 0), month: monthWords[month] })
     })
     return userPointsPerMonth
   }
@@ -73,7 +75,7 @@ class Stats extends React.Component {
     dateArr = Array.from(dateArr)
 
     var dates = []
-    dateArr.map(date => dates.push(this.monthWords[date]))
+    dateArr.map(date => dates.push(monthWords[date]))
     dates.splice(dates.length-1, 1)
     
     return dates
@@ -93,13 +95,10 @@ class Stats extends React.Component {
     let usersInCommunity = taskItems.filter(task => task.userId)
    
    
-    const monthWords = { 1: 'Jan', 2: 'Feb', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec' }
-    const colorScale = ["#8FA5A5", "#8C9A9E", "#79C4C4", "#353637", "#4482AE", "#9BB3B3"]
-   
     let legendArr = []
     communityUsers.forEach(user => { legendArr.push({ name: user.firstName, symbol: { fill: colorScale[user.id] } }) })
     let taskLegend = []
-    userScores.sort(function (a, b) { return a.score - b.score })
+   
 
     tasksPoints = {}
     taskItems.forEach(task => tasksPoints[task.task.id] = { name: task.task.name, points: this.getAvgPointsPerTask(task.task.id) }
@@ -416,7 +415,7 @@ const styles = StyleSheet.create({
 const mapState = state => {
   return {
     user: state.user,
-    userScores: state.userScores,
+    userScores: state.userScores.sort(function (a, b) { return a.score - b.score }),
     taskItems: state.taskItems.filter(taskItem => taskItem.completed !== null),
     communityUsers: state.community.users,
     users: state.users
