@@ -71,11 +71,9 @@ class Stats extends React.Component {
     dateArr = new Set()
     this.props.taskItems.forEach(task => {if (task.completed) return dateArr.add(Number(task.completed.split('-')[1]))})
     dateArr = Array.from(dateArr)
-    console.log(dateArr, '<<<<<<<<<<<<<<')
    // dateArr = dateArr.map(date => Number(date)+1)
     var dates = []
     dateArr.map(date => dates.push(this.monthWords[date]))
-    console.log(dates, '<<<<<<<<<<<, dates')
     dates.splice(dates.length-1, 1)
     
     return dates
