@@ -31,7 +31,7 @@ async function seed() {
         email: 'c@chris.com',
         password: '123',
         communityId: 1,
-        hasSeenTutorials: true,
+        // hasSeenTutorials: true,
       },
       {
         firstName: 'Vi',
@@ -125,8 +125,8 @@ async function seed() {
       const x = (today - taskItem.createdAt) / dayMs
       const z = taskItem.value
       const e = Math.E
-      const points = (8 * z ** 0.6) / (1 + e ** (3 * (1 - x / z))) - (8 * z ** 0.6) / (1 + e ** 3)
-      const threshold = Math.random() * taskItem.value * 5
+      const points = (16 * z ** 0.6) / (1 + e ** (3 * (1 - x / z))) - (16 * z ** 0.6) / (1 + e ** 3)
+      const threshold = Math.random() * taskItem.value * 15
       if (points > threshold) completed = true
       return completed
     }

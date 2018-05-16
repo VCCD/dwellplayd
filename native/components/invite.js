@@ -103,7 +103,7 @@ class Invite extends React.Component {
     return (
       <Container style={styles.container}>
         <Content contentContainerStyle={styles.form}>
-          <Text style={styles.title}>invite dwellows</Text>
+          <Text style={styles.title}>invite dwellers</Text>
           <List
             dataSource={this.ds.cloneWithRows(this.state.emailList)}
             renderRow={data => (
