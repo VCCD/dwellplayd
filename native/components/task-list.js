@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View, Dimensions } from 'react-native';
 import { Container, Content, ActionSheet, Text, Button } from 'native-base'
 import { TaskCard } from '../components'
 import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 import Modal from 'react-native-modal'
+
+const deviceHeight = Dimensions.get('window').height
+const deviceWidth = Dimensions.get('window').width
 
 const BUTTONS = [
   'provide proof',
@@ -83,7 +86,7 @@ class TaskList extends React.Component {
       <Container style={styles.list}>
       {
         sortedTaskItems.length
-          ? <View>
+          ? <View style={styles.list}>
           <ScrollView refreshControl={<RefreshControl
           refreshing={this.state.refreshing}
           onRefresh={this.refresh} />}>
@@ -106,6 +109,7 @@ class TaskList extends React.Component {
 const styles = StyleSheet.create({
   list: {
     backgroundColor: '#8C9A9E',
+    height: deviceHeight
   },
   header: {
     display: 'flex',
