@@ -71,6 +71,7 @@ class Stats extends React.Component {
     dateArr = new Set()
     this.props.taskItems.forEach(task => {if (task.completed) return dateArr.add(Number(task.completed.split('-')[1]))})
     dateArr = Array.from(dateArr)
+
     var dates = []
     dateArr.map(date => dates.push(this.monthWords[date]))
     dates.splice(dates.length-1, 1)
@@ -404,6 +405,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     justifyContent: 'center',
   },
+
   modal: {
     flexDirection: 'row',
     height: 100,

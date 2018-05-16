@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 const roundToTenths = num => {
-  return Math.round(num * 10) / 10
+  return Math.round(num * 10) / 10 < 0 ? 0 : Math.round(num * 10) / 10
 }
 
 const calcPoints = (days, value) => {
