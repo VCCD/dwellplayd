@@ -36,6 +36,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: '#747578',
   },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginTop: 5,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#D4F5F5',
+  },
   button: {
     height: 45,
     alignSelf: 'flex-end',
@@ -147,6 +155,7 @@ class SelectTasks extends Component {
     return (
       <Container style={styles.list}>
         <Content contentContainerStyle={{ backgroundColor: '#8C9A9E' }}>
+        <Text style={styles.title}>add/edit tasks </Text>
         <View style={{
           flexDirection: 'row',
           justifyContent: 'center',
