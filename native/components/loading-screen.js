@@ -93,7 +93,7 @@ class Play extends React.Component {
               this.setState({ modal: 0 })
               store.dispatch(userHasSeenAllTutorialsThunkerator(this.props.user))
               setTimeout(() => {
-                this.props.navigation.navigate('SelectTasks')
+                this.props.taskItems.length ? this.props.navigation.navigate('Tasks') : this.props.navigation.navigate('SelectTasks')
               }, 500)
             })}
           </View>
