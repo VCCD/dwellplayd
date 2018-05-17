@@ -24,7 +24,7 @@ class PastTasks extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Completed Tasks'
+    title: 'Completed'
   }
 
   handleClick = clickedTask => {

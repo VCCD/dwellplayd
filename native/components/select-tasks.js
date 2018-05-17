@@ -133,7 +133,7 @@ class SelectTasks extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Add / Edit Tasks',
+      title: 'Add / Edit',
       headerRight: (
         <Button transparent onPress={() => navigation.navigate('Tasks')}>
           <Text style={{color: '#D4F5F5', fontSize: 16, fontWeight: 'bold', marginRight: 15}}>Done</Text>

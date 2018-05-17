@@ -30,20 +30,20 @@ const DrawerStack = DrawerNavigator({
   PastTasks: {
     screen: PastTasks,
   },
+  SelectTasks: {
+    screen: SelectTasks
+  },
   Scores: {
     screen: Scores
   },
-  Profile: {
-    screen: PlayerDetail
-  },
-  SelectTasks: {
-    screen: SelectTasks
+  Stats: {
+    screen: Stats
   },
   Invite: {
     screen: Invite
   },
-  Stats: {
-    screen: Stats
+  Profile: {
+    screen: PlayerDetail
   },
   Logout: {
     screen: Logout

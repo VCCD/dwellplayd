@@ -31,7 +31,7 @@ class TaskList extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Current Tasks'
+    title: 'Current'
   }
 
   handleClick = clickedTask => {
