@@ -35,8 +35,8 @@ class Scores extends React.Component {
     return (
       <Container style={styles.list}>
         <Content>
-          <Text style={styles.month}>
-            {`Current scores - ${month[date.getMonth()]}:`}
+          <Text style={styles.title}>
+            {`current scores`}
           </Text>
           <View>
             <Card>
@@ -73,8 +73,8 @@ class Scores extends React.Component {
               })}
             </Card>
           </View>
-          <Text style={styles.month}>
-            {`Previous winners:`}
+          <Text style={styles.title}>
+            {`previous winners`}
           </Text>
           <Card>
           {pastWinners.map(winner => {
@@ -115,11 +115,13 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#8C9A9E',
   },
-  month: {
-    fontSize: 24,
+  title: {
+    fontSize: 36,
     fontWeight: 'bold',
-    margin: 10,
-    color: '#D4F5F5'
+    marginTop: 5,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#D4F5F5',
   },
   cardItem: {
     flex: 1,

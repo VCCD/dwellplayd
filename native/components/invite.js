@@ -29,11 +29,12 @@ const options = {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 30,
+    fontSize: 36,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginTop: 5,
+    marginBottom: 5,
     textAlign: 'center',
-    color: 'white',
+    color: '#D4F5F5',
   },
   container: {
     flex: 1,
@@ -102,8 +103,8 @@ class Invite extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       <Container style={styles.container}>
-        <Content contentContainerStyle={styles.form}>
           <Text style={styles.title}>invite dwellers</Text>
+        <Content contentContainerStyle={styles.form}>
           <List
             dataSource={this.ds.cloneWithRows(this.state.emailList)}
             renderRow={data => (
