@@ -55,7 +55,7 @@ describe('Task routes', () => {
 
     it('Get /api/tasks, only returns query amount', async () => {
       try {
-        const taskArray = ['clean the dishes', 'sweep the floors', 'vacuum', 'clean bathroom', 'clean kitchen']
+        const taskArray = ['clean the dishes', 'wash the windows', 'sweep the floors', 'vacuum', 'clean bathroom', 'clean kitchen']
         const taskPromises = taskArray.map((task) => {
           Task.create({name: task})
         })
