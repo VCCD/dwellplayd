@@ -76,12 +76,6 @@ class LoginScreen extends React.Component {
             rounded onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.text}>log in</Text>
             </Button>
-          <Button
-            rounded onPress={() => {
-            store.dispatch(auth(CONFIG.LOGIN))
-          }} style={styles.button}>
-            <Text style={styles.text}>dev login</Text>
-          </Button>
         </View>
       </View>
     );
