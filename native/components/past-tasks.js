@@ -24,7 +24,7 @@ class PastTasks extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Past Tasks'
+    title: 'Completed Tasks'
   }
 
   handleClick = clickedTask => {
@@ -64,6 +64,7 @@ class PastTasks extends React.Component {
     const sortedTaskItems = filteredTaskItems && filteredTaskItems.sort((a, b) => Date.parse(b.completed) - Date.parse(a.completed))
     return (
       <Container style={styles.list}>
+      <Text style={styles.title}>completed tasks</Text>
         {sortedTaskItems.length ?
           <ScrollView refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
@@ -93,6 +94,14 @@ const styles = StyleSheet.create({
   },
   content: {
     margin: 5,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginTop: 5,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#D4F5F5',
   },
   noTask: {
     alignItems: 'center',

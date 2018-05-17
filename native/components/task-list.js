@@ -84,6 +84,7 @@ class TaskList extends React.Component {
 
     return (
       <Container style={styles.list}>
+      <Text style={styles.title}>current tasks</Text>
       {
         sortedTaskItems.length
           ? <View style={styles.list}>
@@ -117,6 +118,14 @@ const styles = StyleSheet.create({
   },
   content: {
     margin: 5,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginTop: 5,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#D4F5F5',
   },
   modalContent: {
     backgroundColor: '#fff',
