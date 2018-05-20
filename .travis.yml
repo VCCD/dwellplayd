@@ -18,6 +18,7 @@ before_script:
   - psql -c 'create database "dwellplayd-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
 before_deploy:
+  - npm run build-client # make the bundle
   - rm -rf node_modules # omit from the tarball, since we skip cleanup
 deploy:
   skip_cleanup: true # prevents travis from deleting the build
