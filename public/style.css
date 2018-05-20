@@ -1,5 +1,26 @@
 body {
   font-family: sans-serif;
+  background-color: #8C9A9E;
+}
+
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo img {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    width: 600px;
+  }
+  50% {
+    width: 590px;
+  }
 }
 
 a {

@@ -1,14 +1,11 @@
 import React from 'react'
 
-import {Navbar} from './components'
-import Routes from './routes'
-
-
 const App = () => {
   return (
-    <div>
-      <Navbar />
-      <Routes />
+    <div className="main">
+      <div className="logo">
+        <img src="/dwellplayd_logo.png" />
+      </div>
     </div>
   )
 }
