@@ -7,12 +7,14 @@
   },
   "main": "index.js",
   "scripts": {
+    "build-client": "webpack",
+    "build-client-watch": "webpack -w",
     "deploy": "script/deploy",
     "lint": "eslint ./ --ignore-path .gitignore",
     "postinstall": "touch secrets.js",
     "seed": "node script/seed.js",
     "start": "node server",
-    "start-dev": "NODE_ENV='development' & npm run start-server",
+    "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client --ignore native",
     "test": "NODE_ENV='test' mocha ./server/**/*.spec.js ./server/**/**/*.spec.js --require @babel/polyfill --require @babel/register"
   },
@@ -69,6 +71,8 @@
     "react-test-renderer": "^16.0.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-mock-store": "^1.2.3",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.0.9"
   }
 }
