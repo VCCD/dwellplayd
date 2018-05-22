@@ -3,11 +3,14 @@ const { Community, User, TaskItem } = require('../../db/models')
 const sendEmail = require('../../mailer')
 module.exports = router
 
-//mailer takes --> email, user, community, status
-
 router.get(`/`, async (req, res, next) => {
-  const communities = await Community.findAll()
-  res.send(communities)
+  try {
+    const communities = await Community.findAll()
+    res.send(communities)
+  }
+  catch (err) {
+    next(err)
+  }
 })
 
 router.param('communityId', async (req, res, next, communityId) => {

@@ -21,7 +21,7 @@ describe('Communities routes', () => {
       })
     })
 
-    it('GET /api/communities', () => {
+    it('GET /api/communities/1', () => {
       return request(app)
         .get('/api/communities/1')
         .expect(200)
