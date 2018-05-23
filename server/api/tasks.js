@@ -1,6 +1,6 @@
 
 const router = require('express').Router()
-const { Task, TaskItem } = require('../db/models')
+const { Task } = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {

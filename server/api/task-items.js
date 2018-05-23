@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { TaskItem, Task, CommunityTask } = require('../db/models')
+const { TaskItem, CommunityTask } = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {

@@ -14,16 +14,20 @@ router.param('userId', async (req, res, next, userId) => {
   }
 })
 
-router.get('/', (req, res, next) => {
-  User.findAll({
-    // explicitly select only the id and email fields - even though
-    // users' passwords are encrypted, it won't help if we just
-    // send everything to anyone who asks!
-    attributes: ['id', 'email', 'firstName', 'lastName'],
-    include: [TaskItem]
-  })
-    .then(users => res.json(users))
-    .catch(next)
+router.get('/', async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      // explicitly select only the id and email fields - even though
+      // users' passwords are encrypted, it won't help if we just
+      // send everything to anyone who asks!
+      attributes: ['id', 'email', 'firstName', 'lastName'],
+      include: [TaskItem]
+    })
+    res.json(users)
+  }
+  catch (err) {
+    next(err)
+  }
 })
 
 router.get('/:userId', (req, res, next) => {
