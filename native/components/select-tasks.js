@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, ListView, View } from 'react-native';
 import { SelectTaskItem } from '../components'
-import Modal from 'react-native-modal'
 import {
   Container,
   Content,
@@ -27,14 +26,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#8C9A9E',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: '#747578',
   },
   title: {
     fontSize: 36,

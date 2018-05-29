@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Header, Content, Body, Text, View } from 'native-base'
+import { Container, Content, Text, View } from 'native-base'
 import { StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux'

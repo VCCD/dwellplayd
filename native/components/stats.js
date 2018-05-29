@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, FlatList, ScrollView, Modal, TouchableHighlight, Dimensions } from 'react-native'
-import { VictoryBar, VictoryZoomContainer, VictoryVoronoiContainer, VictoryArea, VictoryChart, VictoryTheme, VictoryPie, VictoryAnimation, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter, VictoryStack, svg } from "victory-native";
-import { Container, Text, Button, Header, Title, Subtitle, Body } from 'native-base';
-import { fetchUserScores, getPastWinners } from '../store';
+import { StyleSheet, ScrollView, Modal, TouchableHighlight } from 'react-native'
+import { VictoryBar, VictoryVoronoiContainer, VictoryChart, VictoryLegend, VictoryLabel, VictoryAxis, VictoryLine, VictoryGroup, VictoryTooltip, VictoryScatter } from 'victory-native';
+import { Container, Text, Header, Title, Body } from 'native-base';
+import { fetchUserScores } from '../store';
 
 const roundToTenths = num => {
   return Math.round(num * 10) / 10
@@ -25,7 +25,7 @@ class Stats extends React.Component {
       selectedUserPoints: 0
     }
     this.userDataForMonth = []
-    
+
   }
 
   getUserCurrentMonthItems = (id, month) => {
@@ -52,7 +52,7 @@ class Stats extends React.Component {
     return combinedPointsById
   }
   getPointsOverPastMonths = (id) => {
-   
+
     const { taskItems } = this.props
     let userPointsPerMonth = []
     let monthsArr = taskItems.map(task => { if (task.completed) return Number(task.completed.split('-')[1]) })
@@ -77,7 +77,7 @@ class Stats extends React.Component {
     var dates = []
     dateArr.map(date => dates.push(monthWords[date]))
     dates.splice(dates.length-1, 1)
-    
+
     return dates
   }
   dataForMonth =() =>{
@@ -107,12 +107,12 @@ class Stats extends React.Component {
     taskItemsArr = taskItemsArr.sort(function (a, b) { return a.y - b.y })
     return taskItemsArr
   }
-  
+
   render() {
 
     const { userScores, taskItems, communityUsers } = this.props
     this.taskItemsArrFunc()
-    
+
     return (
       <Container style={styles.container}>
         <ScrollView showsHorizontalScrollIndicator={false}>
@@ -373,7 +373,7 @@ class Stats extends React.Component {
                 ticks: { stroke: "black", padding: 25 },
                 tickLabels: { fontSize: 12, fill: "black", angle: 90, orientation: 'left', verticalAnchor: 'start' }
               }}
-  
+
               tickLabelComponent={<VictoryLabel verticalAnchor='start' y={250} />}
               tickValues={taskItemsArr.map((point) => point.x)}
             />
