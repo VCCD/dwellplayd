@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Dimensions, ScrollView, Image } from 'react-native';
-import { Container, Text, Button, Icon, Card, CardItem } from 'native-base';
+import { Container, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux'
 import store, { fetchCommunity, getAllCommunityTasksFromServerThunkerator, fetchCommunityTaskItems, userHasSeenAllTutorialsThunkerator, fetchUserScores } from '../store'
 import Push from './push'

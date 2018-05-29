@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import store, { auth, me } from '../store'
-import { StyleSheet, Text, View, Button as ReactNativeButton } from 'react-native';
-import { Container, Header, Content, Item, Input, Label, Button, Icon } from 'native-base';
-import CONFIG from '../api-routes'
+import { auth } from '../store'
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'native-base';
 import customFormStyle from '../customFormStyle'
 import t from 'tcomb-form-native'
 

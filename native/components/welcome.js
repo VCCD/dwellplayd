@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet, Image } from 'react-native'
-import {Container, Button, Text, Content, Body} from 'native-base'
+import { StyleSheet, Image } from 'react-native'
+import {Container, Button, Text, Content} from 'native-base'
 import { connect } from 'react-redux'
 
 const Welcome = (props) => {

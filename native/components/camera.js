@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import {Icon, Button, Header} from 'native-base'
+import {Icon, Button} from 'native-base'
 import { Camera, Permissions } from 'expo';
 
 class CameraComponent extends Component {

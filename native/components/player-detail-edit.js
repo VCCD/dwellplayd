@@ -5,7 +5,7 @@ import t from 'tcomb-form-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../store'
 import customFormStyle from '../customFormStyle'
-import { ImagePicker, Permissions, Camera } from 'expo'
+import { ImagePicker, Permissions } from 'expo'
 import CONFIG from '../api-routes'
 
 const apiURL = CONFIG.API_URL

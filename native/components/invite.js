@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, ListView } from 'react-native';
+import { StyleSheet, Text, ListView } from 'react-native';
 import { Container, Button, Icon, ListItem, List, Content } from 'native-base';
 import t from 'tcomb-form-native'
 import { sendInvitations } from '../store/community';

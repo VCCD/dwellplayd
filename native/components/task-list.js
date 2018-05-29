@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl, ScrollView, View, Dimensions } from 'react-native';
 import { Container, Content, ActionSheet, Text, Button } from 'native-base'
 import { TaskCard } from '../components'
-import store, { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
-import Modal from 'react-native-modal'
+import { fetchCommunityTaskItems, completeTaskItem, fetchUserScores } from '../store'
 
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
@@ -126,15 +125,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: 'center',
     color: '#D4F5F5',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#747578'
   },
   button: {
     height: 45,
