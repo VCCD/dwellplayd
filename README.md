@@ -1,6 +1,8 @@
 # dwellplayd
 dwellplayd is a react native app designed to gamify and incentivize completing communal tasks in a shared living space
 
+![Task](https://i.imgur.com/udYPc0v.gif) ![Complete](https://i.imgur.com/SZ02dmH.gif) ![Scores Stats](https://i.imgur.com/O5x9sSG.gif)
+
 # Description
 As a player is logged in. User will be promted to create or join an exisiting dwelling. Dwellplayd will suggest a few popular tasks to choose from. There's also an option to create new tasks. Each tasks have a frequency selector for to determine how often a task needs to be completed, then activated to start. Points accumulate in value as time goes by. 
 
