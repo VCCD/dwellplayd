@@ -23,13 +23,13 @@ span {
   color:white;
   margin: 10px;
   font-style: oblique;
-  min-width: 850px;
+  font-size: 20px;
 }
 
 #gifs {
   display: flex;
   margin: 10px;
-  min-width: 270x;
+  min-width: 270px;
   min-height: 480px;
 }
 
