@@ -6,12 +6,36 @@ body {
 .main {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.logo img {
+.logo > a > img {
   animation: pulse 1s infinite;
+}
+
+.logo {
+  max-height: 100px;
+}
+
+span {
+  color:white;
+  margin: 10px;
+  font-style: oblique;
+  min-width: 850px;
+}
+
+#gifs {
+  display: flex;
+  margin: 10px;
+  min-width: 270x;
+  min-height: 480px;
+}
+
+#gifs > img {
+  margin: 10px;
+  border: 2px solid white;
 }
 
 @keyframes pulse {
